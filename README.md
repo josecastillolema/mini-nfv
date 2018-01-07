@@ -15,7 +15,7 @@ If not specified otherwise, mini-nfv will create 3 standards networks:
 - net0: 10.10.0.0/24
 - net1: 10.10.1.0/24
 
-It is also possible to manually define the networks, in the definition of the Virtual Links (VLs):
+It is also possible to manually define the networks, in the definition of the Virtual Links (VLs), see [tosca-vnfd-network.yaml](https://github.com/josecastillolema/mini-nfv/blob/master/samples/vnfd/tosca-vnfd-network.yaml):
 ```
     VL2:
       type: tosca.nodes.nfv.VL
