@@ -19,8 +19,8 @@ from mininet.cli import CLI
 
 MAX_VDUS = 100
 
-def parse_file(path):
-    "Parses the yaml file"
+def parse_vnfg(path):
+    "Parses the yaml file corresponding to the vnfg"
     yaml_file = open(path, 'r')
     content = yaml_file.read()
     parsed_file = yaml.load(content)
@@ -32,6 +32,10 @@ def parse_file(path):
     while parsed_file['topology_template']['node_templates'].has_key('VDU'+str(i)):
         print 'yes'
         i += 1
+
+def parse_vnffgd(path):
+    "Parses the yaml file corresponding to the vnffgd"
+    None
 
 class MyTopo(Topo):
     "Creates the mininet topology"
@@ -68,6 +72,6 @@ def inicializa_red():
 
 if __name__ == '__main__':
     print 'main'
-    parse_file('samples/tosca-vnfd-hello-world.yaml')
+    parse_vnfg('samples/vnfd/tosca-vnfd-hello-world.yaml')
     setLogLevel('info')
     inicializa_red()
