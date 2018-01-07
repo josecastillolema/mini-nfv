@@ -1,5 +1,5 @@
 # mini-nfv
-Enables loading TOSCA templates into mininet, [Tacker](https://docs.openstack.org/tacker/pike/index.html) style.
+Enables loading [TOSCA](http://docs.oasis-open.org/tosca/TOSCA/v1.0/TOSCA-v1.0.html) templates into mininet, [Tacker](https://docs.openstack.org/tacker/pike/index.html) style.
 
 
 Use
