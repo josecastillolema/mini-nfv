@@ -39,11 +39,13 @@ class MyTopo(Topo):
         Topo.__init__(self, **opts)
 
         # Add hosts and switches
-        host1 = self.addHost('h1')
+        host1 = self.addHost('h1', ip='10.0.0.1')
+        host2 = self.addHost('h2', ip='10.0.0.2')
         switch1 = self.addSwitch('s1', dpid='00:00:00:00:00:01')
 
         # links Add
         self.addLink(switch1, host1, 1, 1)
+        self.addLink(switch1, host2, 2, 1)
         # self.addLink(s2, s3, 2, 3, bw=10, delay='200ms', jitter='2ms', loss=10,
         #              max_queue_size=1000, use_htb=True)
 
