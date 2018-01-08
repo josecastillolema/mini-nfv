@@ -83,7 +83,7 @@ or through flavor:
       properties:
         flavor: m1.tiny
 ```
-Mini-nfv maps flavors and number of cpus property configuration into Mininet's CPULimitedHost.
+Mini-nfv maps flavors and number of cpus property configuration into [Mininet's CPULimitedHost](http://mininet.org/api/classmininet_1_1node_1_1CPULimitedHost.html).
 Currently, mini-nfv support the folowing flavors:
 - m1.tiny: 1 cpu
 - m1.small: 1 cpu
