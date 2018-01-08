@@ -8,6 +8,20 @@ Use
 sudo ./mininfv.py
 ```
 
+Characteristics
+--------------
+Mini-nfv supports:
+- network definition via VL
+- IP/mac definition via CP
+- translation of num CPUs and flavor properties into Mininet's CPULimitedHost
+- cloud-init
+
+Mini-nfv ignores:
+- RAM and disk properties
+- floating ips
+- NUMA topology
+- SRiOV
+
 Network definition
 --------------
 If not specified otherwise, mini-nfv will create 3 standards networks:
@@ -31,7 +45,7 @@ It is also possible to manually define the networks, within the Virtual Link (VL
 
 IP/MAC definition
 --------------
-If not specified otherwise, mini-nfv will assign random IPs within the defined netwroks.
+If not specified otherwise, mini-nfv will assign random IPs within the defined networks.
 However, it is also possibly to manually define IP/MAC for a VNF, within the Connection Point (CP) definition, see [tosca-vnfd-mac-ip.yaml](https://github.com/josecastillolema/mini-nfv/blob/master/samples/vnfd/tosca-vnfd-mac-ip.yaml):
 ```
     CP1:
@@ -47,4 +61,48 @@ However, it is also possibly to manually define IP/MAC for a VNF, within the Con
             node: VL1
         - virtualBinding:
             node: VDU1
+```
+
+Flavor and number of cpus
+--------------
+Mini-nfv emulates VNF resource configuration defined via num_cpus properties:
+```
+    VDU1:
+      type: tosca.nodes.nfv.VDU.Tacker
+      capabilities:
+        nfv_compute:
+          properties:
+            num_cpus: 1
+            mem_size: 512 MB
+            disk_size: 1 GB
+```
+or through flavor:
+```
+    VDU1:
+      type: tosca.nodes.nfv.VDU.Tacker
+      properties:
+        flavor: m1.tiny
+```
+Mini-nfv maps flavors and number of cpus property configuration into [Mininet's CPULimitedHost](http://mininet.org/api/classmininet_1_1node_1_1CPULimitedHost.html).
+Currently, mini-nfv support the folowing flavors:
+- m1.tiny: 1 cpu
+- m1.small: 1 cpu
+- m1.medium: 2 cpus
+- m1.large: 4 cpus
+- m1.xlargue: 8 cpus
+
+Mini-nfv will assign 1/(8-num_cpus))) to each VNF.
+
+Cloud-init
+--------------
+Mini-nfv supports VNFs configuration through user-data,  see [tosca-vnfd-userdata.yaml](https://github.com/josecastillolema/mini-nfv/blob/master/samples/vnfd/tosca-vnfd-userdata.yaml):
+```
+    VDU1:
+      type: tosca.nodes.nfv.VDU.Tacker
+      properties:
+        user_data_format: RAW
+        user_data: |
+          #!/bin/sh
+          echo "my hostname is `hostname`" > /tmp/hostname
+          df -h > /tmp/diskinfo
 ```
