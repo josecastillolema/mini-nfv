@@ -46,7 +46,7 @@ It is also possible to manually define the networks, within the Virtual Link (VL
 
 IP/MAC definition
 --------------
-If not specified otherwise, mini-nfv will assign random IPs within the defined netwroks.
+If not specified otherwise, mini-nfv will assign random IPs within the defined networks.
 However, it is also possibly to manually define IP/MAC for a VNF, within the Connection Point (CP) definition, see [tosca-vnfd-mac-ip.yaml](https://github.com/josecastillolema/mini-nfv/blob/master/samples/vnfd/tosca-vnfd-mac-ip.yaml):
 ```
     CP1:
