@@ -95,7 +95,7 @@ Mini-nfv will assign 1/(8-num_cpus))) to each VNF.
 
 Cloud-init
 --------------
-Mini-nfv supports VNFs configuration through user-data:
+Mini-nfv supports VNFs configuration through user-data,  see [tosca-vnfd-userdata.yaml](https://github.com/josecastillolema/mini-nfv/blob/master/samples/vnfd/tosca-vnfd-userdata.yaml):
 ```
     VDU1:
       type: tosca.nodes.nfv.VDU.Tacker
