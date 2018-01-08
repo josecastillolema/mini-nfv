@@ -8,6 +8,15 @@ Use
 sudo ./mininfv.py
 ```
 
+Characteristics
+--------------
+Mini-nfv supports:
+- network definition via VL
+- IP/mac definition via CP
+- flavors
+- num CPUs
+- cloud-init
+
 Network definition
 --------------
 If not specified otherwise, mini-nfv will create 3 standards networks:
