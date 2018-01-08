@@ -8,8 +8,8 @@
 # import json
 # import logging
 # import re
-import yaml
 import netaddr
+import yaml
 from mininet.topo import Topo
 from mininet.net import Mininet
 from mininet.link import TCLink
@@ -17,7 +17,7 @@ from mininet.link import TCLink
 from mininet.log import setLogLevel
 from mininet.node import OVSController
 # from mininet.node import RemoteController
-from mininet.cli import CLI
+from mininet.cli import CLI, output
 
 MAX_VDUS = 100
 
@@ -43,11 +43,11 @@ class MyTopo(Topo):
             num_cpus = 1
             try:
                 num_cpus = VNFD['VDU%s'%i]['capabilities']['nfv_compute2']['properties']['num_cpus']
-                if num_cpus >= 16:
-                    num_cpus = 16
+                if num_cpus >= 8:
+                    num_cpus = 8
             except KeyError:
                 pass
-            hosts.append(self.addHost('h%s' % i, cpu=1./(16-num_cpus)))
+            hosts.append(self.addHost('h%s' % i, cpu=1./(8-num_cpus)))
             i += 1
         # host1 = self.addHost('h1')
         # host2 = self.addHost('h2', ip='10.0.0.2/24', cpu=.5/k)
@@ -111,6 +111,26 @@ def configure_network(net):
     # host1.setIP('10.0.6.11', intf='h1-eth2')
     # host1.setMAC('00:00:00:00:00:11', intf='h1-eth1')
 
+def cloud_init(net):
+    "Configures the networks."
+    host1 = net.getNodeByName('h1')
+    cloudinit = VNFD['VDU1']['properties']['user_data']
+    host1.cmdPrint(cloudinit)
+
+def vnfd_create(self, line):
+    "vnfd-create --vnfd-file <yaml file path> <VNFD-NAME>"
+    net = self.mn
+    # output('mycmd invoked for', net, 'with line', line, '\n')
+    if len(line.split()) != 2:
+        output('Wrong number or arguments\n')
+        output('Use: vnfd-create --vnfd-file <yaml file path> <VNFD-NAME>\n')
+    elif line.split()[0] == '--vnfd-file':
+        output('parsing ' + line.split()[1] + '\n')
+        vnfd2 = parse_vnfd(line.split()[1])
+        host2 = net.addHost('h2')
+        CLI(net)
+        return vnfd2
+
 def inicializa_red():
     "Create network and run simple performance test"
     topo = MyTopo()
@@ -118,19 +138,22 @@ def inicializa_red():
     # net = Mininet(topo=topo, link=TCLink)
     net = Mininet(topo=topo, link=TCLink, controller=OVSController)
     configure_network(net)
-
     net.start()
+
+    if VNFD['VDU1']['properties'].has_key('user_data'):
+        cloud_init(net)
     host1 = net.getNodeByName('h1')
 
     print '*** Initializing VDUs ...'
     host1.cmdPrint('ls')
 
+    CLI.do_vnfd_create = vnfd_create
     CLI(net)
     net.stop()
 
 if __name__ == '__main__':
     print 'main'
     #VNFD = parse_vnfd('samples/vnfd/tosca-vnfd-hello-world.yaml')
-    VNFD = parse_vnfd('samples/vnfd/tosca-vnfd-network.yaml')
+    VNFD = parse_vnfd('samples/vnfd/tosca-vnfd-userdata.yaml')
     setLogLevel('info')
     inicializa_red()

@@ -25,7 +25,7 @@ topology_template:
         user_data: |
           #!/bin/sh
           echo "my hostname is `hostname`" > /tmp/hostname
-          df -h > /home/openwrt/diskinfo
+          df -h > /tmp/diskinfo
 
     CP1:
       type: tosca.nodes.nfv.CP.Tacker
