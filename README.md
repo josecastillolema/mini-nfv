@@ -16,6 +16,7 @@ Mini-nfv supports:
 - flavors
 - translation of num CPUs and flavor properties into Mininet's CPULimitedHost
 - cloud-init
+
 Mini-nfv ignores:
 - RAM and disk properties
 - floating ips
