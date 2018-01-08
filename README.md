@@ -14,7 +14,7 @@ Mini-nfv supports:
 - network definition via VL
 - IP/mac definition via CP
 - flavors
-- num CPUs
+- translation of num CPUs and flavor properties into Mininet's CPULimitedHost
 - cloud-init
 
 Network definition
