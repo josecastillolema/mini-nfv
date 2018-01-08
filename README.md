@@ -91,5 +91,6 @@ Currently, mini-nfv support the folowing flavors:
 - m1.medium: 2 cpus
 - m1.large: 4 cpus
 - m1.xlargue: 8 cpus
+
 Mini-nfv will assign 1/(8-num_cpus))) to each VNF.
 
