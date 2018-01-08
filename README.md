@@ -65,7 +65,7 @@ However, it is also possibly to manually define IP/MAC for a VNF, within the Con
 
 Flavor and number of cpus
 --------------
-Mini-nfv supports VNF resource configuration via num_cpus properties:
+Mini-nfv emulates VNF resource configuration defined via num_cpus properties:
 ```
     VDU1:
       type: tosca.nodes.nfv.VDU.Tacker
