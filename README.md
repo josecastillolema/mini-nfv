@@ -13,7 +13,6 @@ Characteristics
 Mini-nfv supports:
 - network definition via VL
 - IP/mac definition via CP
-- flavors
 - translation of num CPUs and flavor properties into Mininet's CPULimitedHost
 - cloud-init
 
@@ -94,3 +93,16 @@ Currently, mini-nfv support the folowing flavors:
 
 Mini-nfv will assign 1/(8-num_cpus))) to each VNF.
 
+Cloud-init
+--------------
+Mini-nfv supports VNFs configuration through user-data:
+```
+    VDU1:
+      type: tosca.nodes.nfv.VDU.Tacker
+      properties:
+        user_data_format: RAW
+        user_data: |
+          #!/bin/sh
+          echo "my hostname is `hostname`" > /tmp/hostname
+          df -h > /tmp/diskinfo
+```
