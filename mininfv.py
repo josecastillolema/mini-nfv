@@ -5,17 +5,18 @@
 
 "Main module of the mini-nfv framework"
 
-#import json
-#import logging
-#import re
+# import json
+# import logging
+# import re
 import yaml
+import netaddr
 from mininet.topo import Topo
 from mininet.net import Mininet
 from mininet.link import TCLink
-#from mininet.util import dumpNodeConnections
+# from mininet.util import dumpNodeConnections
 from mininet.log import setLogLevel
 from mininet.node import OVSController
-#from mininet.node import RemoteController
+# from mininet.node import RemoteController
 from mininet.cli import CLI
 
 MAX_VDUS = 100
@@ -48,31 +49,31 @@ class MyTopo(Topo):
                 pass
             hosts.append(self.addHost('h%s' % i, cpu=1./(16-num_cpus)))
             i += 1
-        #host1 = self.addHost('h1')
-        #host2 = self.addHost('h2', ip='10.0.0.2/24', cpu=.5/k)
-        #host3 = self.addHost('h3', ip='10.0.5.2/24')
+        # host1 = self.addHost('h1')
+        # host2 = self.addHost('h2', ip='10.0.0.2/24', cpu=.5/k)
+        # host3 = self.addHost('h3', ip='10.0.5.2/24')
         switchs = []
         i = 1
 
         while VNFD.has_key('VL%s' % i):
             switchs.append(self.addSwitch('s%s' % i))
             i += 1
-        #switch1 = self.addSwitch('s1')
-        #switch2 = self.addSwitch('s2')
+        # switch1 = self.addSwitch('s1')
+        # switch2 = self.addSwitch('s2')
 
         # links Add
         for switch in switchs:
             for host in hosts:
                 self.addLink(switch, host)
 
-        #self.addLink(switch1, host1)
-        #self.addLink(switch1, host2)
-        #self.addLink(switch2, host1)
-        #self.addLink(switch2, host3)
+        # self.addLink(switch1, host1)
+        # self.addLink(switch1, host2)
+        # self.addLink(switch2, host1)
+        # self.addLink(switch2, host3)
 
         # self.addLink(switch1, host2, 2, 1)
         # self.addLink(switch1, host2, 3, 2)
-        #self.addLink(switch1, host2, 2, 1, intfName1='h2-eth1')
+        # self.addLink(switch1, host2, 2, 1, intfName1='h2-eth1')
         # self.addLink(s2, s3, 2, 3, bw=10, delay='200ms', jitter='2ms', loss=10,
         #              max_queue_size=1000, use_htb=True)
 
@@ -81,14 +82,28 @@ def configure_network(net):
     host1 = net.getNodeByName('h1')
     i = 1
     while VNFD.has_key('VL%s' % i):
-        if VNFD['VL%s' % i]['properties']['network_name'] == 'net_mgmt':
-            host1.setIP('192.168.120.1/24', intf='h1-eth%s' % (i-1))
-        elif VNFD['VL%s' % i]['properties']['network_name'] == 'net0':
-            host1.setIP('10.10.0.1/24', intf='h1-eth%s' % (i-1))
-        elif VNFD['VL%s' % i]['properties']['network_name'] == 'net1':
-            host1.setIP('10.10.1.1/24', intf='h1-eth%s' % (i-1))
+        if VNFD['CP%s' % i]['properties'].has_key('ip_address'):
+            ip_address = VNFD['CP%s' % i]['properties']['ip_address']
+            host1.setIP(ip_address, intf='h1-eth%s' % (i-1))
         else:
-            host1.setIP('10.0.%s.1/24', intf='h1-eth%s' % (i-1))
+            if VNFD['VL%s' % i]['properties']['network_name'] == 'net_mgmt':
+                host1.setIP('192.168.120.10/24', intf='h1-eth%s' % (i-1))
+            elif VNFD['VL%s' % i]['properties']['network_name'] == 'net0':
+                host1.setIP('10.10.0.10/24', intf='h1-eth%s' % (i-1))
+            elif VNFD['VL%s' % i]['properties']['network_name'] == 'net1':
+                host1.setIP('10.10.1.10/24', intf='h1-eth%s' % (i-1))
+            elif VNFD['VL%s' % i]['properties'].has_key('cidr'):
+                cidr = netaddr.IPNetwork(VNFD['VL%s' % i]['properties']['cidr'])
+                if VNFD['VL%s' % i]['properties'].has_key('start_ip'):
+                    start_ip = VNFD['VL%s' % i]['properties']['start_ip']
+                    host1.setIP(start_ip+'/%s' % cidr.prefixlen, intf='h1-eth%s' % (i-1))
+                else:
+                    host1.setIP(str(cidr.ip+10)+'/%s' % cidr.prefixlen, intf='h1-eth%s' % (i-1))
+            else:
+                host1.setIP('10.0.%s.10/24' %i, intf='h1-eth%s' % (i-1))
+        if VNFD['CP%s' % i]['properties'].has_key('mac_address'):
+            mac_address = VNFD['CP%s' % i]['properties']['mac_address']
+            host1.setMAC(mac_address, intf='h1-eth%s' % (i-1))
         i += 1
     # host1.setIP('10.0.1.10', intf='h1-eth0')
     # host1.setMAC('00:00:00:00:00:10', intf='h1-eth0')
@@ -99,8 +114,8 @@ def configure_network(net):
 def inicializa_red():
     "Create network and run simple performance test"
     topo = MyTopo()
-    #net = Mininet(topo=topo, link=TCLink, controller=RemoteController)
-    #net = Mininet(topo=topo, link=TCLink)
+    # net = Mininet(topo=topo, link=TCLink, controller=RemoteController)
+    # net = Mininet(topo=topo, link=TCLink)
     net = Mininet(topo=topo, link=TCLink, controller=OVSController)
     configure_network(net)
 
@@ -115,6 +130,7 @@ def inicializa_red():
 
 if __name__ == '__main__':
     print 'main'
-    VNFD = parse_vnfd('samples/vnfd/tosca-vnfd-hello-world.yaml')
+    #VNFD = parse_vnfd('samples/vnfd/tosca-vnfd-hello-world.yaml')
+    VNFD = parse_vnfd('samples/vnfd/tosca-vnfd-network.yaml')
     setLogLevel('info')
     inicializa_red()
