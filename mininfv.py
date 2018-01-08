@@ -25,15 +25,7 @@ def parse_vnfd(path):
     yaml_file = open(path, 'r')
     content = yaml_file.read()
     parsed_file = yaml.load(content)
-    # print parsed_file
-    # print yaml.dump(parsed_file)
-    # print parsed_file['description']
-    # print parsed_file['topology_template']['node_templates']['VDU1']
     return parsed_file['topology_template']['node_templates']
-    # i = 1
-    # while parsed_file['topology_template']['node_templates'].has_key('VDU'+str(i)):
-    #     print 'yes'
-    #     i += 1
 
 def parse_vnffgd(path):
     "Parses the yaml file corresponding to the vnffgd"
@@ -46,24 +38,38 @@ class MyTopo(Topo):
         # Add hosts and switches
         hosts = []
         i = 1
-        #while VNFD.has_key('VDU'+str(i)):
-        #    hosts.append(self.addHost('h'+str(i), ip='10.0.0.'+str(i)+'/24'))
-        #    i += 1
-        host1 = self.addHost('h1')
-        host2 = self.addHost('h2', ip='10.0.0.2/24', cpu=.5/k)
-        host3 = self.addHost('h3', ip='10.0.5.2/24')
-        switch1 = self.addSwitch('s1')
-        switch2 = self.addSwitch('s2')
+        while VNFD.has_key('VDU%s' % i):
+            num_cpus = 1
+            try:
+                num_cpus = VNFD['VDU%s' % i]['capabilities']['nfv_compute2']['properties']['num_cpus']
+                if num_cpus >= 16:
+                    num_cpus = 16
+            except KeyError:
+                pass
+            hosts.append(self.addHost('h%s' % i, cpu=1./(16-num_cpus)))
+            i += 1
+        #host1 = self.addHost('h1')
+        #host2 = self.addHost('h2', ip='10.0.0.2/24', cpu=.5/k)
+        #host3 = self.addHost('h3', ip='10.0.5.2/24')
+        switchs = []
+        i = 1
+
+        while VNFD.has_key('VL%s' % i):
+            switchs.append(self.addSwitch('s%s' % i))
+            i += 1
+        #switch1 = self.addSwitch('s1')
+        #switch2 = self.addSwitch('s2')
 
         # links Add
-        #for host in hosts:
-        #    self.addLink(switch1, host, 1, 1)
-        self.addLink(switch1, host1)
-        self.addLink(switch1, host2)
-        self.addLink(switch2, host1)
-        self.addLink(switch2, host3)
-        #host2 = net.getNodeByName('h2')
-        #host2.cmd('ifconfig h2-eth1 5.5.5.5 netmask 255.255.255.0')
+        for switch in switchs:
+            for host in hosts:
+                self.addLink(switch, host)
+
+        #self.addLink(switch1, host1)
+        #self.addLink(switch1, host2)
+        #self.addLink(switch2, host1)
+        #self.addLink(switch2, host3)
+
         # self.addLink(switch1, host2, 2, 1)
         # self.addLink(switch1, host2, 3, 2)
         #self.addLink(switch1, host2, 2, 1, intfName1='h2-eth1')
@@ -72,9 +78,21 @@ class MyTopo(Topo):
 
 def configure_network(net):
     host1 = net.getNodeByName('h1')
-    host1.setIP('10.0.0.10', intf='h1-eth0')
+    i = 1
+    while VNFD.has_key('VL%s' % i):
+        if VNFD['VL%s' % i]['properties']['network_name'] == 'net_mgmt':
+            host1.setIP('192.168.120.1/24', intf='h1-eth%s' % (i-1))
+        elif VNFD['VL%s' % i]['properties']['network_name'] == 'net0':
+            host1.setIP('10.10.0.1/24', intf='h1-eth%s' % (i-1))
+        elif VNFD['VL%s' % i]['properties']['network_name'] == 'net1':
+            host1.setIP('10.10.1.1/24', intf='h1-eth%s' % (i-1))
+        else:
+            host1.setIP('10.0.%s.1/24', intf='h1-eth%s' % (i-1))
+        i += 1
+    #host1.setIP('10.0.1.10', intf='h1-eth0')
     #host1.setMAC('00:00:00:00:00:10', intf='h1-eth0')
-    host1.setIP('10.0.5.11', intf='h1-eth1')
+    #host1.setIP('10.0.5.11', intf='h1-eth1')
+    #host1.setIP('10.0.6.11', intf='h1-eth2')
     #host1.setMAC('00:00:00:00:00:11', intf='h1-eth1')
 
 def inicializa_red():
