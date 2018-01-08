@@ -5,7 +5,7 @@ Enables loading [OASIS TOSCA](http://docs.oasis-open.org/tosca/TOSCA/v1.0/TOSCA-
 Use
 --------------
 ```
-sudo ./mini-nfv.py
+sudo ./mininfv.py
 ```
 
 Network definition
