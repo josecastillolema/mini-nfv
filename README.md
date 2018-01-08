@@ -63,3 +63,33 @@ However, it is also possibly to manually define IP/MAC for a VNF, within the Con
         - virtualBinding:
             node: VDU1
 ```
+
+Flavor and number of cpus
+--------------
+Mini-nfv supports VNF resource configuration via num_cpus properties:
+```
+    VDU1:
+      type: tosca.nodes.nfv.VDU.Tacker
+      capabilities:
+        nfv_compute:
+          properties:
+            num_cpus: 1
+            mem_size: 512 MB
+            disk_size: 1 GB
+```
+or through flavor:
+```
+    VDU1:
+      type: tosca.nodes.nfv.VDU.Tacker
+      properties:
+        flavor: m1.tiny
+```
+Mini-nfv maps flavors and number of cpus property configuration into Mininet's CPULimitedHost.
+Currently, mini-nfv support the folowing flavors:
+- m1.tiny: 1 cpu
+- m1.small: 1 cpu
+- m1.medium: 2 cpus
+- m1.large: 4 cpus
+- m1.xlargue: 8 cpus
+Mini-nfv will assign 1/(8-num_cpus))) to each VNF.
+
