@@ -13,8 +13,8 @@ Characteristics
 Mini-nfv supports:
 - network definition via VL
 - IP/mac definition via CP
-- translation of num CPUs and flavor properties into Mininet's CPULimitedHost
-- cloud-init
+- emulation of num CPUs and flavor properties through Mininet's CPULimitedHost
+- cloud-init scripts
 
 Mini-nfv ignores:
 - RAM and disk properties
