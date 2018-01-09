@@ -5,7 +5,20 @@ Enables loading [OASIS TOSCA](http://docs.oasis-open.org/tosca/TOSCA/v1.0/TOSCA-
 Use
 --------------
 ```
-sudo ./mininfv.py
+$ sudo ./mininfv.py
+*** Configuring hosts
+
+*** Starting controller
+
+*** Starting 0 switches
+
+*** Starting CLI:
+mininet> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfd-userdata
+mininet> vnfd_list
+['vnfd-userdata']
+mininet> vnfd_delete vnfd-userdata
+mininet> vnfd_list
+[]
 ```
 
 Characteristics
