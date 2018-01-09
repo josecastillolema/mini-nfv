@@ -36,124 +36,156 @@ class MyTopo(Topo):
     "Creates the mininet topology"
     def __init__(self, **opts):
         Topo.__init__(self, **opts)
-        # Add hosts and switches
-        hosts = []
-        i = 1
-        while VNFD.has_key('VDU%s' % i):
-            num_cpus = 1
-            try:
-                num_cpus = VNFD['VDU%s'%i]['capabilities']['nfv_compute2']['properties']['num_cpus']
-                if num_cpus >= 8:
-                    num_cpus = 8
-            except KeyError:
-                pass
-            hosts.append(self.addHost('h%s' % i, cpu=1./(8-num_cpus)))
-            i += 1
-        # host1 = self.addHost('h1')
-        # host2 = self.addHost('h2', ip='10.0.0.2/24', cpu=.5/k)
-        # host3 = self.addHost('h3', ip='10.0.5.2/24')
-        switchs = []
-        i = 1
 
-        while VNFD.has_key('VL%s' % i):
-            switchs.append(self.addSwitch('s%s' % i))
-            i += 1
-        # switch1 = self.addSwitch('s1')
-        # switch2 = self.addSwitch('s2')
-
-        # links Add
-        for switch in switchs:
-            for host in hosts:
-                self.addLink(switch, host)
-
-        # self.addLink(switch1, host1)
-        # self.addLink(switch1, host2)
-        # self.addLink(switch2, host1)
-        # self.addLink(switch2, host3)
-
-        # self.addLink(switch1, host2, 2, 1)
-        # self.addLink(switch1, host2, 3, 2)
-        # self.addLink(switch1, host2, 2, 1, intfName1='h2-eth1')
-        # self.addLink(s2, s3, 2, 3, bw=10, delay='200ms', jitter='2ms', loss=10,
-        #              max_queue_size=1000, use_htb=True)
-
-def configure_network(net):
+def configure_network(net, vnfd, host):
     "Configures the networks."
-    host1 = net.getNodeByName('h1')
+    switch = {}
     i = 1
-    while VNFD.has_key('VL%s' % i):
-        if VNFD['CP%s' % i]['properties'].has_key('ip_address'):
-            ip_address = VNFD['CP%s' % i]['properties']['ip_address']
-            host1.setIP(ip_address, intf='h1-eth%s' % (i-1))
+    while vnfd.has_key('VL%s' % i):
+        if vnfd['CP%s' % i]['properties'].has_key('ip_address'):
+            ip_address = vnfd['CP%s' % i]['properties']['ip_address']
+            switch_name = 's' + ip_address
+            if not switch.has_key(switch_name):
+                switch[switch_name] = net.addSwitch(switch_name[:10])
         else:
-            if VNFD['VL%s' % i]['properties']['network_name'] == 'net_mgmt':
-                host1.setIP('192.168.120.10/24', intf='h1-eth%s' % (i-1))
-            elif VNFD['VL%s' % i]['properties']['network_name'] == 'net0':
-                host1.setIP('10.10.0.10/24', intf='h1-eth%s' % (i-1))
-            elif VNFD['VL%s' % i]['properties']['network_name'] == 'net1':
-                host1.setIP('10.10.1.10/24', intf='h1-eth%s' % (i-1))
-            elif VNFD['VL%s' % i]['properties'].has_key('cidr'):
-                cidr = netaddr.IPNetwork(VNFD['VL%s' % i]['properties']['cidr'])
-                if VNFD['VL%s' % i]['properties'].has_key('start_ip'):
-                    start_ip = VNFD['VL%s' % i]['properties']['start_ip']
-                    host1.setIP(start_ip+'/%s' % cidr.prefixlen, intf='h1-eth%s' % (i-1))
+            if vnfd['VL%s' % i]['properties']['network_name'] == 'net_mgmt':
+                switch_name = 's' + '192.168.120.0'
+                if not switch.has_key(switch_name):
+                    switch[switch_name] = net.addSwitch(switch_name[:10])
+            elif vnfd['VL%s' % i]['properties']['network_name'] == 'net0':
+                switch_name = 's' + '10.10.0.0'
+                if not switch.has_key(switch_name):
+                    switch[switch_name] = net.addSwitch(switch_name[:10])
+            elif vnfd['VL%s' % i]['properties']['network_name'] == 'net1':
+                switch_name = 's' + '10.10.1.0'
+                if not switch.has_key(switch_name):
+                    switch[switch_name] = net.addSwitch(switch_name[:10])
+            elif vnfd['VL%s' % i]['properties'].has_key('cidr'):
+                cidr = netaddr.IPNetwork(vnfd['VL%s' % i]['properties']['cidr'])
+                if vnfd['VL%s' % i]['properties'].has_key('start_ip'):
+                    start_ip = netaddr.IPNetwork(vnfd['VL%s' % i]['properties']['start_ip'])
+                    switch_name = 's%s' % start_ip.network
+                    if not switch.has_key(switch_name):
+                        switch[switch_name] = net.addSwitch(switch_name[:10])
                 else:
-                    host1.setIP(str(cidr.ip+10)+'/%s' % cidr.prefixlen, intf='h1-eth%s' % (i-1))
-            else:
-                host1.setIP('10.0.%s.10/24' %i, intf='h1-eth%s' % (i-1))
-        if VNFD['CP%s' % i]['properties'].has_key('mac_address'):
-            mac_address = VNFD['CP%s' % i]['properties']['mac_address']
-            host1.setMAC(mac_address, intf='h1-eth%s' % (i-1))
+                    switch_name = 's%s' % cidr.ip
+                    if not switch.has_key(switch_name):
+                        switch[switch_name] = net.addSwitch(switch_name[:10])
         i += 1
-    # host1.setIP('10.0.1.10', intf='h1-eth0')
-    # host1.setMAC('00:00:00:00:00:10', intf='h1-eth0')
-    # host1.setIP('10.0.5.11', intf='h1-eth1')
-    # host1.setIP('10.0.6.11', intf='h1-eth2')
-    # host1.setMAC('00:00:00:00:00:11', intf='h1-eth1')
 
-def cloud_init(net):
+    host1 = net.getNodeByName(host)
+    for i in switch:
+        net.addLink(switch[i], host1)
+
+def configure_host(net, vnfd, host):
+    "Configures the host."
+    host1 = net.getNodeByName(host)
+    i = 1
+    while vnfd.has_key('VL%s' % i):
+        if vnfd['CP%s' % i]['properties'].has_key('ip_address'):
+            ip_address = vnfd['CP%s' % i]['properties']['ip_address']
+            host1.setIP(ip_address, intf=host+'-eth%s' % (i-1))
+        else:
+            if vnfd['VL%s' % i]['properties']['network_name'] == 'net_mgmt':
+                host1.setIP('192.168.120.10/24', intf=host+'-eth%s' % (i-1))
+            elif vnfd['VL%s' % i]['properties']['network_name'] == 'net0':
+                host1.setIP('10.10.0.10/24', intf=host+'-eth%s' % (i-1))
+            elif vnfd['VL%s' % i]['properties']['network_name'] == 'net1':
+                host1.setIP('10.10.1.10/24', intf=host+'-eth%s' % (i-1))
+            elif vnfd['VL%s' % i]['properties'].has_key('cidr'):
+                cidr = netaddr.IPNetwork(vnfd['VL%s' % i]['properties']['cidr'])
+                if vnfd['VL%s' % i]['properties'].has_key('start_ip'):
+                    start_ip = vnfd['VL%s' % i]['properties']['start_ip']
+                    host1.setIP(start_ip+'/%s' % cidr.prefixlen, intf=host+'-eth%s' % (i-1))
+                else:
+                    host1.setIP(str(cidr.ip+10)+'/%s' % cidr.prefixlen, intf=host+'-eth%s' % (i-1))
+            else:
+                host1.setIP('10.0.%s.10/24' %i, intf=host+'-eth%s' % (i-1))
+        if vnfd['CP%s' % i]['properties'].has_key('mac_address'):
+            mac_address = vnfd['CP%s' % i]['properties']['mac_address']
+            host1.setMAC(mac_address, intf=host+'-eth%s' % (i-1))
+        i += 1
+
+def cloud_init(net, vnfd, host_name):
     "Configures the networks."
-    host1 = net.getNodeByName('h1')
-    cloudinit = VNFD['VDU1']['properties']['user_data']
-    host1.cmdPrint(cloudinit)
+    host = net.getNodeByName(host_name)
+    cloudinit = vnfd['VDU1']['properties']['user_data']
+    output('*** Initializing VDU ' + host_name + ' ...\n')
+    host.cmdPrint(cloudinit)
+
+def add_host(self, line):
+    "add_host <HOST-NAME> [<IP1> <IP2s> ...]"
+    net = self.mn
+    if len(line.split()) >= 1:
+        output('Wrong number or arguments\n')
+        output('Use: add_host <HOST-NAME> [<IP1> <IP2s> ...]\n')
+        return None
+    host_name = line.split()[0]
+    output('creating host ' + host_name + '\n')
+    net.addHost(host_name)
+    return None
 
 def vnfd_create(self, line):
     "vnfd-create --vnfd-file <yaml file path> <VNFD-NAME>"
     net = self.mn
-    # output('mycmd invoked for', net, 'with line', line, '\n')
-    if len(line.split()) != 2:
+    if len(line.split()) != 3:
         output('Wrong number or arguments\n')
         output('Use: vnfd-create --vnfd-file <yaml file path> <VNFD-NAME>\n')
-    elif line.split()[0] == '--vnfd-file':
-        output('parsing ' + line.split()[1] + '\n')
-        vnfd2 = parse_vnfd(line.split()[1])
-        host2 = net.addHost('h2')
-        CLI(net)
-        return vnfd2
+        return None
+    if line.split()[0] != '--vnfd-file':
+        output('Use: vnfd-create --vnfd-file <yaml file path> <VNFD-NAME>\n')
+        return None
+    file_path = line.split()[1]
+    vnf_name = line.split()[2]
+    output('parsing ' + file_path + '\n')
+    vnfd = parse_vnfd(file_path)
+    net.addHost(vnf_name)
+    configure_network(net, vnfd, vnf_name)
+    configure_host(net, vnfd, vnf_name)
+    if vnfd['VDU1']['properties'].has_key('user_data'):
+        cloud_init(net, vnfd, vnf_name)
+    return None
 
-def inicializa_red():
-    "Create network and run simple performance test"
-    topo = MyTopo()
-    # net = Mininet(topo=topo, link=TCLink, controller=RemoteController)
-    # net = Mininet(topo=topo, link=TCLink)
-    net = Mininet(topo=topo, link=TCLink, controller=OVSController)
-    configure_network(net)
-    net.start()
+def vnf_create(self, line):
+    "vnf-create --vnfd-name <VNFD-FILE-NAME> <VNF-NAME>"
+    net = self.mn
+    if len(line.split()) != 3:
+        output('Wrong number or arguments\n')
+        output('Use: vnfd-create --vnfd-file <yaml file path> <VNFD-NAME>\n')
+        return None
+    if line.split()[0] != '--vnfd-file':
+        output('Use: vnfd-create --vnfd-file <yaml file path> <VNFD-NAME>\n')
+        return None
+    file_path = line.split()[1]
+    vnf_name = line.split()[2]
+    output('parsing ' + file_path + '\n')
+    vnfd = parse_vnfd(file_path)
+    net.addHost(vnf_name)
+    configure_network(net, vnfd, vnf_name)
+    configure_host(net, vnfd, vnf_name)
+    if vnfd['VDU1']['properties'].has_key('user_data'):
+        cloud_init(net, vnfd, vnf_name)
+    return None
 
-    if VNFD['VDU1']['properties'].has_key('user_data'):
-        cloud_init(net)
-    host1 = net.getNodeByName('h1')
-
-    print '*** Initializing VDUs ...'
-    host1.cmdPrint('ls')
-
-    CLI.do_vnfd_create = vnfd_create
-    CLI(net)
-    net.stop()
+def vnfd_list(self, line):
+    "vnfd-list"
+    print line
 
 if __name__ == '__main__':
-    print 'main'
-    #VNFD = parse_vnfd('samples/vnfd/tosca-vnfd-hello-world.yaml')
-    VNFD = parse_vnfd('samples/vnfd/tosca-vnfd-userdata.yaml')
     setLogLevel('info')
-    inicializa_red()
+    # TOPO = MyTopo()
+    # NET = Mininet(topo=topo, link=TCLink, controller=RemoteController)
+    # NET = Mininet(topo=topo, link=TCLink)
+    # NET = Mininet(topo=TOPO, link=TCLink, controller=OVSController)
+    NET = Mininet(link=TCLink, controller=OVSController)
+    NET.start()
+
+    #print '*** Initializing VDUs ...'
+    # host1.cmdPrint('ls')
+
+    CLI.do_add_host = add_host
+    CLI.do_vnfd_create = vnfd_create
+    CLI.do_vnf_create = vnf_create
+    CLI.do_vnfd_list = vnfd_list
+    CLI(NET)
+    NET.stop()
