@@ -57,7 +57,7 @@ NFVO Orquestrator
 
 Mini-nfv supports:
 - network definition via VL [&#8629;](https://github.com/josecastillolema/mini-nfv/blob/master/README.md#network-definition)
-- IP/mac definition via CP
+- IP/mac definition via CP [&#8629;](#IP/MAC definition)
 - emulation of num CPUs and flavor properties through Mininet's CPULimitedHost
 - cloud-init scripts
 
