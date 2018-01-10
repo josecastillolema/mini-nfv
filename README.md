@@ -18,18 +18,6 @@ In the OpenStack world, Tacker is the project implementing a generic VNFM and NF
 
 On the other hand, Mininet has shown itself as a great tool for agile network/SDN/NFV experimentation. The goal of this tool is to alleviate the developers’ tedious task of setting up a whole service chaining environment and let them focus on their own work (e.g., developing a particular VNF, implementing an orchestration algorithm or a customized traffic steering).
 
-**vCE**
-
-Mini-nfv can be used by SP's OSS / BSS or an NFV Orchestrator to deploy VNFs in SP's network to deliver agile network services for remote Customer networks
-
-**vCPE**
-
-Mini-nfv can be used by SP's OSS / BSS or an NFV Orchestrator to manage OpenStack enabled remote CPE devices to deploy VNFs to provide locally network services at the customer site.
-
-**vPE**
-
-Mini-nfv can be used by SP's OSS / BSS or an NFV Orchestrator to deploy VNFs within SP's network to virtualize existing network services into a Virtual Function.
-
 Use
 --------------
 ```
