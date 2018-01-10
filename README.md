@@ -12,6 +12,20 @@ Mini-nfv uses TOSCA for VNF meta-data definition. Within TOSCA, mini-nfv uses NF
     - Latest spec is available here: https://www.oasis-open.org/committees/document.php?document_id=56577&wg_abbrev=tosca
     - Current latest (as of Oct 2015) is: https://www.oasis-open.org/committees/download.php/56577/tosca-nfv-v1.0-wd02-rev03.doc
 
+Use cases
+--------------
+In the OpenStack world, Tacker is the project implementing a generic VNFM and NFVO. At the input consumes Tosca-based templates, which are then used to spin up VMs on OpenStack. While it is true that today exist various tools that simplify the deployment of an OpenStack cloud (i.e.: devstack), deploying, configuring and managing OpenStack environments is still a time-consuming process with a considerable learning curve.
+On the other hand, Mininet has shown itself as a great tool for agile network/SDN/NFV experimentation. The goal of this tool is to alleviate the developers’ tedious task of setting up a whole service chaining environment and let them focus on their own work (e.g., developing a particular VNF, implementing an orchestration algorithm or a customized traffic steering).
+
+**vCE**
+Mini-nfv can be used by SP's OSS / BSS or an NFV Orchestrator to deploy VNFs in SP's network to deliver agile network services for remote Customer networks
+
+**vCPE**
+Mini-nfv can be used by SP's OSS / BSS or an NFV Orchestrator to manage OpenStack enabled remote CPE devices to deploy VNFs to provide locally network services at the customer site.
+
+**vPE**
+Mini-nfv can be used by SP's OSS / BSS or an NFV Orchestrator to deploy VNFs within SP's network to virtualize existing network services into a Virtual Function.
+
 Use
 --------------
 ```
