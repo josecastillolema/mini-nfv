@@ -29,6 +29,20 @@ mininet> vnfd_list
 
 Characteristics
 --------------
+NFV Catalog
+- VNF Descriptors
+- Network Services Decriptors
+- VNF Forwarding Graph Descriptors
+
+VNF Manager
+- Basic life-cycle of VNF (create/update/delete)
+- Facilitate initial configuration of VNF
+
+NFVO Orquestrator
+- Templatized end-to-end Network Service deployment using decomposed VNFs
+- VNF placement policy – ensure efficient placement of VNFs
+- VNFs connected using an SFC - described in a VNF Forwarding Graph Descriptor
+
 Mini-nfv supports:
 - network definition via VL
 - IP/mac definition via CP
