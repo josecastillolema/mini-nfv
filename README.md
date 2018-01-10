@@ -56,7 +56,7 @@ NFVO Orquestrator
 - VNFs connected using an SFC - described in a VNF Forwarding Graph Descriptor
 
 Mini-nfv supports:
-- network definition via VL &#8629;
+- network definition via VL [&#8629;](https://github.com/josecastillolema/mini-nfv/blob/master/README.md#network-definition)
 - IP/mac definition via CP
 - emulation of num CPUs and flavor properties through Mininet's CPULimitedHost
 - cloud-init scripts
