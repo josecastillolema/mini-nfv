@@ -1,20 +1,65 @@
 # mini-nfv
-Enables loading [OASIS TOSCA](http://docs.oasis-open.org/tosca/TOSCA/v1.0/TOSCA-v1.0.html) templates into mininet, [Tacker](https://docs.openstack.org/tacker/pike/index.html) style.
+Mini-nfv is a framework for NFV Orchestration with a general purpose VNF Manager to deploy and operate Virtual Network Functions (VNFs) and Network Services on Mininet. It is based on ETSI MANO Architectural Framework.
 
+Mini-nfv manages the life-cycle of a Virtual Network Function (VNF). Mini-nfv takes care of deployment, monitoring, scaling and removal of VNFs on Mininet.
+
+Mini-nfv allows loading [OASIS TOSCA](http://docs.oasis-open.org/tosca/TOSCA/v1.0/TOSCA-v1.0.html) templates (V1.0 CSD 03) into Mininet, following an [OpenStack Tacker](https://docs.openstack.org/tacker/pike/index.html)'s alike workflow. Within Tacker's documentation it can be found a comprehensive [VNF Descriptor Template Guide](https://docs.openstack.org/tacker/pike/contributor/vnfd_template_description.html).
+
+Mini-nfv uses TOSCA for VNF meta-data definition. Within TOSCA, mini-nfv uses NFV profile schema:
+- TOSCA YAML
+    - YAML Simple Profile: http://docs.oasis-open.org/tosca/TOSCA-Simple-Profile-YAML/v1.1/csprd02/TOSCA-Simple-Profile-YAML-v1.1-csprd02.html
+- TOSCA NFV Profile:
+    - Latest spec is available here: https://www.oasis-open.org/committees/document.php?document_id=56577&wg_abbrev=tosca
+    - Current latest (as of Oct 2015) is: https://www.oasis-open.org/committees/download.php/56577/tosca-nfv-v1.0-wd02-rev03.doc
+
+Use cases
+--------------
+In the OpenStack world, Tacker is the project implementing a generic VNFM and NFVO. At the input consumes Tosca-based templates, which are then used to spin up VMs on OpenStack. While it is true that today exist various tools that simplify the deployment of an OpenStack cloud (i.e.: devstack), deploying, configuring and managing OpenStack environments is still a time-consuming process with a considerable learning curve.
+
+On the other hand, Mininet has shown itself as a great tool for agile network/SDN/NFV experimentation. The goal of this tool is to alleviate the developers’ tedious task of setting up a whole service chaining environment and let them focus on their own work (e.g., developing a particular VNF, prototyping, implementing an orchestration algorithm or a customized traffic steering).
 
 Use
 --------------
 ```
-sudo ./mininfv.py
+$ sudo ./mininfv.py
+*** Configuring hosts
+
+*** Starting controller
+
+*** Starting 0 switches
+
+*** Starting CLI:
+mininet> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfd-userdata
+mininet> vnfd_list
+['vnfd-userdata']
+mininet> vnfd_template_show vnfd-userdata
+{'VDU1': {'type': 'tosca.nodes.nfv.VDU.Tacker', 'properties': {'image': 'cirros-0.3.5-x86_64-disk', 'user_data_format': 'RAW', 'config': 'param0: key1\nparam1: key2\n', 'user_data': '#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n', 'mgmt_driver': 'noop'}, 'capabilities': {'nfv_compute': {'properties': {'mem_size': '512 MB', 'num_cpus': 1, 'disk_size': '1 GB'}}}}, 'CP1': {'type': 'tosca.nodes.nfv.CP.Tacker', 'requirements': [{'virtualLink': {'node': 'VL1'}}, {'virtualBinding': {'node': 'VDU1'}}], 'properties': {'anti_spoofing_protection': False, 'management': True, 'order': 0}}, 'VL1': {'type': 'tosca.nodes.nfv.VL', 'properties': {'network_name': 'net_mgmt', 'vendor': 'ACME'}}}
+mininet> vnfd_delete vnfd-userdata
+mininet> vnfd_list
+[]
 ```
 
 Characteristics
 --------------
+NFV Catalog
+- VNF Descriptors
+- Network Services Decriptors
+- VNF Forwarding Graph Descriptors
+
+VNF Manager
+- Basic life-cycle of VNF (create/update/delete)
+- Facilitate initial configuration of VNF
+
+NFVO Orquestrator
+- Templatized end-to-end Network Service deployment using decomposed VNFs
+- VNF placement policy – ensure efficient placement of VNFs
+- VNFs connected using an SFC - described in a VNF Forwarding Graph Descriptor
+
 Mini-nfv supports:
-- network definition via VL
-- IP/mac definition via CP
-- emulation of num CPUs and flavor properties through Mininet's CPULimitedHost
-- cloud-init scripts
+- network definition via VL [&#8629;](https://github.com/josecastillolema/mini-nfv/blob/master/README.md#network-definition)
+- IP/mac definition via CP [&#8629;](https://github.com/josecastillolema/mini-nfv/blob/master/README.md#ipmac-definition)
+- emulation of num CPUs and flavor properties through Mininet's CPULimitedHost [&#8629;](https://github.com/josecastillolema/mini-nfv/blob/master/README.md#flavor-and-number-of-cpus)
+- cloud-init scripts [&#8629;](https://github.com/josecastillolema/mini-nfv/blob/master/README.md#cloud-init)
 
 Mini-nfv ignores:
 - RAM and disk properties
