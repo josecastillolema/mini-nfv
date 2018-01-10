@@ -285,7 +285,7 @@ if __name__ == '__main__':
     # NET = Mininet(topo=topo, link=TCLink)
     # NET = Mininet(topo=TOPO, link=TCLink, controller=OVSController)
     if standalone:
-        NET = Mininet(link=TCLink, controller=OVSController)
+        NET = Mininet(topo=TOPO, link=TCLink, controller=OVSController)
     else:
         NET = Mininet(topo=TOPO, link=TCLink, controller=RemoteController)
     NET.start()
