@@ -24,11 +24,8 @@ Use
 ```
 $ sudo ./mininfv.py
 *** Configuring hosts
-
 *** Starting controller
-
 *** Starting 0 switches
-
 *** Starting CLI:
 
 mininet> vnfd_<TAB>
@@ -54,11 +51,8 @@ mininet> vnfd_list
 ```
 $ sudo ./mininfv.py
 *** Configuring hosts
-
 *** Starting controller
-
 *** Starting 0 switches
-
 *** Starting CLI:
 
 mininet> vnf_<TAB>
