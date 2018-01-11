@@ -57,13 +57,13 @@ mininet> vnf_create
 Use: vnf_create --vnfd-name <VNFD-NAME> <VNF-NAME>
      vnf_create --vnfd-file <yaml file path> <VNFD-NAME>
      vnf_create --vnfd-template <yaml file path> <VNFD-NAME>
-mininet> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnf-userdata
+mininet> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfuserdata
 *** Initializing VDU vnf-userdata ...
 *** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
 mininet> nodes
 available nodes are: 
-c0 s192.168.1 vnf-userdata
-mininet> vnf-userdata ifconfig
+c0 s192.168.1 vnfuserdata
+mininet> vnfuserdata ifconfig
 ud-eth0   Link encap:Ethernet  HWaddr 76:2c:90:f5:72:13  
           inet addr:192.168.120.10  Bcast:192.168.120.255  Mask:255.255.255.0
           inet6 addr: fe80::742c:90ff:fef5:7213/64 Scope:Link
@@ -73,7 +73,7 @@ ud-eth0   Link encap:Ethernet  HWaddr 76:2c:90:f5:72:13
           collisions:0 txqueuelen:1000 
           RX bytes:6751 (6.7 KB)  TX bytes:648 (648.0 B)
 mininet> vnf_list
-['vnf-userdata']
+['vnfuserdata']
 mininet> vnf_delete vnf-userdata
 mininet> nodes
 available nodes are: 
