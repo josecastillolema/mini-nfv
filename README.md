@@ -20,7 +20,7 @@ On the other hand, Mininet has shown itself as a great tool for agile network/SD
 
 Use
 --------------
-- **VNFD creation/listing/removal**
+- **VNFD creation/listing/removal/template**
 ```
 $ sudo ./mininfv.py
 *** Configuring hosts
@@ -41,7 +41,7 @@ mininet> vnfd_delete vnfd-userdata
 mininet> vnfd_list
 []
 ```
-- **VNFD creation/listing/removal**
+- **VNF creation/listing/removal**
 ```
 $ sudo ./mininfv.py
 *** Configuring hosts
@@ -77,6 +77,42 @@ mininet> vnf_list
 mininet> vnf_delete vnf-userdata
 mininet> vnf_list
 []
+```
+- **Adding hosts to the topology**
+```
+$ sudo ./mininfv.py
+*** Configuring hosts
+
+*** Starting controller
+
+*** Starting 0 switches
+
+*** Starting CLI:
+mininet> add_host
+Wrong number or arguments
+Use: add_host <HOST-NAME> [<IP1/masc> <IP2/masc> ...]
+mininet> add_host h1 10.0.0.10/24 20.0.0.10/24
+mininet> nodes
+available nodes are: 
+c0 h1 s10.0.0.0 s192.168.1 s20.0.0.0 ud
+mininet> h1 ifconfig
+h1-eth0   Link encap:Ethernet  HWaddr 3e:b2:ba:99:4e:dc  
+          inet addr:10.0.0.10  Bcast:10.255.255.255  Mask:255.255.255.0
+          inet6 addr: fe80::3cb2:baff:fe99:4edc/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:24 errors:0 dropped:1 overruns:0 frame:0
+          TX packets:7 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3445 (3.4 KB)  TX bytes:578 (578.0 B)
+
+h1-eth1   Link encap:Ethernet  HWaddr aa:08:cf:38:e8:d5  
+          inet addr:20.0.0.10  Bcast:20.255.255.255  Mask:255.255.255.0
+          inet6 addr: fe80::a808:cfff:fe38:e8d5/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:25 errors:0 dropped:1 overruns:0 frame:0
+          TX packets:7 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3515 (3.5 KB)  TX bytes:578 (578.0 B)
 ```
 
 Characteristics
