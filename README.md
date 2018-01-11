@@ -31,6 +31,9 @@ $ sudo ./mininfv.py
 mininet> vnfd_<TAB>
 vnfd_create         vnfd_delete         vnfd_list           vnfd_template_show  
 
+mininet> vnfd_create
+Use: vnfd_create --vnfd-file <yaml file path> <VNFD-NAME>
+
 mininet> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfd-userdata
 
 mininet> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-hello-world.yaml vnfd-helloworld
@@ -97,19 +100,19 @@ mininet> vnf_list
 ```
 $ sudo ./mininfv.py
 *** Configuring hosts
-
 *** Starting controller
-
 *** Starting 0 switches
-
 *** Starting CLI:
+
 mininet> add_host
-Wrong number or arguments
 Use: add_host <HOST-NAME> [<IP1/masc> <IP2/masc> ...]
+
 mininet> add_host h1 10.0.0.10/24 20.0.0.10/24
+
 mininet> nodes
 available nodes are: 
 c0 h1 s10.0.0.0 s192.168.1 s20.0.0.0 ud
+
 mininet> h1 ifconfig
 h1-eth0   Link encap:Ethernet  HWaddr 3e:b2:ba:99:4e:dc  
           inet addr:10.0.0.10  Bcast:10.255.255.255  Mask:255.255.255.0
