@@ -30,15 +30,19 @@ $ sudo ./mininfv.py
 *** Starting 0 switches
 
 *** Starting CLI:
+
 mininet> vnfd_<TAB>
 vnfd_create         vnfd_delete         vnfd_list           vnfd_template_show  
+
 mininet> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfd-userdata
 mininet> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-hello-world.yaml vnfd-helloworld
 mininet> vnfd_list
 vnfd-helloworld: Demo example
 vnfd-userdata: Demo with user-data
+
 mininet> vnfd_template_show vnfd-userdata
 {'VDU1': {'type': 'tosca.nodes.nfv.VDU.Tacker', 'properties': {'image': 'cirros-0.3.5-x86_64-disk', 'user_data_format': 'RAW', 'config': 'param0: key1\nparam1: key2\n', 'user_data': '#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n', 'mgmt_driver': 'noop'}, 'capabilities': {'nfv_compute': {'properties': {'mem_size': '512 MB', 'num_cpus': 1, 'disk_size': '1 GB'}}}}, 'CP1': {'type': 'tosca.nodes.nfv.CP.Tacker', 'requirements': [{'virtualLink': {'node': 'VL1'}}, {'virtualBinding': {'node': 'VDU1'}}], 'properties': {'anti_spoofing_protection': False, 'management': True, 'order': 0}}, 'VL1': {'type': 'tosca.nodes.nfv.VL', 'properties': {'network_name': 'net_mgmt', 'vendor': 'ACME'}}}
+
 mininet> vnfd_delete vnfd-userdata
 mininet> vnfd_list
 []
@@ -53,18 +57,26 @@ $ sudo ./mininfv.py
 *** Starting 0 switches
 
 *** Starting CLI:
+
 mininet> vnf_<TAB>
-vnf_create  vnf_delete  vnf_list 
+vnf_create  vnf_delete  vnf_list
+
 mininet> vnf_create
 Use: vnf_create --vnfd-name <VNFD-NAME> <VNF-NAME>
      vnf_create --vnfd-file <yaml file path> <VNFD-NAME>
      vnf_create --vnfd-template <yaml file path> <VNFD-NAME>
+     
 mininet> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
 *** Initializing VDU vnf-userdata ...
 *** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
+
 mininet> nodes
 available nodes are: 
 c0 s192.168.1 vnfUD
+
+mininet> vnf_list
+['vnfuserdata']
+
 mininet> vnfUD ifconfig
 ud-eth0   Link encap:Ethernet  HWaddr 76:2c:90:f5:72:13  
           inet addr:192.168.120.10  Bcast:192.168.120.255  Mask:255.255.255.0
@@ -74,12 +86,12 @@ ud-eth0   Link encap:Ethernet  HWaddr 76:2c:90:f5:72:13
           TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
           collisions:0 txqueuelen:1000 
           RX bytes:6751 (6.7 KB)  TX bytes:648 (648.0 B)
-mininet> vnf_list
-['vnfuserdata']
+
 mininet> vnf_delete vnf-userdata
 mininet> nodes
 available nodes are: 
 c0 s192.168.1
+
 mininet> vnf_list
 []
 ```
