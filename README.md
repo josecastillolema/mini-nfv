@@ -32,7 +32,7 @@ $ sudo ./mininfv.py
 *** Starting CLI:
 mininet> vnfd_<TAB>
 vnfd_create         vnfd_delete         vnfd_list           vnfd_template_show  
-**mininet>** vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfd-userdata
+mininet> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfd-userdata
 mininet> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-hello-world.yaml vnfd-helloworld
 mininet> vnfd_list
 vnfd-helloworld: Demo example
