@@ -30,6 +30,8 @@ $ sudo ./mininfv.py
 *** Starting 0 switches
 
 *** Starting CLI:
+mininet> vnfd_<TAB>
+vnfd_create         vnfd_delete         vnfd_list           vnfd_template_show  
 mininet> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfd-userdata
 mininet> vnfd_list
 ['vnfd-userdata']
@@ -61,6 +63,15 @@ mininet> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnf-userda
 mininet> nodes
 available nodes are: 
 c0 s192.168.1 vnf-userdata
+mininet> vnf-userdata ifconfig
+ud-eth0   Link encap:Ethernet  HWaddr 76:2c:90:f5:72:13  
+          inet addr:192.168.120.10  Bcast:192.168.120.255  Mask:255.255.255.0
+          inet6 addr: fe80::742c:90ff:fef5:7213/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:41 errors:0 dropped:10 overruns:0 frame:0
+          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:6751 (6.7 KB)  TX bytes:648 (648.0 B)
 mininet> vnf_list
 ['vnf-userdata']
 mininet> vnf_delete vnf-userdata
