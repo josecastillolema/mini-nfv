@@ -20,23 +20,117 @@ On the other hand, Mininet has shown itself as a great tool for agile network/SD
 
 Use
 --------------
+- **VNFD creation/listing/removal/template**
 ```
 $ sudo ./mininfv.py
 *** Configuring hosts
-
 *** Starting controller
-
 *** Starting 0 switches
-
 *** Starting CLI:
+
+mininet> vnfd_<TAB>
+vnfd_create         vnfd_delete         vnfd_list           vnfd_template_show  
+
+mininet> vnfd_create
+Use: vnfd_create --vnfd-file <yaml file path> <VNFD-NAME>
+
 mininet> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfd-userdata
+
+mininet> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-hello-world.yaml vnfd-helloworld
+
 mininet> vnfd_list
-['vnfd-userdata']
+vnfd-helloworld: Demo example
+vnfd-userdata: Demo with user-data
+
 mininet> vnfd_template_show vnfd-userdata
 {'VDU1': {'type': 'tosca.nodes.nfv.VDU.Tacker', 'properties': {'image': 'cirros-0.3.5-x86_64-disk', 'user_data_format': 'RAW', 'config': 'param0: key1\nparam1: key2\n', 'user_data': '#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n', 'mgmt_driver': 'noop'}, 'capabilities': {'nfv_compute': {'properties': {'mem_size': '512 MB', 'num_cpus': 1, 'disk_size': '1 GB'}}}}, 'CP1': {'type': 'tosca.nodes.nfv.CP.Tacker', 'requirements': [{'virtualLink': {'node': 'VL1'}}, {'virtualBinding': {'node': 'VDU1'}}], 'properties': {'anti_spoofing_protection': False, 'management': True, 'order': 0}}, 'VL1': {'type': 'tosca.nodes.nfv.VL', 'properties': {'network_name': 'net_mgmt', 'vendor': 'ACME'}}}
+
 mininet> vnfd_delete vnfd-userdata
+
 mininet> vnfd_list
 []
+```
+- **VNF creation/listing/removal**
+```
+$ sudo ./mininfv.py
+*** Configuring hosts
+*** Starting controller
+*** Starting 0 switches
+*** Starting CLI:
+
+mininet> vnf_<TAB>
+vnf_create  vnf_delete  vnf_list
+
+mininet> vnf_create
+Use: vnf_create --vnfd-name <VNFD-NAME> <VNF-NAME>
+     vnf_create --vnfd-file <yaml file path> <VNFD-NAME>
+     vnf_create --vnfd-template <yaml file path> <VNFD-NAME>
+     
+mininet> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
+*** Initializing VDU vnf-userdata ...
+*** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
+
+mininet> nodes
+available nodes are: 
+c0 s192.168.1 vnfUD
+
+mininet> vnf_list
+['vnfuserdata']
+
+mininet> vnfUD ifconfig
+ud-eth0   Link encap:Ethernet  HWaddr 76:2c:90:f5:72:13  
+          inet addr:192.168.120.10  Bcast:192.168.120.255  Mask:255.255.255.0
+          inet6 addr: fe80::742c:90ff:fef5:7213/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:41 errors:0 dropped:10 overruns:0 frame:0
+          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:6751 (6.7 KB)  TX bytes:648 (648.0 B)
+
+mininet> vnf_delete vnf-userdata
+
+mininet> nodes
+available nodes are: 
+c0 s192.168.1
+
+mininet> vnf_list
+[]
+```
+- **Adding hosts to the topology**
+```
+$ sudo ./mininfv.py
+*** Configuring hosts
+*** Starting controller
+*** Starting 0 switches
+*** Starting CLI:
+
+mininet> add_host
+Use: add_host <HOST-NAME> [<IP1/masc> <IP2/masc> ...]
+
+mininet> add_host h1 10.0.0.10/24 20.0.0.10/24
+
+mininet> nodes
+available nodes are: 
+c0 h1 s10.0.0.0 s192.168.1 s20.0.0.0 ud
+
+mininet> h1 ifconfig
+h1-eth0   Link encap:Ethernet  HWaddr 3e:b2:ba:99:4e:dc  
+          inet addr:10.0.0.10  Bcast:10.255.255.255  Mask:255.255.255.0
+          inet6 addr: fe80::3cb2:baff:fe99:4edc/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:24 errors:0 dropped:1 overruns:0 frame:0
+          TX packets:7 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3445 (3.4 KB)  TX bytes:578 (578.0 B)
+
+h1-eth1   Link encap:Ethernet  HWaddr aa:08:cf:38:e8:d5  
+          inet addr:20.0.0.10  Bcast:20.255.255.255  Mask:255.255.255.0
+          inet6 addr: fe80::a808:cfff:fe38:e8d5/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:25 errors:0 dropped:1 overruns:0 frame:0
+          TX packets:7 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:3515 (3.5 KB)  TX bytes:578 (578.0 B)
 ```
 
 Characteristics
