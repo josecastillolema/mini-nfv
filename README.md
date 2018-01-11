@@ -20,6 +20,7 @@ On the other hand, Mininet has shown itself as a great tool for agile network/SD
 
 Use
 --------------
+- **VNFD creation/listing/removal**
 ```
 $ sudo ./mininfv.py
 *** Configuring hosts
