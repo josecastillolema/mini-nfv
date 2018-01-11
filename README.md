@@ -75,6 +75,9 @@ ud-eth0   Link encap:Ethernet  HWaddr 76:2c:90:f5:72:13
 mininet> vnf_list
 ['vnf-userdata']
 mininet> vnf_delete vnf-userdata
+mininet> nodes
+available nodes are: 
+c0 s192.168.1
 mininet> vnf_list
 []
 ```
