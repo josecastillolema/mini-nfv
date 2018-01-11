@@ -39,6 +39,34 @@ mininet> vnfd_delete vnfd-userdata
 mininet> vnfd_list
 []
 ```
+- **VNFD creation/listing/removal**
+```
+$ sudo ./mininfv.py
+*** Configuring hosts
+
+*** Starting controller
+
+*** Starting 0 switches
+
+*** Starting CLI:
+mininet> vnf_<TAB>
+vnf_create  vnf_delete  vnf_list 
+mininet> vnf_create
+Use: vnf_create --vnfd-name <VNFD-NAME> <VNF-NAME>
+     vnf_create --vnfd-file <yaml file path> <VNFD-NAME>
+     vnf_create --vnfd-template <yaml file path> <VNFD-NAME>
+mininet> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnf-userdata
+*** Initializing VDU vnf-userdata ...
+*** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
+mininet> nodes
+available nodes are: 
+c0 s192.168.1 vnf-userdata
+mininet> vnf_list
+['vnf-userdata']
+mininet> vnf_delete vnf-userdata
+mininet> vnf_list
+[]
+```
 
 Characteristics
 --------------
