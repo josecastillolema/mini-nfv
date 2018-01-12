@@ -12,17 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# mini-nfv extensions for NFV orchestration added by:
+# Jose Castillo Lema <josecastillolema@gmail.com>
+
 """
 A stupid L3 switch
 
 For each switch:
 1) Keep a table that maps IP addresses to MAC addresses and switch ports.
    Stock this table using information from ARP and IP packets.
+   This table also contains information about traffic rerouting for
+   the NFV orchestration.
 2) When you see an ARP query, try to answer it using information in the table
    from step 1.  If the info in the table is old, just flood the query.
 3) Flood all other ARPs.
 4) When you see an IP packet, if you know the destination port (because it's
    in the table from step 1), install a flow for it.
+
+When a new switch appears with DPID :99, perform rerouting according to
+a given forwarding graph.
 """
 
 from pox.core import core
@@ -63,10 +71,11 @@ class Entry (object):
   We use the timeout so that if an entry is older than ARP_TIMEOUT, we
    flood the ARP request rather than try to answer it ourselves.
   """
-  def __init__ (self, port, mac):
+  def __init__ (self, port, mac, mac2=None):
     self.timeout = time.time() + ARP_TIMEOUT
     self.port = port
     self.mac = mac
+    self.mac2 = mac2
 
   def __eq__ (self, other):
     if type(other) == tuple:
@@ -173,6 +182,9 @@ class l3_switch (EventMixin):
       for fake in self.fakeways:
         self.arpTable[dpid][IPAddr(fake)] = Entry(of.OFPP_NONE,
          dpid_to_mac(dpid))
+
+    if dpid == '99':
+      print 'JOSEEEEEEEEEEEEEEE CHEGOU A HORAAAAAA'
 
     if packet.type == ethernet.LLDP_TYPE:
       # Ignore LLDP packets

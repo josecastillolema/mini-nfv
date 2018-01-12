@@ -288,6 +288,7 @@ def configure_vnffg(net, vnffg, vnffg_name):
         ip_proto = criteria[0]['ip_proto']
         port_range = criteria[0]['destination_port_range']
     forwarder = path['forwarder']
+    net.addSwitch('s99')
 
 def vnffg_create(self, line):
     "Creates vnffg from previously defined vnffgd or directly from template."
