@@ -270,15 +270,38 @@ def vnf_delete(self, line):
 
 # VNFFG
 
+def configure_vnffg(net, vnffg, vnffg_name):
+    "NFV Orchestration function."
+    criteria = vnffg['topology_template']['node_templates']['Forwarding_path1']['properties']['policy']['criteria']
+    path = vnffg['topology_template']['node_templates']['Forwarding_path1']['properties']['path'][0]
+    print len(criteria)
+    if len(criteria) != 1:
+        for i in range(len(criteria)):
+            if criteria[i].has_key('network_src_port_id'):
+                port_id = criteria[i]['network_src_port_id']
+            elif criteria[i].has_key('ip_proto'):
+                ip_proto = criteria[i]['ip_proto']
+            elif criteria[i].has_key('port_range'):
+                port_range = criteria[i]['port_range']
+    else:
+        port_id = criteria[0]['network_src_port_id']
+        ip_proto = criteria[0]['ip_proto']
+        port_range = criteria[0]['destination_port_range']
+    forwarder = path['forwarder']
+
 def vnffg_create(self, line):
-    "Creates vnffgd from from template."
-    if len(line.split()) != 7 or line.split()[0] not in ['--vnfd-name', '--vnfd-template'] or line.split()[3] != '--vnf-mapping' or line.split()[5] != '--symmetrical':
+    "Creates vnffg from previously defined vnffgd or directly from template."
+    net = self.mn
+    if len(line.split()) != 7:
+        print 'problema e tamanho'
+        print line.split()[0]
+    if len(line.split()) != 7 or line.split()[0] not in ['--vnffgd-name', '--vnffgd-template'] or line.split()[2] != '--vnf-mapping' or line.split()[4] != '--symmetrical':
         output('''Use: vnffg-create --vnffgd-name <vnffgd-name> --vnf-mapping <vnf-mapping>
-                                    --symmetrical <boolean> <vnffg-name>\n''')
+                  --symmetrical <boolean> <vnffg-name>\n''')
         output('''     vnffg-create --vnffgd-template <vnffgd-template> --vnf-mapping <vnf-mapping>
-                                    --symmetrical <boolean> <vnffg-name>\n''')
+                  --symmetrical <boolean> <vnffg-name>\n''')
         return None
-    if line.split()[0] == ['--vnfd-template']:
+    if line.split()[0] == '--vnffgd-template':
         file_path = line.split()[1]
         vnffg = parse_tosca(file_path)
     else:  # --vnffg-name
@@ -286,10 +309,11 @@ def vnffg_create(self, line):
         vnffg = VNFFGD[vnffg_name]
     if vnffg:
         vnffg_name = line.split()[6]
-        #if vnffg_name in VNFS:
-        #    output('<VNF-NAME> already in use\n')
-        #    return None
-        #VNFS.append(vnf_name)
+        if vnffg_name in VNFFGS:
+            output('<VNF-NAME> already in use\n')
+            return None
+        VNFFGS.append(vnffg_name)
+        configure_vnffg(net, vnffg, vnffg_name)
         #net.addHost(vnf_name)
         #configure_network(net, vnfd, vnf_name)
         #configure_host(net, vnfd, vnf_name)
@@ -297,8 +321,23 @@ def vnffg_create(self, line):
     return None
 
 def vnffg_list(self, line):
-    "Lists all vnfs created."
+    "Lists all vnffgs created."
     output('%s' % VNFFGS + '\n')
+
+def vnffg_delete(self, line):
+    "Deletes a given vnffg."
+    net = self.mn
+    if len(line.split()) != 1:
+        output('Use: vnffg_delete <VNFFG-NAME>\n')
+        return None
+    vnffg_name = line.split()[0]
+    if vnffg_name in VNFFGS:
+        del VNFFGS[VNFFGS.index(vnffg_name)]
+        # net.delNode(vnf_name)
+        # AttributeError: 'Mininet' object has no attribute 'delNode'
+    else:
+        output('<VNFFG-NAME> does not exist\n')
+    return None
 
 if __name__ == '__main__':
     setLogLevel('info')
@@ -328,5 +367,8 @@ if __name__ == '__main__':
     CLI.do_vnf_create = vnf_create
     CLI.do_vnf_list = vnf_list
     CLI.do_vnf_delete = vnf_delete
+    CLI.do_vnffg_create = vnffg_create
+    CLI.do_vnffg_list = vnffg_list
+    CLI.do_vnffg_delete = vnffg_delete
     CLI(NET)
     NET.stop()
