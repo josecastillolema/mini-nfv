@@ -135,7 +135,7 @@ h1-eth1   Link encap:Ethernet  HWaddr aa:08:cf:38:e8:d5
 NFV Orchestrator Use
 --------------
 In order to use the NFV Orchestrator [POX](https://github.com/noxrepo/pox) must be installed.
-Place [*l3_mininfv.py*](https://github.com/josecastillolema/mini-nfv/blob/master/l3mininfv.py) in the *pox/ext* folder.
+Place [`l3_mininfv.py`](https://github.com/josecastillolema/mini-nfv/blob/master/l3mininfv.py) in the `pox/ext` folder.
 ```
 ./pox.py l3_mininfv openflow.discovery
 ```
