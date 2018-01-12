@@ -18,7 +18,7 @@ In the OpenStack world, Tacker is the project implementing a generic VNFM and NF
 
 On the other hand, Mininet has shown itself as a great tool for agile network/SDN/NFV experimentation. The goal of this tool is to alleviate the developers’ tedious task of setting up a whole service chaining environment and let them focus on their own work (e.g., developing a particular VNF, prototyping, implementing an orchestration algorithm or a customized traffic steering).
 
-Use
+VNF Manager Use
 --------------
 - **VNFD creation/listing/removal/template**
 ```
@@ -132,7 +132,13 @@ h1-eth1   Link encap:Ethernet  HWaddr aa:08:cf:38:e8:d5
           collisions:0 txqueuelen:1000 
           RX bytes:3515 (3.5 KB)  TX bytes:578 (578.0 B)
 ```
-
+NFV Orchestrator Use
+--------------
+In order to use the NFV Orchestrator [POX](https://github.com/noxrepo/pox) must be installed.
+Place [*l3_mininfv.py*](https://github.com/josecastillolema/mini-nfv/blob/master/l3mininfv.py) in the *pox/ext* folder.
+```
+./pox.py l3_mininfv openflow.discovery
+```
 Characteristics
 --------------
 NFV Catalog
