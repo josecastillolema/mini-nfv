@@ -137,7 +137,8 @@ NFV Orchestrator Use
 In order to use the NFV Orchestrator [POX](https://github.com/noxrepo/pox) must be installed.
 Place [`l3_mininfv.py`](https://github.com/josecastillolema/mini-nfv/blob/master/l3mininfv.py) in the `pox/ext` folder.
 ```
-./pox.py l3_mininfv openflow.discovery
+./pox.py l3_mininfv openflow.discovery                                       or
+./pox.py log.level --DEBUG l3_mininfv openflow.discovery           (debug mode)
 ```
 Characteristics
 --------------
