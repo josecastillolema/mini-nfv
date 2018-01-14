@@ -252,3 +252,11 @@ Mini-nfv supports VNFs configuration through user-data,  see [tosca-vnfd-userdat
           echo "my hostname is `hostname`" > /tmp/hostname
           df -h > /tmp/diskinfo
 ```
+
+Dependencies
+--------------
+Mini-nfv was tested on Ubuntu 14.04 and 16.04.
+APT dependencies:
+- mininet
+- python-netaddr (it can be installed via pip also)
+- python-yaml (it can be installed via pip also)
