@@ -140,6 +140,37 @@ Place [`l3_mininfv.py`](https://github.com/josecastillolema/mini-nfv/blob/master
 ./pox.py l3_mininfv openflow.discovery                              or
 ./pox.py log.level --DEBUG l3_mininfv openflow.discovery           (debug mode)
 ```
+
+- **VNFFG creation/listing/removal**
+```
+$ sudo ./mininfv.py
+*** Configuring hosts
+*** Starting controller
+*** Starting 0 switches
+*** Starting CLI:
+
+mininet> vnffg_<TAB>
+vnffg_create  vnffg_delete  vnffg_list    
+
+mininet> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
+*** Initializing VDU vnf-userdata ...
+*** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
+
+mininet> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-sample.yaml --vnf-mapping asdf --symmetrical false vnffg-sample
+
+mininet> nodes
+available nodes are: 
+c0 h99 s99
+
+mininet> vnf_list
+['vnffg-sample]
+
+mininet> vnffg_delete vnffg-sample
+
+mininet> vnffg_list
+[]
+```
+
 Characteristics
 --------------
 NFV Catalog
