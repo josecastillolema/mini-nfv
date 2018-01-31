@@ -75,7 +75,7 @@ available nodes are:
 c0 s192.168.1 vnfUD
 
 mininet> vnf_list
-['vnfuserdata']
+['vnfUD']
 
 mininet> vnfUD ifconfig
 ud-eth0   Link encap:Ethernet  HWaddr 76:2c:90:f5:72:13  
@@ -149,6 +149,10 @@ $ sudo ./mininfv.py
 *** Starting 0 switches
 *** Starting CLI:
 
+mininet> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
+*** Initializing VDU vnf-userdata ...
+*** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
+
 mininet> vnffg_<TAB>
 vnffg_create  vnffg_delete  vnffg_list    
 
@@ -156,7 +160,7 @@ mininet> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
 *** Initializing VDU vnf-userdata ...
 *** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
 
-mininet> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-sample.yaml --vnf-mapping asdf --symmetrical false vnffg-sample
+mininet> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-sample.yaml --vnf-mapping VNF1:'vnfUD' --symmetrical false vnffg-sample
 
 mininet> nodes
 available nodes are: 
