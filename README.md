@@ -153,6 +153,10 @@ mininet> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
 *** Initializing VDU vnf-userdata ...
 *** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
 
+mininet> add_host http_client 192.168.120.1/24
+
+mininet> add_host http_server 192.168.120.2/24
+
 mininet> vnffg_<TAB>
 vnffg_create  vnffg_delete  vnffg_list    
 
