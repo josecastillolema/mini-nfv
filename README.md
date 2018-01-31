@@ -156,11 +156,7 @@ mininet> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
 mininet> vnffg_<TAB>
 vnffg_create  vnffg_delete  vnffg_list    
 
-mininet> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
-*** Initializing VDU vnf-userdata ...
-*** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
-
-mininet> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-sample.yaml --vnf-mapping VNF1:'vnfUD' --symmetrical false vnffg-sample
+mininet> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-helloworld2.yaml --vnf-mapping vnfd-helloworld:'vnfUD' --symmetrical false vnffg-sample
 
 mininet> nodes
 available nodes are: 
