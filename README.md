@@ -54,7 +54,7 @@ mininet> vnfd_template_show vnfd-userdata
 mininet> vnfd_delete vnfd-userdata
 
 mininet> vnfd_list
-[]
+vnfd-helloworld: Demo example
 ```
 - **VNF creation/listing/removal**
 ```
