@@ -172,17 +172,25 @@ mininet> add_host http_cl 192.168.120.1/24
 
 mininet> add_host http_sr 192.168.120.2/24
 
+mininet> nodes
+available nodes are: 
+c0 http_cl http_sr s192.168.1 vnfUD
+
+mininet> switch s192.168.1 start
+
+mininet> py http_sr.cmdPrint('python -m SimpleHTTPServer 80 &')
+
+mininet> http_cl curl http_sr
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"><html>
+...
+
 mininet> vnffg_<TAB>
 vnffg_create  vnffg_delete  vnffg_list    
 
 mininet> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-helloworld2.yaml --vnf-mapping vnfd-helloworld:'vnfUD' --symmetrical false vnffg-sample
 
-mininet> nodes
-available nodes are: 
-c0 h99 s99
-
-mininet> vnf_list
-['vnffg-sample]
+mininet> vnffg_list
+['vnffg-sample']
 
 mininet> vnffg_delete vnffg-sample
 
