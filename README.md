@@ -24,7 +24,7 @@ For the VNF Manager functionality:
 ```
 $ sudo ./mininfv.py [--standalone]
 ```
-The `--standalone` option runs mininet with its default controller. This way can be usefull to test the VNF Manager functionality with full connectivity between VNFs and hosts without the need of running POX. However, to have NFV Orchestration capabilites mininfv must be run without the `--standalone` option and with POX controller running in the background.
+The `--standalone` option runs mininet with its default controller. This way can be usefull to test the VNF Manager functionality with full connectivity between VNFs and hosts without the need of running POX. However, to have NFV Orchestration capabilites mininfv must be run without the `--standalone` option along with POX controller running in the background.
 
 - **VNFD creation/listing/removal/template**
 ```
