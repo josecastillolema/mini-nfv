@@ -98,7 +98,7 @@ mininet> vnf_list
 ```
 - **Adding hosts to the topology**
 ```
-$ sudo ./mininfv.py
+$ sudo ./mininfv.py --standalone
 *** Configuring hosts
 *** Starting controller
 *** Starting 0 switches
@@ -107,15 +107,15 @@ $ sudo ./mininfv.py
 mininet> add_host
 Use: add_host <HOST-NAME> [<IP1/masc> <IP2/masc> ...]
 
-mininet> add_host h1 10.0.0.10/24 20.0.0.10/24
+mininet> add_host h1 10.0.0.11/24 20.0.0.11/24
 
 mininet> nodes
 available nodes are: 
-c0 h1 s10.0.0.0 s192.168.1 s20.0.0.0 ud
+c0 h1 s10.0.0.0 s20.0.0.0 ud
 
 mininet> h1 ifconfig
 h1-eth0   Link encap:Ethernet  HWaddr 3e:b2:ba:99:4e:dc  
-          inet addr:10.0.0.10  Bcast:10.255.255.255  Mask:255.255.255.0
+          inet addr:10.0.0.11  Bcast:10.255.255.255  Mask:255.255.255.0
           inet6 addr: fe80::3cb2:baff:fe99:4edc/64 Scope:Link
           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
           RX packets:24 errors:0 dropped:1 overruns:0 frame:0
@@ -131,6 +131,14 @@ h1-eth1   Link encap:Ethernet  HWaddr aa:08:cf:38:e8:d5
           TX packets:7 errors:0 dropped:0 overruns:0 carrier:0
           collisions:0 txqueuelen:1000 
           RX bytes:3515 (3.5 KB)  TX bytes:578 (578.0 B)
+          
+mininet> add_host h2 10.0.0.12/24
+
+mininet> switch s10.0.0.0 start
+
+mininte> h1 ping h2
+PING 10.0.0.12 (10.0.0.12) 56(84) bytes of data.
+64 bytes from 192.168.120.2: icmp_seq=1 ttl=64 time=2.84 ms
 ```
 NFV Orchestrator Use
 --------------
