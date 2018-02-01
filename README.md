@@ -20,6 +20,12 @@ On the other hand, Mininet has shown itself as a great tool for agile network/SD
 
 VNF Manager Use
 --------------
+For the VNF Manager functionality:
+```
+$ sudo ./mininfv.py [--standalone]
+```
+The `--standalone` option runs mininet with its default controller. This way can be usefull to test the VNF Manager functionality with full connectivity between VNFs and hosts without the need of running POX. However, to have NFV Orchestration capabilites mininfv must be run without the `--standalone` option and with POX controller running in the background.
+
 - **VNFD creation/listing/removal/template**
 ```
 $ sudo ./mininfv.py
@@ -144,6 +150,7 @@ NFV Orchestrator Use
 --------------
 In order to use the NFV Orchestrator [POX](https://github.com/noxrepo/pox) must be installed.
 Place [`l3_mininfv.py`](https://github.com/josecastillolema/mini-nfv/blob/master/l3_mininfv.py) in the `pox/ext` folder.
+To have NFV Orchestration capabilites mininfv must be run without the `--standalone` option and with POX controller running in the background.
 ```
 ./pox.py l3_mininfv openflow.discovery                              or
 ./pox.py log.level --DEBUG l3_mininfv openflow.discovery           (debug mode)
