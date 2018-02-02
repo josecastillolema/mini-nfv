@@ -1,0 +1,6 @@
+add_host h1 10.0.0.11/24 20.0.0.11/24
+h1 ifconfig
+add_host h2 10.0.0.12/24
+switch s10.0.0.0 start
+nodes
+h1 ping -c 3 h2
