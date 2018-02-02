@@ -8,6 +8,7 @@
 import sys
 import netaddr
 import yaml
+from collections import defaultdict
 from mininet.topo import Topo
 from mininet.net import Mininet
 from mininet.link import TCLink
@@ -24,6 +25,7 @@ VNFFGS = []
 VNFFGD = {}
 HOSTS = []
 SWITCH = {}
+PORTS = defaultdict(list)
 INC = 10
 
 def parse_tosca(path):
@@ -98,28 +100,29 @@ def configure_host(net, vnfd, host):
     while topo.has_key('VL%s' % i):
         if topo['CP%s' % i]['properties'].has_key('ip_address'):
             ip_address = topo['CP%s' % i]['properties']['ip_address']
-            host1.setIP(ip_address, intf=host+'-eth%s' % (i-1))
         else:
             if topo['VL%s' % i]['properties']['network_name'] == 'net_mgmt':
-                host1.setIP('192.168.120.%s' % INC + '/24', intf=host+'-eth%s' % (i-1))
+                ip_address = '192.168.120.%s/24' % INC
                 INC += 1
             elif topo['VL%s' % i]['properties']['network_name'] == 'net0':
-                host1.setIP('10.10.0.%s' % INC+'/24', intf=host+'-eth%s' % (i-1))
+                ip_address = '10.10.0.%s/24' % INC
                 INC += 1
             elif topo['VL%s' % i]['properties']['network_name'] == 'net1':
-                host1.setIP('10.10.1.%s'%INC+'/24', intf=host+'-eth%s' % (i-1))
+                ip_address = '10.10.1.%s/24' % INC
                 INC += 1
             elif topo['VL%s' % i]['properties'].has_key('cidr'):
                 cidr = netaddr.IPNetwork(topo['VL%s' % i]['properties']['cidr'])
                 if topo['VL%s' % i]['properties'].has_key('start_ip'):
                     start_ip = topo['VL%s' % i]['properties']['start_ip']
-                    host1.setIP(start_ip+'/%s' % cidr.prefixlen, intf=host+'-eth%s' % (i-1))
+                    ip_address = '%s/%s' % (start_ip, cidr.prefixlen)
                 else:
-                    host1.setIP(str(cidr.ip+INC)+'/%s' % cidr.prefixlen, intf=host+'-eth%s' % (i-1))
+                    ip_address = str(cidr.ip+INC)+'/%s' % cidr.prefixlen
                     INC += 1
             else:
-                host1.setIP('10.0.%s.%s/24' %(i, INC), intf=host+'-eth%s' % (i-1))
+                ip_address = '10.0.%s.%s/24' %(i, INC)
                 INC += 1
+        host1.setIP(ip_address, intf=host+'-eth%s' % (i-1))
+        PORTS[host].append(ip_address)
         if topo['CP%s' % i]['properties'].has_key('mac_address'):
             mac_address = topo['CP%s' % i]['properties']['mac_address']
             host1.setMAC(mac_address, intf=host+'-eth%s' % (i-1))
@@ -130,7 +133,26 @@ def configure_host2(net, ips, host):
     host1 = net.getNodeByName(host)
     for i in range(len(ips)):
         ip_address = netaddr.IPNetwork(ips[i])
-        host1.setIP('%s/%s' % (ip_address.ip, ip_address.prefixlen), intf=host+'-eth%s' % i)
+        ip_address_final = '%s/%s' % (ip_address.ip, ip_address.prefixlen)
+        host1.setIP(ip_address_final, intf=host+'-eth%s' % i)
+        PORTS[host].append(ip_address_final)
+
+def list_ports(self, line):
+    "List all ports."
+    if len(line.split()) != 0:
+        output('Use: list_ports\n')
+        return None
+    for i in PORTS:
+        output(i, PORTS[i])
+        output('\n')
+    return None
+
+def find_port(ip_address):
+    "Returns the host of the port if the port exists."
+    for i in PORTS:
+        if ip_address in PORTS[i]:
+            return i
+    return None
 
 def add_host(self, line):
     "Adds a host to the mininet topology."
@@ -159,7 +181,7 @@ def add_host(self, line):
     HOSTS.append(host_name)
     host = net.addHost(host_name)
     for i in switchs:
-        net.addLink(i, host)
+        net.addLink(i[:10], host)
     configure_host2(net, ips, host_name)
     return None
 
@@ -270,25 +292,59 @@ def vnf_delete(self, line):
 
 # VNFFG
 
-def configure_vnffg(net, vnffg, vnffg_name):
+def configure_vnffg(net, vnffg, vnffg_name, binds):
     "NFV Orchestration function."
     criteria = vnffg['topology_template']['node_templates']['Forwarding_path1']['properties']['policy']['criteria']
     path = vnffg['topology_template']['node_templates']['Forwarding_path1']['properties']['path'][0]
-    print len(criteria)
+    vnfs = vnffg['topology_template']['groups']['VNFFG1']['properties']['constituent_vnfs']
+    if vnfs[0] != binds[0]:
+        output('vnf-mapping <' + binds[0] + '> not defined in template\n')
+        return
     if len(criteria) != 1:
         for i in range(len(criteria)):
             if criteria[i].has_key('network_src_port_id'):
                 port_id = criteria[i]['network_src_port_id']
+            elif criteria[i].has_key('ip_src_prefix'):
+                ip_src = criteria[i]['ip_src_prefix']
+                if not find_port(ip_src):
+                    output('ip_src_prefix ,' + ip_src + '> not exists in current environment\n')
+                    return
+            elif criteria[i].has_key('ip_dst_prefix'):
+                ip_dst = criteria[i]['ip_dst_prefix']
+                if not find_port(ip_dst):
+                    output('ip_dst_prefix ,' + ip_dst + '> not exists in current environment\n')
+                    return
             elif criteria[i].has_key('ip_proto'):
                 ip_proto = criteria[i]['ip_proto']
-            elif criteria[i].has_key('port_range'):
-                port_range = criteria[i]['port_range']
+            elif criteria[i].has_key('destination_port_range'):
+                port_range = criteria[i]['destination_port_range']
     else:
-        port_id = criteria[0]['network_src_port_id']
-        ip_proto = criteria[0]['ip_proto']
-        port_range = criteria[0]['destination_port_range']
+        if criteria[0].has_key('network_src_port_id'):
+            port_id = criteria[0]['network_src_port_id']
+        if criteria[0].has_key('ip_src_prefix'):
+            ip_src = criteria[0]['ip_src_prefix']
+            if not find_port(ip_src):
+                output('ip_src_prefix ,' + ip_src + '> not exists in current environment\n')
+                return
+        if criteria[0].has_key('ip_dst_prefix'):
+            ip_dst = criteria[0]['ip_dst_prefix']
+            if not find_port(ip_dst):
+                output('ip_dst_prefix ,' + ip_dst + '> not exists in current environment\n')
+                return
+        if criteria[0].has_key('ip_proto'):
+            ip_proto = criteria[0]['ip_proto']
+        if criteria[i].has_key('destination_port_range'):
+            port_range = criteria[0]['destination_port_range']
+    VNFFGS.append(vnffg_name)
     forwarder = path['forwarder']
     net.addSwitch('s99')
+    h99 = net.addHost('h99', ip='9.9.9.9/24')
+    net.addLink('s99', h99)
+    h99.setIP('9.9.9.9/24', intf='h99-eth0')
+
+def read_binding(binding):
+    "Translates something in the form VNF:'vnf' into ('VNF', 'vnf')"
+    return (binding.split(':')[0], binding.split(':')[1].replace("'", ''))
 
 def vnffg_create(self, line):
     "Creates vnffg from previously defined vnffgd or directly from template."
@@ -308,13 +364,14 @@ def vnffg_create(self, line):
     else:  # --vnffg-name
         vnffg_name = line.split()[1]
         vnffg = VNFFGD[vnffg_name]
+    binds = read_binding(line.split()[3])
     if vnffg:
         vnffg_name = line.split()[6]
         if vnffg_name in VNFFGS:
-            output('<VNF-NAME> already in use\n')
+            output('<VNFFG-NAME> already in use\n')
             return None
-        VNFFGS.append(vnffg_name)
-        configure_vnffg(net, vnffg, vnffg_name)
+        #VNFFGS.append(vnffg_name)
+        configure_vnffg(net, vnffg, vnffg_name, binds)
         #net.addHost(vnf_name)
         #configure_network(net, vnfd, vnf_name)
         #configure_host(net, vnfd, vnf_name)
@@ -361,6 +418,8 @@ if __name__ == '__main__':
         NET = Mininet(topo=TOPO, link=TCLink, controller=RemoteController)
     NET.start()
     CLI.do_add_host = add_host
+    CLI.do_list_ports = list_ports
+    CLI.do_find_port = find_port
     CLI.do_vnfd_create = vnfd_create
     CLI.do_vnfd_list = vnfd_list
     CLI.do_vnfd_delete = vnfd_delete

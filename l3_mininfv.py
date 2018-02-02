@@ -176,6 +176,11 @@ class l3_switch (EventMixin):
       log.warning("%i %i ignoring unparsed packet", dpid, inport)
       return
 
+    log.debug('pacote: '+ str(dpid) + str(packet))
+    if str(dpid) == '99':
+      #log.debug('JOSEEEEEEEEEEEEEEE CHEGOU A HORAAAAAA %s' % packet.next.srcip,packet.next.dstip)
+      log.debug('JOSEEEEEEEEEEEEEEE CHEGOU A HORAAAAAA %s' % packet.next)
+
     if dpid not in self.arpTable:
       # New switch -- create an empty table
       self.arpTable[dpid] = {}
@@ -183,16 +188,15 @@ class l3_switch (EventMixin):
         self.arpTable[dpid][IPAddr(fake)] = Entry(of.OFPP_NONE,
          dpid_to_mac(dpid))
 
-    if dpid == '99':
-      print 'JOSEEEEEEEEEEEEEEE CHEGOU A HORAAAAAA'
-
     if packet.type == ethernet.LLDP_TYPE:
       # Ignore LLDP packets
       return
 
     if isinstance(packet.next, ipv4):
-      log.debug("%i %i IP %s => %s", dpid,inport,
+      log.debug("a%i %i IP %s => %s", dpid,inport,
                 packet.next.srcip,packet.next.dstip)
+
+      log.debug("JOSE2 %i" % packet.next.dstip)
 
       # Send any waiting packets...
       self._send_lost_buffers(dpid, packet.next.srcip, packet.src, inport)
@@ -219,7 +223,7 @@ class l3_switch (EventMixin):
           log.debug("%i %i installing flow for %s => %s out port %i"
                     % (dpid, inport, packet.next.srcip, dstaddr, prt))
 
-          log.debug('JOSE '+ str(self.arpTable))
+          log.debug('JOSE3 '+ str(self.arpTable))
 
           actions = []
           actions.append(of.ofp_action_dl_addr.set_dst(mac))
@@ -285,9 +289,11 @@ class l3_switch (EventMixin):
 
     elif isinstance(packet.next, arp):
       a = packet.next
-      log.debug("%i %i ARP %s %s => %s", dpid, inport,
+      log.debug("b%i %i ARP %s %s => %s", dpid, inport,
        {arp.REQUEST:"request",arp.REPLY:"reply"}.get(a.opcode,
        'op:%i' % (a.opcode,)), str(a.protosrc), str(a.protodst))
+
+      log.debug("JOSE4 => %s", str(a.protodst))
 
       if a.prototype == arp.PROTO_TYPE_IP:
         if a.hwtype == arp.HW_TYPE_ETHERNET:
