@@ -105,7 +105,6 @@ c0 s192.168.1
 mininet> vnf_list
 []
 ```
-
 Or just source  [`vnf_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnf_test) from mininfv:
 `mininet> source samples/topology/vnf_test`
 
@@ -153,9 +152,9 @@ mininte> h1 ping h2
 PING 10.0.0.12 (10.0.0.12) 56(84) bytes of data.
 64 bytes from 192.168.120.2: icmp_seq=1 ttl=64 time=2.84 ms
 ```
-
 Or just source  [`host_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/host_test) from mininfv:
 `mininet> source samples/topology/host_test`
+
 NFV Orchestrator Use
 --------------
 In order to use the NFV Orchestrator [POX](https://github.com/noxrepo/pox) must be installed.
