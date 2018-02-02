@@ -105,6 +105,7 @@ c0 s192.168.1
 mininet> vnf_list
 []
 ```
+
 Or just source  [`vnf_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnf_test) from mininfv:
 `mininet> source samples/topology/vnf_test`
 
@@ -152,6 +153,7 @@ mininte> h1 ping h2
 PING 10.0.0.12 (10.0.0.12) 56(84) bytes of data.
 64 bytes from 192.168.120.2: icmp_seq=1 ttl=64 time=2.84 ms
 ```
+
 Or just source  [`host_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/host_test) from mininfv:
 `mininet> source samples/topology/host_test`
 NFV Orchestrator Use
@@ -205,6 +207,7 @@ mininet> vnffg_delete vnffg-sample
 mininet> vnffg_list
 []
 ```
+
 Or just source  [`vnffg_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnffg_test) from mininfv:
 `mininet> source samples/topology/vnffg_test`
 
