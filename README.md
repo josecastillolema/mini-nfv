@@ -320,6 +320,11 @@ vnffg_create  vnffg_delete  vnffg_list
 
 mininet> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-helloworld2.yaml --vnf-mapping vnfd-helloworld:'vnfUD' --symmetrical false vnffg-sample
 
+mininet> nodes
+c0 http_cl http_sr s192.168.1 vnfUD s99
+
+mininet> switch s99 start
+
 mininet> vnffg_list
 ['vnffg-sample']
 
