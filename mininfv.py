@@ -430,5 +430,6 @@ if __name__ == '__main__':
     CLI.do_vnffg_create = vnffg_create
     CLI.do_vnffg_list = vnffg_list
     CLI.do_vnffg_delete = vnffg_delete
+    CLI.prompt = 'mininfv> '
     CLI(NET)
     NET.stop()
