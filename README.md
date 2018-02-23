@@ -156,30 +156,30 @@ $ sudo ./mininfv.py
 *** Starting 0 switches
 *** Starting CLI:
 
-mininet> vnfd_<TAB>
+mininfv> vnfd_<TAB>
 vnfd_create         vnfd_delete         vnfd_list           vnfd_template_show  
 
-mininet> vnfd_create
+mininfv> vnfd_create
 Use: vnfd_create --vnfd-file <yaml file path> <VNFD-NAME>
 
-mininet> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfd-userdata
+mininfv> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfd-userdata
 
-mininet> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-hello-world.yaml vnfd-helloworld
+mininfv> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-hello-world.yaml vnfd-helloworld
 
-mininet> vnfd_list
+mininfv> vnfd_list
 vnfd-helloworld: Demo example
 vnfd-userdata: Demo with user-data
 
-mininet> vnfd_template_show vnfd-userdata
+mininfv> vnfd_template_show vnfd-userdata
 {'VDU1': {'type': 'tosca.nodes.nfv.VDU.Tacker', 'properties': {'image': 'cirros-0.3.5-x86_64-disk', 'user_data_format': 'RAW', 'config': 'param0: key1\nparam1: key2\n', 'user_data': '#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n', 'mgmt_driver': 'noop'}, 'capabilities': {'nfv_compute': {'properties': {'mem_size': '512 MB', 'num_cpus': 1, 'disk_size': '1 GB'}}}}, 'CP1': {'type': 'tosca.nodes.nfv.CP.Tacker', 'requirements': [{'virtualLink': {'node': 'VL1'}}, {'virtualBinding': {'node': 'VDU1'}}], 'properties': {'anti_spoofing_protection': False, 'management': True, 'order': 0}}, 'VL1': {'type': 'tosca.nodes.nfv.VL', 'properties': {'network_name': 'net_mgmt', 'vendor': 'ACME'}}}
 
-mininet> vnfd_delete vnfd-userdata
+mininfv> vnfd_delete vnfd-userdata
 
-mininet> vnfd_list
+mininfv> vnfd_list
 vnfd-helloworld: Demo example
 ```
 Or just source  [`vnfd_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnfd_test) from mininfv:
-`mininet> source samples/topology/vnfd_test`
+`mininfv> source samples/topology/vnfd_test`
 
 - **VNF creation/listing/removal**
 ```
@@ -189,26 +189,26 @@ $ sudo ./mininfv.py
 *** Starting 0 switches
 *** Starting CLI:
 
-mininet> vnf_<TAB>
+mininfv> vnf_<TAB>
 vnf_create  vnf_delete  vnf_list
 
-mininet> vnf_create
+mininfv> vnf_create
 Use: vnf_create --vnfd-name <VNFD-NAME> <VNF-NAME>
      vnf_create --vnfd-file <yaml file path> <VNFD-NAME>
      vnf_create --vnfd-template <yaml file path> <VNFD-NAME>
      
-mininet> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
+mininfv> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
 *** Initializing VDU vnf-userdata ...
 *** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
 
-mininet> nodes
+mininfv> nodes
 available nodes are: 
 c0 s192.168.1 vnfUD
 
-mininet> vnf_list
+mininfv> vnf_list
 ['vnfUD']
 
-mininet> vnfUD ifconfig
+mininfv> vnfUD ifconfig
 ud-eth0   Link encap:Ethernet  HWaddr 76:2c:90:f5:72:13  
           inet addr:192.168.120.10  Bcast:192.168.120.255  Mask:255.255.255.0
           inet6 addr: fe80::742c:90ff:fef5:7213/64 Scope:Link
@@ -218,17 +218,17 @@ ud-eth0   Link encap:Ethernet  HWaddr 76:2c:90:f5:72:13
           collisions:0 txqueuelen:1000 
           RX bytes:6751 (6.7 KB)  TX bytes:648 (648.0 B)
 
-mininet> vnf_delete vnf-userdata
+mininfv> vnf_delete vnf-userdata
 
-mininet> nodes
+mininfv> nodes
 available nodes are: 
 c0 s192.168.1
 
-mininet> vnf_list
+mininfv> vnf_list
 []
 ```
 Or just source  [`vnf_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnf_test) from mininfv:
-`mininet> source samples/topology/vnf_test`
+`mininfv> source samples/topology/vnf_test`
 
 - **Adding hosts to the topology**
 ```
@@ -238,16 +238,16 @@ $ sudo ./mininfv.py --standalone
 *** Starting 0 switches
 *** Starting CLI:
 
-mininet> add_host
+mininfv> add_host
 Use: add_host <HOST-NAME> [<IP1/masc> <IP2/masc> ...]
 
-mininet> add_host h1 10.0.0.11/24 20.0.0.11/24
+mininfv> add_host h1 10.0.0.11/24 20.0.0.11/24
 
-mininet> nodes
+mininfv> nodes
 available nodes are: 
 c0 h1 s10.0.0.0 s20.0.0.0 ud
 
-mininet> h1 ifconfig
+mininfv> h1 ifconfig
 h1-eth0   Link encap:Ethernet  HWaddr 3e:b2:ba:99:4e:dc  
           inet addr:10.0.0.11  Bcast:10.255.255.255  Mask:255.255.255.0
           inet6 addr: fe80::3cb2:baff:fe99:4edc/64 Scope:Link
@@ -266,16 +266,16 @@ h1-eth1   Link encap:Ethernet  HWaddr aa:08:cf:38:e8:d5
           collisions:0 txqueuelen:1000 
           RX bytes:3515 (3.5 KB)  TX bytes:578 (578.0 B)
           
-mininet> add_host h2 10.0.0.12/24
+mininfv> add_host h2 10.0.0.12/24
 
-mininet> switch s10.0.0.0 start
+mininfv> switch s10.0.0.0 start
 
-mininte> h1 ping h2
+mininfv> h1 ping h2
 PING 10.0.0.12 (10.0.0.12) 56(84) bytes of data.
 64 bytes from 192.168.120.2: icmp_seq=1 ttl=64 time=2.84 ms
 ```
 Or just source  [`host_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/host_test) from mininfv:
-`mininet> source samples/topology/host_test`
+`mininfv> source samples/topology/host_test`
 
 NFV Orchestrator Use
 --------------
@@ -295,46 +295,46 @@ $ sudo ./mininfv.py
 *** Starting 0 switches
 *** Starting CLI:
 
-mininet> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
+mininfv> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
 *** Initializing VDU vnf-userdata ...
 *** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
 
-mininet> add_host http_cl 192.168.120.1/24
+mininfv> add_host http_cl 192.168.120.1/24
 
-mininet> add_host http_sr 192.168.120.2/24
+mininfv> add_host http_sr 192.168.120.2/24
 
-mininet> nodes
+mininfv> nodes
 available nodes are: 
 c0 http_cl http_sr s192.168.1 vnfUD
 
-mininet> switch s192.168.1 start
+mininfv> switch s192.168.1 start
 
-mininet> py http_sr.cmdPrint('python -m SimpleHTTPServer 80 &')
+mininfv> py http_sr.cmdPrint('python -m SimpleHTTPServer 80 &')
 
-mininet> http_cl curl http_sr
+mininfv> http_cl curl http_sr
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"><html>
 ...
 
-mininet> vnffg_<TAB>
+mininfv> vnffg_<TAB>
 vnffg_create  vnffg_delete  vnffg_list    
 
-mininet> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-helloworld2.yaml --vnf-mapping vnfd-helloworld:'vnfUD' --symmetrical false vnffg-sample
+mininfv> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-helloworld2.yaml --vnf-mapping vnfd-helloworld:'vnfUD' --symmetrical false vnffg-sample
 
-mininet> nodes
+mininfv> nodes
 c0 h99 http_cl http_sr s192.168.1 vnfUD s99
 
-mininet> switch s99 start
+mininfv> switch s99 start
 
-mininet> vnffg_list
+mininfv> vnffg_list
 ['vnffg-sample']
 
-mininet> h99 ping 9.9.9.8
+mininfv> h99 ping 9.9.9.8
 
-mininet> vnffg_delete vnffg-sample
+mininfv> vnffg_delete vnffg-sample
 
-mininet> vnffg_list
+mininfv> vnffg_list
 []
 ```
 
 Or just source  [`vnffg_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnffg_test) from mininfv:
-`mininet> source samples/topology/vnffg_test`
+`mininfv> source samples/topology/vnffg_test`
