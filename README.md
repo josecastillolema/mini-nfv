@@ -137,11 +137,17 @@ Mini-nfv was tested on Ubuntu 14.04 and 16.04.
 
 APT dependencies:
 - mininet
+- openvswitch-testcontroller (in Ubuntu 16.04)
 - python-netaddr (it can also be installed via `pip`)
 - python-yaml (it can also be installed via `pip`)
 
 ```
 pip install -r ./requirements.txt
+```
+If you are running Ubuntu 16.04, the `openvswitch-ovscontroller` was recently renamed to `openvswitch-testcontroller`.
+To solve it, you need to create a symbolic link to ovs-testcontroller that is called ovs-controller.
+```
+sudo ln /usr/bin/ovs-testcontroller /usr/bin/ovs-controller
 ```
 
 VNF Manager Use
