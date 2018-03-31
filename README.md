@@ -140,6 +140,10 @@ APT dependencies:
 - python-netaddr (it can also be installed via `pip`)
 - python-yaml (it can also be installed via `pip`)
 
+```
+pip install -r ./requirements.txt
+```
+
 VNF Manager Use
 --------------
 For the VNF Manager functionality:
