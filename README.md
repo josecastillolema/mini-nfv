@@ -145,7 +145,7 @@ APT dependencies:
 pip install -r ./requirements.txt
 ```
 If you are running Ubuntu 16.04, the `openvswitch-ovscontroller` was recently renamed to `openvswitch-testcontroller`.
-To solve it, you need to create a symbolic link to ovs-testcontroller that is called ovs-controller.
+To solve it, you need to create a symbolic link to `ovs-testcontroller` that is called `ovs-controller`.
 ```
 sudo ln /usr/bin/ovs-testcontroller /usr/bin/ovs-controller
 ```
