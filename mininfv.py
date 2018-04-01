@@ -8,6 +8,7 @@
 import sys
 import netaddr
 import yaml
+import subprocess
 from collections import defaultdict
 from mininet.topo import Topo
 from mininet.net import Mininet
@@ -90,6 +91,7 @@ def configure_network(net, vnfd, host):
     host1 = net.getNodeByName(host)
     for i in switchs:
         net.addLink(i, host1)
+        PORTS[i].append(host1)
 
 def configure_host(net, vnfd, host):
     "Configures the host."
@@ -143,7 +145,12 @@ def list_ports(self, line):
         output('Use: list_ports\n')
         return None
     for i in PORTS:
-        output(i, PORTS[i])
+        if i[0] == 's':
+            output('%s ' % i)
+            for j in PORTS[i]:
+                output ('%s ' % j.IP())
+        else:
+            output(i, PORTS[i])
         output('\n')
     return None
 
@@ -152,6 +159,26 @@ def find_port(ip_address):
     for i in PORTS:
         if ip_address in PORTS[i]:
             return i
+    return None
+
+def find_port2(ip_address):
+    "Returns the number of the port in the swtich if the port exists."
+    for i in PORTS:
+        if i[0] == 's':
+            port_number=1
+            for j in PORTS[i]:
+                if j.IP() == str(ip_address):
+                    return port_number
+                port_number += 1
+    return None
+
+def find_port3(host, ip_src, ip_dst):
+    "Returns the IP of the host if the host exists."
+    if host in PORTS:
+        for i in PORTS[host]:
+            i2 = netaddr.IPNetwork(i)
+            if i2.cidr == ip_src.cidr or i2.cidr == ip_dst.cidr:
+                return i2.ip
     return None
 
 def add_host(self, line):
@@ -182,6 +209,7 @@ def add_host(self, line):
     host = net.addHost(host_name)
     for i in switchs:
         net.addLink(i[:10], host)
+        PORTS[i[:10]].append(host)
     configure_host2(net, ips, host_name)
     return None
 
@@ -309,11 +337,14 @@ def configure_vnffg(net, vnffg, vnffg_name, binds):
                 if not find_port(ip_src):
                     output('ip_src_prefix ,' + ip_src + '> not exists in current environment\n')
                     return
+                ip_src = netaddr.IPNetwork(ip_src)
+                #ip_address_final = '%s/%s' % (ip_address.ip, ip_address.prefixlen)
             elif criteria[i].has_key('ip_dst_prefix'):
                 ip_dst = criteria[i]['ip_dst_prefix']
                 if not find_port(ip_dst):
                     output('ip_dst_prefix ,' + ip_dst + '> not exists in current environment\n')
                     return
+                ip_dst = netaddr.IPNetwork(ip_dst)
             elif criteria[i].has_key('ip_proto'):
                 ip_proto = criteria[i]['ip_proto']
             elif criteria[i].has_key('destination_port_range'):
@@ -337,10 +368,13 @@ def configure_vnffg(net, vnffg, vnffg_name, binds):
             port_range = criteria[0]['destination_port_range']
     VNFFGS.append(vnffg_name)
     forwarder = path['forwarder']
-    net.addSwitch('s99')
-    h99 = net.addHost('h99', ip='9.9.9.9/24')
-    net.addLink('s99', h99)
-    h99.setIP('9.9.9.9/24', intf='h99-eth0')
+    port_dst = find_port2(ip_dst.ip)
+    port_vnf = find_port2(find_port3(forwarder, ip_src, ip_dst))
+    print ip_src.ip, find_port2(ip_src.ip), ip_dst.ip, port_dst, forwarder, port_vnf
+    #command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=192.168.120.1,actions=output:2,3'
+    command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s,%s' % (ip_src.ip, port_dst, port_vnf)
+    s = subprocess.check_output(command, shell=True)
+    print s
 
 def read_binding(binding):
     "Translates something in the form VNF:'vnf' into ('VNF', 'vnf')"
@@ -372,9 +406,6 @@ def vnffg_create(self, line):
             return None
         #VNFFGS.append(vnffg_name)
         configure_vnffg(net, vnffg, vnffg_name, binds)
-        #net.addHost(vnf_name)
-        #configure_network(net, vnfd, vnf_name)
-        #configure_host(net, vnfd, vnf_name)
         return None
     return None
 
@@ -409,9 +440,7 @@ if __name__ == '__main__':
         STANDALONE = False
 
     TOPO = MyTopo()
-    # NET = Mininet(topo=topo, link=TCLink, controller=RemoteController)
     # NET = Mininet(topo=topo, link=TCLink)
-    # NET = Mininet(topo=TOPO, link=TCLink, controller=OVSController)
     if STANDALONE:
         NET = Mininet(topo=TOPO, link=TCLink, controller=OVSController)
     else:
@@ -419,7 +448,6 @@ if __name__ == '__main__':
     NET.start()
     CLI.do_add_host = add_host
     CLI.do_list_ports = list_ports
-    CLI.do_find_port = find_port
     CLI.do_vnfd_create = vnfd_create
     CLI.do_vnfd_list = vnfd_list
     CLI.do_vnfd_delete = vnfd_delete
