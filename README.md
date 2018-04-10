@@ -157,13 +157,19 @@ To solve it, you need to create a symbolic link to `ovs-testcontroller` that is 
 sudo ln /usr/bin/ovs-testcontroller /usr/bin/ovs-controller
 ```
 
-VNF Manager Use
+mini-nfv use
 --------------
-For the VNF Manager functionality:
 ```
 $ sudo ./mininfv.py [--standalone]
 ```
-The `--standalone` option runs mininet with its default controller. This way can be usefull to test the VNF Manager functionality with full connectivity between VNFs hosts and NFV Orchestration capabilities without the need of running POX, Ryu or other SDN controller. However, if you wish to include a SDN controller into your experiments mininfv must be run without the `--standalone` option alongside with the controller running in the background.
+The `--standalone` option runs mininet with its default controller. This way can be usefull to test the VNF Manager functionality with full connectivity between VNFs hosts and NFV Orchestration capabilities without the need of running POX, Ryu or other SDN controller. However, if you wish to include a SDN controller into your experiments mininfv must be run without the `--standalone` option alongside with the controller running in the background, for example:
+```
+./pox.py pox.forwarding.l3_learning openflow.discovery                              or
+./pox.py log.level --DEBUG pox.forwarding.l3_learning openflow.discovery           (debug mode)
+```
+
+VNF Manager Use
+--------------
 
 - **VNFD creation/listing/removal/template**
 ```
@@ -296,13 +302,6 @@ Or just source  [`host_test`](https://github.com/josecastillolema/mini-nfv/blob/
 
 NFV Orchestrator Use
 --------------
-In order to use the NFV Orchestrator [POX](https://github.com/noxrepo/pox) must be installed.
-Place [`l3_mininfv.py`](https://github.com/josecastillolema/mini-nfv/blob/master/l3_mininfv.py) in the `pox/ext` folder.
-To have NFV Orchestration capabilites mininfv must be run without the `--standalone` option allong with POX controller running in the background.
-```
-./pox.py l3_mininfv openflow.discovery                              or
-./pox.py log.level --DEBUG l3_mininfv openflow.discovery           (debug mode)
-```
 
 - **VNFFG creation/listing/removal**
 ```
