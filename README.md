@@ -126,7 +126,7 @@ Mini-nfv will assign 1/(8-num_cpus))) to each VNF.
 
 Cloud-init
 --------------
-Mini-nfv supports VNFs configuration through user-data,  see [tosca-vnfd-userdata.yaml](https://github.com/josecastillolema/mini-nfv/blob/master/samples/vnfd/tosca-vnfd-userdata.yaml):
+Mini-nfv supports VNFs configuration through user-data, see [tosca-vnfd-userdata.yaml](https://github.com/josecastillolema/mini-nfv/blob/master/samples/vnfd/tosca-vnfd-userdata.yaml):
 ```
     VDU1:
       type: tosca.nodes.nfv.VDU.Tacker
@@ -163,7 +163,7 @@ For the VNF Manager functionality:
 ```
 $ sudo ./mininfv.py [--standalone]
 ```
-The `--standalone` option runs mininet with its default controller. This way can be usefull to test the VNF Manager functionality with full connectivity between VNFs and hosts without the need of running POX. However, to have NFV Orchestration capabilites mininfv must be run without the `--standalone` option along with POX controller running in the background.
+The `--standalone` option runs mininet with its default controller. This way can be usefull to test the VNF Manager functionality with full connectivity between VNFs hosts and NFV Orchestration capabilities without the need of running POX, Ryu or other SDN controller. However, if you wish to include a SDN controller into your experiments mininfv must be run without the `--standalone` option alongside with the controller running in the background.
 
 - **VNFD creation/listing/removal/template**
 ```
