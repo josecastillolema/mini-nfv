@@ -32,6 +32,7 @@ VNF Manager
 NFVO Orquestrator
 - Templatized end-to-end Network Service deployment using decomposed VNFs
 - VNF placement policy – ensure efficient placement of VNFs
+- VNFs connected using an Service Function Chain (SFC) - described in a VNF Forwarding Graph Descriptor
 - Symmetrical and asymmetrical traffic from and to the VNF! (currently Tacker/OpenStack VIM driver only support asymmetrical unidirectional traffic)
 
 Mini-nfv supports:
@@ -49,6 +50,7 @@ Mini-nfv ignores:
 Mini-nfv has not implemented (yet):
 - Monitoring/autoscaling of VNFs
 - Network Service Descriptors (NSDs)
+- Explicit support for containers/NETCONF/Click-based VNFs
 
 
 Network definition
