@@ -170,7 +170,7 @@ The `--standalone` option runs mininet with its default controller. This way can
 
 mini-nfv debugging
 --------------
-During a mini-nfv session, the openvswitch status can be debugging using the following command:
+During a mini-nfv session, the openvswitch status can be debugging using the following commands (from outside mininfv CLI):
 ```
 $ sudo ovs-vsctl show 
 bece8326-e719-4b6f-abee-a422f6904808
