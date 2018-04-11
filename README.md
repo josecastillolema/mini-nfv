@@ -231,7 +231,7 @@ VNF Manager Use
 
 - **VNFD creation/listing/removal/template**
 ```
-$ sudo ./mininfv.py
+$ sudo ./mininfv.py --standalone
 *** Configuring hosts
 *** Starting controller
 *** Starting 0 switches
@@ -264,7 +264,7 @@ Or just source  [`vnfd_test`](https://github.com/josecastillolema/mini-nfv/blob/
 
 - **VNF creation/listing/removal**
 ```
-$ sudo ./mininfv.py
+$ sudo ./mininfv.py --standalone
 *** Configuring hosts
 *** Starting controller
 *** Starting 0 switches
@@ -363,7 +363,7 @@ NFV Orchestrator Use
 
 - **VNFFG creation/listing/removal**
 ```
-$ sudo ./mininfv.py
+$ sudo ./mininfv.py --standalone
 *** Configuring hosts
 *** Starting controller
 *** Starting 0 switches
