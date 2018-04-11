@@ -385,10 +385,6 @@ mininfv> switch s192.168.1 start
 
 mininfv> py http_sr.cmdPrint('python -m SimpleHTTPServer 80 &')
 
-mininfv> http_cl curl http_sr
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"><html>
-...
-
 mininfv> vnffg_<TAB>
 vnffg_create  vnffg_delete  vnffg_list
 
