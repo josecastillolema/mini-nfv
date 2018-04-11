@@ -399,6 +399,8 @@ mininfv> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-helloworld.y
 mininfv> vnffg_list
 ['vnffg-sample']
 
+mininfv> xterm vnfUD
+
 mininfv> http_cl curl http_sr
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"><html>
 ...
@@ -408,6 +410,10 @@ mininfv> vnffg_delete vnffg-sample
 mininfv> vnffg_list
 []
 ```
+
+In the xterm window of the vnfUD:
+![Screenshot of the VNF xterm](https://github.com/josecastillolema/mini-nfv/doc/img/screendshot_vnfUD.png)
+
 
 Or just source  [`vnffg_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnffg_test) from mininfv:
 `mininfv> source samples/topology/vnffg_test`
