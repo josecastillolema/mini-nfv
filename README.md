@@ -412,8 +412,8 @@ mininfv> vnffg_list
 ```
 
 In the xterm window of the vnfUD:
-![Screenshot of the VNF xterm](https://github.com/josecastillolema/mini-nfv/doc/img/screendshot_vnfUD.png)
+![Screenshot of the VNF xterm](https://github.com/josecastillolema/mini-nfv/blob/master/doc/img/screendshot_vnfUD.png)
 
 
-Or just source  [`vnffg_test`](https://github.com/josecastillolema/mini-nfv/blob/master/doc/img/screendshot_vnfUD.png) from mininfv:
+Or just source  [`vnffg_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnffg_test) from mininfv:
 `mininfv> source samples/topology/vnffg_test`
