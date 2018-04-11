@@ -19,8 +19,10 @@ topology_template:
             - network_id: 3d582b05-b996-4df2-9b3f-a1a26b2f1383
             - ip_proto: 6
             - destination_port_range: 80-80
+            - ip_dst_prefix: 192.168.120.2/24
+            - ip_src_prefix: 192.168.120.1/24
         path:
-          - forwarder: vnfd-helloworld
+          - forwarder: vnfUD
             capability: CP111
 
   groups:
@@ -33,5 +35,5 @@ topology_template:
         number_of_endpoints: 1
         dependent_virtual_link: [VL11]
         connection_point: [CP111]
-        constituent_vnfs: [vnfd-helloworld]
+        constituent_vnfs: [vnfUD]
       members: [Forwarding_path1]
