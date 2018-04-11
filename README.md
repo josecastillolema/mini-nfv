@@ -411,7 +411,7 @@ mininfv> vnffg_list
 []
 ```
 
-In the xterm window of the vnfUD:
+In the xterm window of the vnfUD we opened at step 11, if we dump the interface we can see the http and them the icmp traffic corresponding to the curl and to the ping passing through the VNF interface:
 ![Screenshot of the VNF xterm](https://github.com/josecastillolema/mini-nfv/blob/master/doc/img/screendshot_vnfUD.png)
 
 
