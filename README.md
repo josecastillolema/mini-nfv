@@ -392,7 +392,7 @@ mininfv> http_cl curl http_sr
 mininfv> vnffg_<TAB>
 vnffg_create  vnffg_delete  vnffg_list    
 
-mininfv> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-helloworld2.yaml --vnf-mapping vnfd-helloworld:'vnfUD' --symmetrical false vnffg-sample
+mininfv> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-helloworld.yaml --vnf-mapping vnfd-helloworld:'vnfUD' --symmetrical false vnffg-sample
 
 mininfv> nodes
 c0 h99 http_cl http_sr s192.168.1 vnfUD s99
