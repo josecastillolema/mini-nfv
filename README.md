@@ -168,6 +168,49 @@ The `--standalone` option runs mininet with its default controller. This way can
 ./pox.py log.level --DEBUG pox.forwarding.l3_learning openflow.discovery           (debug mode)
 ```
 
+mini-nfv debugging
+--------------
+During a mini-nfv session, the openvswitch status can be debugging using the following command:
+```
+$ sudo ovs-vsctl show 
+bece8326-e719-4b6f-abee-a422f6904808
+    Bridge "s192.168.1"
+        Controller "tcp:127.0.0.1:6633"
+            is_connected: true
+        fail_mode: secure
+        Port "s192.168.1"
+            Interface "s192.168.1"
+                type: internal
+        Port "s192.168.1-eth1"
+            Interface "s192.168.1-eth1"
+    ovs_version: "2.5.4"
+```
+
+To show the ports attached to a specific switch:
+```
+OFPT_FEATURES_REPLY (xid=0x2): dpid:00000000000000c0
+n_tables:254, n_buffers:256
+capabilities: FLOW_STATS TABLE_STATS PORT_STATS QUEUE_STATS ARP_MATCH_IP
+actions: output enqueue set_vlan_vid set_vlan_pcp strip_vlan mod_dl_src mod_dl_dst mod_nw_src mod_nw_dst mod_nw_tos mod_tp_src mod_tp_dst
+ 1(s192.168.1-eth1): addr:72:cb:47:5b:23:ec
+     config:     0
+     state:      0
+     current:    10GB-FD COPPER
+     speed: 10000 Mbps now, 0 Mbps max
+ LOCAL(s192.168.1): addr:ae:89:9f:63:e5:47
+     config:     PORT_DOWN
+     state:      LINK_DOWN
+     speed: 0 Mbps now, 0 Mbps max
+OFPT_GET_CONFIG_REPLY (xid=0x4): frags=normal miss_send_len=0
+```
+
+To dump the flows of a specific switch:
+```
+$ sudo ovs-ofctl dump-flows s192.168.1
+NXST_FLOW reply (xid=0x4):
+ cookie=0x0, duration=244.774s, table=0, n_packets=9, n_bytes=434, idle_age=0, priority=0 actions=CONTROLLER:128
+```
+
 VNF Manager Use
 --------------
 
