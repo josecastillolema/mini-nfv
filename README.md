@@ -390,19 +390,22 @@ mininfv> http_cl curl http_sr
 ...
 
 mininfv> vnffg_<TAB>
-vnffg_create  vnffg_delete  vnffg_list    
+vnffg_create  vnffg_delete  vnffg_list
+
+mininfv> vnffg_create
+Use: vnffg-create --vnffgd-name <vnffgd-name> --vnf-mapping <vnf-mapping>
+                  --symmetrical <boolean> <vnffg-name>
+     vnffg-create --vnffgd-template <vnffgd-template> --vnf-mapping <vnf-mapping>
+                  --symmetrical <boolean> <vnffg-name>
 
 mininfv> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-helloworld.yaml --vnf-mapping vnfd-helloworld:'vnfUD' --symmetrical false vnffg-sample
-
-mininfv> nodes
-c0 h99 http_cl http_sr s192.168.1 vnfUD s99
-
-mininfv> switch s99 start
 
 mininfv> vnffg_list
 ['vnffg-sample']
 
-mininfv> h99 ping 9.9.9.8
+mininfv> http_cl curl http_sr
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"><html>
+...
 
 mininfv> vnffg_delete vnffg-sample
 
