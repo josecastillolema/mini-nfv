@@ -212,6 +212,20 @@ NXST_FLOW reply (xid=0x4):
  cookie=0x0, duration=244.774s, table=0, n_packets=9, n_bytes=434, idle_age=0, priority=0 actions=CONTROLLER:128
 ```
 
+From inside the mini-nfv session CLI, there are some commands that could also be usefull for debugging purposes:
+```
+mininfv> dump
+<Host http_cl: http_cl-eth0:192.168.120.1 pid=26425> 
+<OVSSwitch s192.168.1: lo:127.0.0.1,s192.168.1-eth1:None pid=26420> 
+<OVSController c0: 127.0.0.1:6633 pid=26409> 
+
+mininfv> dpctl dump-flows
+*** s192.168.1 ------------------------------------------------------------------------
+NXST_FLOW reply (xid=0x4):
+ cookie=0x0, duration=682.379s, table=0, n_packets=14, n_bytes=644, idle_age=432, priority=0 actions=CONTROLLER:128
+```
+
+
 VNF Manager Use
 --------------
 
