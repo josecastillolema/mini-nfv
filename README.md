@@ -188,6 +188,7 @@ bece8326-e719-4b6f-abee-a422f6904808
 
 To show the ports attached to a specific switch:
 ```
+$ sudo ovs-ofctl show s192.168.1
 OFPT_FEATURES_REPLY (xid=0x2): dpid:00000000000000c0
 n_tables:254, n_buffers:256
 capabilities: FLOW_STATS TABLE_STATS PORT_STATS QUEUE_STATS ARP_MATCH_IP
