@@ -383,9 +383,9 @@ def read_binding(binding):
 def vnffg_create(self, line):
     "Creates vnffg from previously defined vnffgd or directly from template."
     net = self.mn
-    if len(line.split()) != 7:
-        print 'problema e tamanho'
-        print line.split()[0]
+    #if len(line.split()) != 7:
+    #    print 'problema e tamanho'
+    #    print line.split()[0]
     if len(line.split()) != 7 or line.split()[0] not in ['--vnffgd-name', '--vnffgd-template'] or line.split()[2] != '--vnf-mapping' or line.split()[4] != '--symmetrical':
         output('''Use: vnffg-create --vnffgd-name <vnffgd-name> --vnf-mapping <vnf-mapping>
                   --symmetrical <boolean> <vnffg-name>\n''')

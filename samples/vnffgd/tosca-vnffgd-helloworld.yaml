@@ -35,5 +35,5 @@ topology_template:
         number_of_endpoints: 1
         dependent_virtual_link: [VL11]
         connection_point: [CP111]
-        constituent_vnfs: [vnfUD]
+        constituent_vnfs: [vnfd-helloworld]
       members: [Forwarding_path1]
