@@ -140,11 +140,11 @@ Mini-nfv supports VNFs configuration through user-data, see [tosca-vnfd-userdata
 
 Dependencies
 --------------
-Mini-nfv was tested on Ubuntu 14.04 and 16.04.
+Mini-nfv was tested on Ubuntu 14.04, 16.04 and 18.04.
 
 APT dependencies:
 - mininet
-- openvswitch-testcontroller (in Ubuntu 16.04)
+- openvswitch-testcontroller (in Ubuntu 16.04 and 18.04)
 - python-netaddr (it can also be installed via `pip`)
 - python-yaml (it can also be installed via `pip`)
 
@@ -155,6 +155,10 @@ If you are running Ubuntu 16.04, the `openvswitch-ovscontroller` was recently re
 To solve it, you need to create a symbolic link to `ovs-testcontroller` that is called `ovs-controller`.
 ```
 sudo ln /usr/bin/ovs-testcontroller /usr/bin/ovs-controller
+```
+In Ubuntu 18.04 `openvswitch-testcontroller` must be stopped before running mini-nfv in standalone mode.
+```
+sudo systemctl stop openvswitch-testcontroller.service
 ```
 
 mini-nfv use
