@@ -1,5 +1,8 @@
+py "*** Creating vnfds userdata and hello-world ..."
 vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfd-userdata
 vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-hello-world.yaml vnfd-helloworld
+py "*** Listing vnfds ..."
 vnfd_list
+py "\n*** Showing vnf template ..."
 vnfd_template_show vnfd-userdata
 

@@ -1,7 +1,9 @@
-py "Starting vnf <tosca-vnfd-userdata.yaml> ..."
+py "*** Starting vnf <tosca-vnfd-userdata.yaml> ..."
 vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
+py "*** Listing vNF interfaces:"
 vnfUD ifconfig
 vnfUD ifconfig
+py "*** Listing nodes:"
 nodes
 
 

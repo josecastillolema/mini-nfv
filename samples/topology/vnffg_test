@@ -1,7 +1,12 @@
+py "*** Starting vnf <tosca-vnfd-userdata.yaml> ..."
 vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
+py "\n*** Creating http client ..."
 add_host http_cl 192.168.120.1/24
+py "*** Creating http server ..."
 add_host http_sr 192.168.120.2/24
+py "*** Starting the switch ..."
 switch s192.168.1 start
+py "*** Starting HTTP server ..."
 py http_sr.cmdPrint('python -m SimpleHTTPServer 80 &')
-vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-helloworld2.yaml --vnf-mapping vnfd-helloworld:'vnfUD' --symmetrical false vnffg-sample
-
+py "*** Starting vnffg <tosca-vnfd-helloworld.yaml> ..."
+vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-helloworld.yaml --vnf-mapping vnfd-helloworld:'vnfUD' --symmetrical false vnffg-sample

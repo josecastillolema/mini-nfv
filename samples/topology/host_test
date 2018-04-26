@@ -1,6 +1,12 @@
+py "*** Creating host h1 with two interfaces ..."
 add_host h1 10.0.0.11/24 20.0.0.11/24
+py "*** Listing interfaces of the host:"
 h1 ifconfig
+py "*** Creating host h2"
 add_host h2 10.0.0.12/24
+py "*** Starting switch ..."
 switch s10.0.0.0 start
+py "*** Listing nodes:"
 nodes
+py "\n*** Testing conectivity ..."
 h1 ping -c 3 h2

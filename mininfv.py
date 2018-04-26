@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 # Author: Jose Castillo Lema <josecastillolema@gmail.com>
-# Author: Alberico Castro <>
 
 "Main module of the mini-nfv framework"
 
@@ -366,14 +365,19 @@ def configure_vnffg(net, vnffg, vnffg_name, binds):
             ip_proto = criteria[0]['ip_proto']
         if criteria[i].has_key('destination_port_range'):
             port_range = criteria[0]['destination_port_range']
-    VNFFGS.append(vnffg_name)
     forwarder = path['forwarder']
     port_dst = find_port2(ip_dst.ip)
     port_vnf = find_port2(find_port3(forwarder, ip_src, ip_dst))
+    VNFFGS.append(vnffg_name)
     print ip_src.ip, find_port2(ip_src.ip), ip_dst.ip, port_dst, forwarder, port_vnf
     #command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=192.168.120.1,actions=output:2,3'
-    command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s,%s' % (ip_src.ip, port_dst, port_vnf)
+    #command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s,%s' % (ip_src.ip, port_dst, port_vnf)
+    command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s' % (ip_src.ip, port_vnf)
+    command2 = 'sudo ovs-ofctl mod-flows s192.168.1 in_port=%s,actions=output:%s' % (port_vnf, port_dst)
+    #command3 = 'sudo ovs-ofctl mod-flows s192.168.1 arp,in_port="s192.168.1-eth4",vlan_tci=0x0000/0x1fff,dl_src=12:b9:d1:5d:26:5e,dl_dst=1e:29:c2:41:d5:02,arp_spa=192.168.120.2,arp_tpa=192.168.120.1,arp_op=2,actions=output:"s192.168.1-eth3"'
     s = subprocess.check_output(command, shell=True)
+    s2 = subprocess.check_output(command2, shell=True)
+    #s3 = subprocess.check_output(command2, shell=True)
     print s
 
 def read_binding(binding):

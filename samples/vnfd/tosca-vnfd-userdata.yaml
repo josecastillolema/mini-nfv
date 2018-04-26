@@ -25,7 +25,8 @@ topology_template:
         user_data: |
           #!/bin/sh
           echo "my hostname is `hostname`" > /tmp/hostname
-          df -h > /tmp/diskinfo
+          echo 1 > /proc/sys/net/ipv4/ip_forward
+          ip route add default via 192.168.120.10
 
     CP1:
       type: tosca.nodes.nfv.CP.Tacker
