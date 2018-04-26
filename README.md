@@ -264,7 +264,17 @@ mininfv> vnfd_list
 vnfd-helloworld: Demo example
 ```
 Or just source  [`vnfd_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnfd_test) from mininfv:
-`mininfv> source samples/topology/vnfd_test`
+```
+mininfv> source samples/topology/vnfd_test
+*** Creating vnfds userdata and hello-world ...
+*** Listing vnfds ...
+vnfd-helloworld: Demo example
+vnfd-userdata: Demo with user-data
+
+*** Showing vnf template ...
+{'tosca_definitions_version': 'tosca_simple_profile_for_nfv_1_0_0', 'metadata': {'template_name': 'sample-vnfd-userdata'}, 'description': 'Demo with user-data', 'topology_template': {'node_templates': {'VDU1': {'type': 'tosca.nodes.nfv.VDU.Tacker', 'properties': {'image': 'cirros-0.3.5-x86_64-disk', 'user_data_format': 'RAW', 'config': 'param0: key1\nparam1: key2\n', 'user_data': '#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\necho 1 > /proc/sys/net/ipv4/ip_forward\nip route add default via 192.168.120.10\n', 'mgmt_driver': 'noop'}, 'capabilities': {'nfv_compute': {'properties': {'mem_size': '512 MB', 'num_cpus': 1, 'disk_size': '1 GB'}}}}, 'CP1': {'type': 'tosca.nodes.nfv.CP.Tacker', 'requirements': [{'virtualLink': {'node': 'VL1'}}, {'virtualBinding': {'node': 'VDU1'}}], 'properties': {'anti_spoofing_protection': False, 'management': True, 'order': 0}}, 'VL1': {'type': 'tosca.nodes.nfv.VL', 'properties': {'network_name': 'net_mgmt', 'vendor': 'ACME'}}}}}
+
+```
 
 - **VNF creation/listing/removal**
 ```
@@ -313,7 +323,26 @@ mininfv> vnf_list
 []
 ```
 Or just source  [`vnf_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnf_test) from mininfv:
-`mininfv> source samples/topology/vnf_test`
+```
+mininfv> source samples/topology/vnf_test
+*** Starting vnf <tosca-vnfd-userdata.yaml> ...
+*** Initializing VDU vnfUD ...
+*** vnfUD : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\necho 1 > /proc/sys/net/ipv4/ip_forward\nip route add default via 192.168.120.10\n',)
+
+*** Listing vNF interfaces:
+vnfUD-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.120.10  netmask 255.255.255.0  broadcast 192.168.120.255
+        inet6 fe80::7032:2dff:fe89:175e  prefixlen 64  scopeid 0x20<link>
+        ether 72:32:2d:89:17:5e  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+*** Listing nodes:
+available nodes are: 
+c0 s192.168.1 vnfUD
+```
 
 - **Adding hosts to the topology**
 ```
@@ -360,7 +389,44 @@ PING 10.0.0.12 (10.0.0.12) 56(84) bytes of data.
 64 bytes from 192.168.120.2: icmp_seq=1 ttl=64 time=2.84 ms
 ```
 Or just source  [`host_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/host_test) from mininfv:
-`mininfv> source samples/topology/host_test`
+```
+mininfv> source samples/topology/host_test
+*** Creating host h1 with two interfaces ...
+*** Listing interfaces of the host:
+h1-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.0.0.11  netmask 255.255.255.0  broadcast 10.0.0.255
+        inet6 fe80::609d:6fff:fe6e:eae8  prefixlen 64  scopeid 0x20<link>
+        ether 62:9d:6f:6e:ea:e8  txqueuelen 1000  (Ethernet)
+        RX packets 1  bytes 90 (90.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 1  bytes 90 (90.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+h1-eth1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 20.0.0.11  netmask 255.255.255.0  broadcast 20.0.0.255
+        inet6 fe80::bc42:45ff:fee1:6e0b  prefixlen 64  scopeid 0x20<link>
+        ether be:42:45:e1:6e:0b  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+*** Creating host h2
+*** Starting switch ...
+*** Listing nodes:
+available nodes are: 
+c0 h1 h2 s10.0.0.0 s192.168.1 s20.0.0.0 vnfUD
+
+*** Testing conectivity ...
+PING 10.0.0.12 (10.0.0.12) 56(84) bytes of data.
+64 bytes from 10.0.0.12: icmp_seq=1 ttl=64 time=3.43 ms
+64 bytes from 10.0.0.12: icmp_seq=2 ttl=64 time=0.716 ms
+64 bytes from 10.0.0.12: icmp_seq=3 ttl=64 time=0.111 ms
+
+--- 10.0.0.12 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 0.111/1.419/3.430/1.443 ms
+```
 
 NFV Orchestrator Use
 --------------
