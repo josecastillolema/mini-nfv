@@ -384,9 +384,15 @@ mininfv> add_host h2 10.0.0.12/24
 
 mininfv> switch s10.0.0.0 start
 
-mininfv> h1 ping h2
+mininfv> h1 ping -c3 h2
 PING 10.0.0.12 (10.0.0.12) 56(84) bytes of data.
-64 bytes from 192.168.120.2: icmp_seq=1 ttl=64 time=2.84 ms
+64 bytes from 10.0.0.12: icmp_seq=1 ttl=64 time=2.93 ms
+64 bytes from 10.0.0.12: icmp_seq=2 ttl=64 time=0.736 ms
+64 bytes from 10.0.0.12: icmp_seq=3 ttl=64 time=0.142 ms
+
+--- 10.0.0.12 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2032ms
+rtt min/avg/max/mdev = 0.142/1.270/2.934/1.201 ms
 ```
 Or just source  [`host_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/host_test) from mininfv:
 ```
