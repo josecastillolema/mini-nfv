@@ -164,9 +164,17 @@ sudo systemctl stop openvswitch-testcontroller.service
 mini-nfv use
 --------------
 ```
-$ sudo ./mininfv.py [--standalone]
+Usage: mininfv [options]
+
+The mininfv utility loads vNFs into Mininet networks from the command line.
+It can create parametrized topologies, invoke the mininfv CLI, and run tests.
+
+Options:
+  -h, --help            show this help message and exit
+  --controller=CONTROLLER
+                        remote=RemoteController
 ```
-The `--standalone` option runs mininet with its default controller. This way can be usefull to test the VNF Manager functionality with full connectivity between VNFs hosts and NFV Orchestration capabilities without the need of running POX, Ryu or other SDN controller. However, if you wish to include a SDN controller into your experiments mininfv must be run without the `--standalone` option alongside with the controller running in the background, for example:
+Whithou any explicit options mininfv runs mininet with its default controller. This way can be usefull to test the VNF Manager functionality with full connectivity between VNFs hosts and NFV Orchestration capabilities without the need of running POX, Ryu or other SDN controller. However, if you wish to include a SDN controller into your experiments mininfv must be run with the `--controller=remote` option alongside with the controller running in the background, for example:
 ```
 ./pox.py pox.forwarding.l3_learning openflow.discovery                              or
 ./pox.py log.level --DEBUG pox.forwarding.l3_learning openflow.discovery           (debug mode)
@@ -235,7 +243,7 @@ VNF Manager Use
 
 - **VNFD creation/listing/removal/template**
 ```
-$ sudo ./mininfv.py --standalone
+$ sudo ./mininfv.py
 *** Configuring hosts
 *** Starting controller
 *** Starting 0 switches
@@ -278,7 +286,7 @@ vnfd-userdata: Demo with user-data
 
 - **VNF creation/listing/removal**
 ```
-$ sudo ./mininfv.py --standalone
+$ sudo ./mininfv.py
 *** Configuring hosts
 *** Starting controller
 *** Starting 0 switches
@@ -346,7 +354,7 @@ c0 s192.168.1 vnfUD
 
 - **Adding hosts to the topology**
 ```
-$ sudo ./mininfv.py --standalone
+$ sudo ./mininfv.py
 *** Configuring hosts
 *** Starting controller
 *** Starting 0 switches
@@ -439,7 +447,7 @@ NFV Orchestrator Use
 
 - **VNFFG creation/listing/removal**
 ```
-$ sudo ./mininfv.py --standalone
+$ sudo ./mininfv.py
 *** Configuring hosts
 *** Starting controller
 *** Starting 0 switches
