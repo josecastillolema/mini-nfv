@@ -371,12 +371,12 @@ def configure_vnffg(net, vnffg, vnffg_name, binds):
     VNFFGS.append(vnffg_name)
     print ip_src.ip, find_port2(ip_src.ip), ip_dst.ip, port_dst, forwarder, port_vnf
     #command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=192.168.120.1,actions=output:2,3'
-    #command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s,%s' % (ip_src.ip, port_dst, port_vnf)
-    command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s' % (ip_src.ip, port_vnf)
-    command2 = 'sudo ovs-ofctl mod-flows s192.168.1 in_port=%s,actions=output:%s' % (port_vnf, port_dst)
+    command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s,%s' % (ip_src.ip, port_dst, port_vnf)
+    #command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s' % (ip_src.ip, port_vnf)
+    #command2 = 'sudo ovs-ofctl mod-flows s192.168.1 in_port=%s,actions=output:%s' % (port_vnf, port_dst)
     #command3 = 'sudo ovs-ofctl mod-flows s192.168.1 arp,in_port="s192.168.1-eth4",vlan_tci=0x0000/0x1fff,dl_src=12:b9:d1:5d:26:5e,dl_dst=1e:29:c2:41:d5:02,arp_spa=192.168.120.2,arp_tpa=192.168.120.1,arp_op=2,actions=output:"s192.168.1-eth3"'
     s = subprocess.check_output(command, shell=True)
-    s2 = subprocess.check_output(command2, shell=True)
+    #s2 = subprocess.check_output(command2, shell=True)
     #s3 = subprocess.check_output(command2, shell=True)
     print s
 
@@ -434,14 +434,26 @@ def vnffg_delete(self, line):
 
 if __name__ == '__main__':
     setLogLevel('info')
+    usage = """Usage: mininfv [options]
+
+The mininfv utility loads vNFs into Mininet networks from the command line.
+It can create parametrized topologies, invoke the mininfv CLI, and run tests.
+
+Options:
+  -h, --help            show this help message and exit
+  --controller=CONTROLLER
+                        remote=RemoteController"""
     if len(sys.argv) > 2:
-        sys.exit('Uso: ./mininfv [--standalone]')
-    elif len(sys.argv) == 2 and sys.argv[1] != '--standalone':
-        sys.exit('Uso: ./mininfv [--standalone]')
-    elif len(sys.argv) == 2 and sys.argv[1] == '--standalone':
-        STANDALONE = True
+        sys.exit(usage)
+    elif len(sys.argv) == 2:
+        if (sys.argv[1] == '-h' or sys.argv[1] == '--help'):
+            sys.exit(usage)
+        elif sys.argv[1] == '--controller=remote':
+            STANDALONE = False
+        else:
+            sys.exit(usage)
     else:
-        STANDALONE = False
+        STANDALONE = True
 
     TOPO = MyTopo()
     # NET = Mininet(topo=topo, link=TCLink)
