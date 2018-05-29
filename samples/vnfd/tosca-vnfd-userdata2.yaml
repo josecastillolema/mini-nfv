@@ -24,9 +24,9 @@ topology_template:
         user_data_format: RAW
         user_data: |
           #!/bin/sh
-          FILE=$(ifconfig | head -n 1 | cut -f 1 -d' ')
-          mkdir exp
-          watch -n 60 "date >> exp/$FILE; ifconfig | grep eth0 -C 5 | egrep 'RX|TX' > exp/$FILE" &
+          echo "my hostname is `hostname`" > /tmp/hostname
+          echo 1 > /proc/sys/net/ipv4/ip_forward
+          ip route add default via 192.168.120.10
 
     CP1:
       type: tosca.nodes.nfv.CP.Tacker

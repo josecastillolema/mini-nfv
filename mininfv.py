@@ -46,51 +46,56 @@ class MyTopo(Topo):
 
 def configure_network(net, vnfd, host):
     "Configures the networks."
-    i = 1
-    switchs = []
-    topo = vnfd['topology_template']['node_templates']
-    while topo.has_key('VL%s' % i):
-        if topo['CP%s' % i]['properties'].has_key('ip_address'):
-            ip_address = topo['CP%s' % i]['properties']['ip_address']
-            switch_name = 's' + ip_address
-            switchs.append(switch_name)
-            if not SWITCH.has_key(switch_name):
-                SWITCH[switch_name] = net.addSwitch(switch_name[:10])
-        else:
-            if topo['VL%s' % i]['properties']['network_name'] == 'net_mgmt':
-                switch_name = 's' + '192.168.120.0'
-                switchs.append(switch_name[:10])
+    if MULTSWITCHES:
+        i = 1
+        switchs = []
+        topo = vnfd['topology_template']['node_templates']
+        while topo.has_key('VL%s' % i):
+            if topo['CP%s' % i]['properties'].has_key('ip_address'):
+                ip_address = topo['CP%s' % i]['properties']['ip_address']
+                switch_name = 's' + ip_address
+                switchs.append(switch_name)
                 if not SWITCH.has_key(switch_name):
                     SWITCH[switch_name] = net.addSwitch(switch_name[:10])
-            elif topo['VL%s' % i]['properties']['network_name'] == 'net0':
-                switch_name = 's' + '10.10.0.0'
-                switchs.append(switch_name[:10])
-                if not SWITCH.has_key(switch_name):
-                    SWITCH[switch_name] = net.addSwitch(switch_name[:10])
-            elif topo['VL%s' % i]['properties']['network_name'] == 'net1':
-                switch_name = 's' + '10.10.1.0'
-                switchs.append(switch_name[:10])
-                if not SWITCH.has_key(switch_name):
-                    SWITCH[switch_name] = net.addSwitch(switch_name[:10])
-            elif topo['VL%s' % i]['properties'].has_key('cidr'):
-                cidr = netaddr.IPNetwork(topo['VL%s' % i]['properties']['cidr'])
-                if topo['node_templates']['VL%s' % i]['properties'].has_key('start_ip'):
-                    start_ip = netaddr.IPNetwork(topo['VL%s' % i]['properties']['start_ip'])
-                    switch_name = 's%s' % start_ip.network
+            else:
+                if topo['VL%s' % i]['properties']['network_name'] == 'net_mgmt':
+                    switch_name = 's' + '192.168.120.0'
                     switchs.append(switch_name[:10])
                     if not SWITCH.has_key(switch_name):
                         SWITCH[switch_name] = net.addSwitch(switch_name[:10])
-                else:
-                    switch_name = 's%s' % cidr.ip
+                elif topo['VL%s' % i]['properties']['network_name'] == 'net0':
+                    switch_name = 's' + '10.10.0.0'
                     switchs.append(switch_name[:10])
                     if not SWITCH.has_key(switch_name):
                         SWITCH[switch_name] = net.addSwitch(switch_name[:10])
-        i += 1
+                elif topo['VL%s' % i]['properties']['network_name'] == 'net1':
+                    switch_name = 's' + '10.10.1.0'
+                    switchs.append(switch_name[:10])
+                    if not SWITCH.has_key(switch_name):
+                        SWITCH[switch_name] = net.addSwitch(switch_name[:10])
+                elif topo['VL%s' % i]['properties'].has_key('cidr'):
+                    cidr = netaddr.IPNetwork(topo['VL%s' % i]['properties']['cidr'])
+                    if topo['node_templates']['VL%s' % i]['properties'].has_key('start_ip'):
+                        start_ip = netaddr.IPNetwork(topo['VL%s' % i]['properties']['start_ip'])
+                        switch_name = 's%s' % start_ip.network
+                        switchs.append(switch_name[:10])
+                        if not SWITCH.has_key(switch_name):
+                            SWITCH[switch_name] = net.addSwitch(switch_name[:10])
+                    else:
+                        switch_name = 's%s' % cidr.ip
+                        switchs.append(switch_name[:10])
+                        if not SWITCH.has_key(switch_name):
+                            SWITCH[switch_name] = net.addSwitch(switch_name[:10])
+            i += 1
 
-    host1 = net.getNodeByName(host)
-    for i in switchs:
-        net.addLink(i, host1)
-        PORTS[i].append(host1)
+        host1 = net.getNodeByName(host)
+        for i in switchs:
+            net.addLink(i, host1)
+            PORTS[i].append(host1)
+    else:
+        host1 = net.getNodeByName(host)
+        net.addLink('s1', host1)
+        PORTS['s1'].append(host1)
 
 def configure_host(net, vnfd, host):
     "Configures the host."
@@ -123,6 +128,8 @@ def configure_host(net, vnfd, host):
                 ip_address = '10.0.%s.%s/24' %(i, INC)
                 INC += 1
         host1.setIP(ip_address, intf=host+'-eth%s' % (i-1))
+        c =  netaddr.IPNetwork(ip_address)
+        host1.cmd('ip route add default via %s' % netaddr.IPAddress(c.first+1))
         PORTS[host].append(ip_address)
         if topo['CP%s' % i]['properties'].has_key('mac_address'):
             mac_address = topo['CP%s' % i]['properties']['mac_address']
@@ -136,6 +143,8 @@ def configure_host2(net, ips, host):
         ip_address = netaddr.IPNetwork(ips[i])
         ip_address_final = '%s/%s' % (ip_address.ip, ip_address.prefixlen)
         host1.setIP(ip_address_final, intf=host+'-eth%s' % i)
+        host1.cmd('ip route add default via %s' % netaddr.IPAddress(ip_address.first+1))
+        PORTS[host].append(ip_address)
         PORTS[host].append(ip_address_final)
 
 def list_ports(self, line):
@@ -190,25 +199,32 @@ def add_host(self, line):
     if host_name in HOSTS:
         output('<HOST-NAME> already in use\n')
         return None
-    i = 1
     ips = line.split()[1:]
-    switchs = []
-    for i in ips:
-        try:
-            ip_address = netaddr.IPNetwork(i)
-        except netaddr.core.AddrFormatError:
-            output('IP format not valid: ' + i + '\n')
-            output('Use: add_host <HOST-NAME> [<IP1/masc> <IP2/masc> ...]\n')
-            return None
-        switch_name = 's%s' % ip_address.network
-        if not SWITCH.has_key(switch_name):
-            SWITCH[switch_name] = net.addSwitch(switch_name[:10])
-        switchs.append(switch_name)
-    HOSTS.append(host_name)
-    host = net.addHost(host_name)
-    for i in switchs:
-        net.addLink(i[:10], host)
-        PORTS[i[:10]].append(host)
+    if MULTSWITCHES:
+        i = 1
+        switchs = []
+        for i in ips:
+            try:
+                ip_address = netaddr.IPNetwork(i)
+            except netaddr.core.AddrFormatError:
+                output('IP format not valid: ' + i + '\n')
+                output('Use: add_host <HOST-NAME> [<IP1/masc> <IP2/masc> ...]\n')
+                return None
+            switch_name = 's%s' % ip_address.network
+            if not SWITCH.has_key(switch_name):
+                SWITCH[switch_name] = net.addSwitch(switch_name[:10])
+            switchs.append(switch_name)
+        host = net.addHost(host_name)
+        HOSTS.append(host_name)
+        for i in switchs:
+            net.addLink(i[:10], host)
+            PORTS[i[:10]].append(host)
+    else:
+        host = net.addHost(host_name)
+        HOSTS.append(host_name)
+        net.addLink('s1', host)
+        PORTS['s1'].append(host)
+
     configure_host2(net, ips, host_name)
     return None
 
@@ -292,6 +308,7 @@ def vnf_create(self, line):
         VNFS.append(vnf_name)
         net.addHost(vnf_name)
         configure_network(net, vnfd, vnf_name)
+
         configure_host(net, vnfd, vnf_name)
         if vnfd['topology_template']['node_templates']['VDU1']['properties'].has_key('user_data'):
             cloud_init(net, vnfd, vnf_name)
@@ -365,20 +382,36 @@ def configure_vnffg(net, vnffg, vnffg_name, binds):
             ip_proto = criteria[0]['ip_proto']
         if criteria[i].has_key('destination_port_range'):
             port_range = criteria[0]['destination_port_range']
+
+    print 'vnfs0', binds[1], 'ip_src', ip_src, 'ip_dst', ip_dst
+    vnf = binds[1]
+    vnf = net.getNodeByName(vnf)
+
     forwarder = path['forwarder']
     port_dst = find_port2(ip_dst.ip)
     port_vnf = find_port2(find_port3(forwarder, ip_src, ip_dst))
     VNFFGS.append(vnffg_name)
     print ip_src.ip, find_port2(ip_src.ip), ip_dst.ip, port_dst, forwarder, port_vnf
-    #command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=192.168.120.1,actions=output:2,3'
-    command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s,%s' % (ip_src.ip, port_dst, port_vnf)
-    #command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s' % (ip_src.ip, port_vnf)
-    #command2 = 'sudo ovs-ofctl mod-flows s192.168.1 in_port=%s,actions=output:%s' % (port_vnf, port_dst)
-    #command3 = 'sudo ovs-ofctl mod-flows s192.168.1 arp,in_port="s192.168.1-eth4",vlan_tci=0x0000/0x1fff,dl_src=12:b9:d1:5d:26:5e,dl_dst=1e:29:c2:41:d5:02,arp_spa=192.168.120.2,arp_tpa=192.168.120.1,arp_op=2,actions=output:"s192.168.1-eth3"'
-    s = subprocess.check_output(command, shell=True)
-    #s2 = subprocess.check_output(command2, shell=True)
-    #s3 = subprocess.check_output(command2, shell=True)
-    print s
+    if MULTSWITCHES:
+        #command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=192.168.120.1,actions=output:2,3'
+        command2 = "ovs-ofctl add-flow s192.168.1 priority=1,arp,actions=flood"
+        command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s,%s' % (ip_src.ip, port_dst, port_vnf)
+        #command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s' % (ip_src.ip, port_vnf)
+        #command2 = 'sudo ovs-ofctl mod-flows s192.168.1 in_port=%s,actions=output:%s' % (port_vnf, port_dst)
+        #command3 = 'sudo ovs-ofctl mod-flows s192.168.1 arp,in_port="s192.168.1-eth4",vlan_tci=0x0000/0x1fff,dl_src=12:b9:d1:5d:26:5e,dl_dst=1e:29:c2:41:d5:02,arp_spa=192.168.120.2,arp_tpa=192.168.120.1,arp_op=2,actions=output:"s192.168.1-eth3"'
+        s2 = subprocess.check_output(command2, shell=True)
+        s = subprocess.check_output(command, shell=True)
+        #s3 = subprocess.check_output(command2, shell=True)
+        print s, s2
+    else:
+        vnf.cmdPrint('ip addr add %s/24 brd + dev %s-eth0' % (netaddr.IPAddress(netaddr.IPNetwork(ip_src).first+1), binds[1]))
+        vnf.cmdPrint('ip addr add %s/24 brd + dev %s-eth0' % (netaddr.IPAddress(netaddr.IPNetwork(ip_dst).first+1), binds[1]))
+        vnf.cmdPrint("echo 1 > /proc/sys/net/ipv4/ip_forward")
+        #s1 = net.getNodeByName('s1')
+        #s1.cmdPrint('ovs-ofctl add-flow s1 priority=1,arp,actions=flood')
+        #s1.cmdPrint("ovs-ofctl add-flow s1 priority=65535,ip,dl_dst=00:00:00:00:01:00,actions=output:1")
+        #s1.cmdPrint("ovs-ofctl add-flow s1 priority=10,ip,nw_dst=10.0.10.0/24,actions=output:2")
+        #s1.cmdPrint("ovs-ofctl add-flow s1 priority=10,ip,nw_dst=10.0.20.0/24,actions=output:3")
 
 def read_binding(binding):
     "Translates something in the form VNF:'vnf' into ('VNF', 'vnf')"
@@ -413,6 +446,16 @@ def vnffg_create(self, line):
         return None
     return None
 
+
+def vnfd_create_jinja(self, line):
+    "Creates vnffg from previously defined vnffgd or directly from template."
+    net = self.mn
+    print line
+    print vars()
+    print net.a
+
+    return None
+
 def vnffg_list(self, line):
     "Lists all vnffgs created."
     output('%s' % VNFFGS + '\n')
@@ -442,7 +485,8 @@ It can create parametrized topologies, invoke the mininfv CLI, and run tests.
 Options:
   -h, --help            show this help message and exit
   --controller=CONTROLLER
-                        remote=RemoteController"""
+                        remote=RemoteController
+  --multipleswitches    creates a individual switch for every L2 topo"""
     if len(sys.argv) > 2:
         sys.exit(usage)
     elif len(sys.argv) == 2:
@@ -450,10 +494,15 @@ Options:
             sys.exit(usage)
         elif sys.argv[1] == '--controller=remote':
             STANDALONE = False
+        elif sys.argv[1] == '--multipleswitches':
+            STANDALONE = True
+            MULTSWITCHES = True
+            print 'true'
         else:
             sys.exit(usage)
     else:
         STANDALONE = True
+        MULTSWITCHES = False
 
     TOPO = MyTopo()
     # NET = Mininet(topo=topo, link=TCLink)
@@ -461,10 +510,13 @@ Options:
         NET = Mininet(topo=TOPO, link=TCLink, controller=OVSController)
     else:
         NET = Mininet(topo=TOPO, link=TCLink, controller=RemoteController)
+    if not MULTSWITCHES:
+        NET.addSwitch('s1')   
     NET.start()
     CLI.do_add_host = add_host
     CLI.do_list_ports = list_ports
     CLI.do_vnfd_create = vnfd_create
+    CLI.do_vnfd_create_jinja = vnfd_create_jinja
     CLI.do_vnfd_list = vnfd_list
     CLI.do_vnfd_delete = vnfd_delete
     CLI.do_vnfd_template_show = vnfd_template_show
