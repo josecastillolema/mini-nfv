@@ -9,6 +9,7 @@ import netaddr
 import yaml
 import subprocess
 from collections import defaultdict
+from jinja2 import Template
 from mininet.topo import Topo
 from mininet.net import Mininet
 from mininet.link import TCLink
@@ -237,7 +238,7 @@ def cloud_init(net, vnfd, host_name):
 
 # VNFD
 
-def vnfd_create(self, line):
+def vnfd_create(self, line, jinja=False):
     "Creates vnfd from template."
     if len(line.split()) != 3 or line.split()[0] != '--vnfd-file':
         output('Use: vnfd_create --vnfd-file <yaml file path> <VNFD-NAME>\n')
@@ -250,6 +251,11 @@ def vnfd_create(self, line):
             VNFD[vnfd_name] = vnfd
         else:
             output('<VNFD-NAME> already in use\n')
+    return None
+
+def vnfd_create_jinja(self, line):
+    "Creates vnfd using jinja template."
+    vnfd_create(self, line, jinja=True)
     return None
 
 def vnfd_list(self, line):
@@ -286,7 +292,7 @@ def vnfd_template_show(self, line):
 
 # VNF
 
-def vnf_create(self, line):
+def vnf_create(self, line, jinja=False):
     "Creates vnf from vnfd previously created or directly from template."
     net = self.mn
     if len(line.split()) != 3 or line.split()[0] not in ['--vnfd-name', '--vnfd-file', '--vnfd-template']:
@@ -297,6 +303,10 @@ def vnf_create(self, line):
     if line.split()[0] in ['--vnfd-file', '--vnfd-template']:
         file_path = line.split()[1]
         vnfd = parse_tosca(file_path)
+        if jinja:
+            template=Template(str(vnfd))
+            print 'template jinja',
+            print "{}".format(template.render(net.values))
     else:  # --vnfd-name
         vnfd_name = line.split()[1]
         vnfd = VNFD[vnfd_name]
@@ -313,6 +323,11 @@ def vnf_create(self, line):
         if vnfd['topology_template']['node_templates']['VDU1']['properties'].has_key('user_data'):
             cloud_init(net, vnfd, vnf_name)
         return None
+    return None
+
+def vnf_create_jinja(self, line):
+    "Creates vnf using jinja templates."
+    vnf_create(self, line, jinja=True)
     return None
 
 def vnf_list(self, line):
@@ -417,7 +432,7 @@ def read_binding(binding):
     "Translates something in the form VNF:'vnf' into ('VNF', 'vnf')"
     return (binding.split(':')[0], binding.split(':')[1].replace("'", ''))
 
-def vnffg_create(self, line):
+def vnffg_create(self, line, jinja=False):
     "Creates vnffg from previously defined vnffgd or directly from template."
     net = self.mn
     #if len(line.split()) != 7:
@@ -446,14 +461,9 @@ def vnffg_create(self, line):
         return None
     return None
 
-
-def vnfd_create_jinja(self, line):
-    "Creates vnffg from previously defined vnffgd or directly from template."
-    net = self.mn
-    print line
-    print vars()
-    print net.a
-
+def vnffg_create_jinja(self, line):
+    "Creates vnffg using jinja templates."
+    vnffg_create(self, line, jinja=True)
     return None
 
 def vnffg_list(self, line):
@@ -516,11 +526,11 @@ Options:
     CLI.do_add_host = add_host
     CLI.do_list_ports = list_ports
     CLI.do_vnfd_create = vnfd_create
-    CLI.do_vnfd_create_jinja = vnfd_create_jinja
     CLI.do_vnfd_list = vnfd_list
     CLI.do_vnfd_delete = vnfd_delete
     CLI.do_vnfd_template_show = vnfd_template_show
     CLI.do_vnf_create = vnf_create
+    CLI.do_vnf_create_jinja = vnf_create_jinja
     CLI.do_vnf_list = vnf_list
     CLI.do_vnf_delete = vnf_delete
     CLI.do_vnffg_create = vnffg_create

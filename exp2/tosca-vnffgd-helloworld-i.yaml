@@ -19,8 +19,8 @@ topology_template:
             - network_id: 3d582b05-b996-4df2-9b3f-a1a26b2f1383
             - ip_proto: 6
             - destination_port_range: 80-80
-            - ip_dst_prefix: 10.0.30.10/24
-            - ip_src_prefix: 10.0.40.10/24
+            - ip_dst_prefix: '{{ ip_dst }}'
+            - ip_src_prefix: '{{ ip_src }}'
         path:
           - forwarder: vnfUD
             capability: CP111
