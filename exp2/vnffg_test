@@ -1,0 +1,18 @@
+py "*** Starting vnf <tosca-vnfd-userdata.yaml> ..."
+vnf_create --vnfd-file samples/vnfd/tosca-vnfd-countpackets.yaml vnfUD
+
+py "\n*** Creating http client and http server ..."
+add_host http_cl 10.0.30.10/24
+add_host http_sr 10.0.40.10/24
+
+py "*** Starting HTTP server ..."
+py http_sr.cmdPrint('python -m SimpleHTTPServer 80 &')
+
+py "*** Loading values for jinja template invocation ..."
+px import yaml; net.values=yaml.load('---\nip_src: 10.0.30.10/24\nip_dst: 10.0.40.10/24')
+
+py "*** Starting vnffg <tosca-vnfd-helloworld.yaml> ..."
+vnffg_create_jinja --vnffgd-template exp2/tosca-vnffgd-helloworld.yaml --vnf-mapping vnfd-helloworld:'vnfUD' --symmetrical false vnffg-sample
+
+py "*** Starting the switch ..."
+switch s1 start

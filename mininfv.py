@@ -447,6 +447,13 @@ def vnffg_create(self, line, jinja=False):
     if line.split()[0] == '--vnffgd-template':
         file_path = line.split()[1]
         vnffg = parse_tosca(file_path)
+        #print 'antes: ', vnffg
+        if jinja:
+            template=Template(str(vnffg))
+            #print 'template jinja',
+            #print "{}".format(template.render(net.values))
+            vnffg = yaml.load("{}".format(template.render(net.values)))
+            #print 'despues: ', vnffg
     else:  # --vnffg-name
         vnffg_name = line.split()[1]
         vnffg = VNFFGD[vnffg_name]
@@ -483,6 +490,11 @@ def vnffg_delete(self, line):
         # AttributeError: 'Mininet' object has no attribute 'delNode'
     else:
         output('<VNFFG-NAME> does not exist\n')
+    return None
+
+def do_print(self, line):
+    "Prints a given line."
+    output(line + '\n')
     return None
 
 if __name__ == '__main__':
@@ -526,6 +538,7 @@ Options:
     CLI.do_add_host = add_host
     CLI.do_list_ports = list_ports
     CLI.do_vnfd_create = vnfd_create
+    CLI.do_vnfd_create_jinja = vnfd_create_jinja
     CLI.do_vnfd_list = vnfd_list
     CLI.do_vnfd_delete = vnfd_delete
     CLI.do_vnfd_template_show = vnfd_template_show
@@ -534,8 +547,10 @@ Options:
     CLI.do_vnf_list = vnf_list
     CLI.do_vnf_delete = vnf_delete
     CLI.do_vnffg_create = vnffg_create
+    CLI.do_vnffg_create_jinja = vnffg_create_jinja
     CLI.do_vnffg_list = vnffg_list
     CLI.do_vnffg_delete = vnffg_delete
+    CLI.do_print = do_print
     CLI.prompt = 'mininfv> '
     CLI(NET)
     NET.stop()

@@ -1,0 +1,8 @@
+py "*** Loading values for jinja template invocation ..."
+px for i in range(2,200,2): cli=CLI(net, script='null_script'); cli.do_vnf_create("--vnfd-file samples/vnfd/tosca-vnfd-countpackets.yaml vnfUD%s" % i); cli.do_add_host("http_cl%s 10.0.%s.%s/24" % (i,i,i)); cli.do_add_host("http_sr%s 10.0.%s.%s/24" % (i,i+1,i)); import yaml; net.values=yaml.load('---\nip_src: 10.0.%s.%s/24\nip_dst: 10.0.%s.%s/24' % (i,i,i+1,i)); print net.values;  cli.do_vnffg_create_jinja("--vnffgd-template exp2/tosca-vnffgd-helloworld.yaml --vnf-mapping vnfd-helloworld:'vnfUD%s' --symmetrical false vnffg-sample-%s" % (i,i)); cli.default('http_cl%s ping -s 65507 http_sr%s &'%(i,i))
+
+py "*** Starting the switch ..."
+switch s1 start
+
+py "*** Starting generating traffic ..."
+http_cl2 ping http_sr2 &
