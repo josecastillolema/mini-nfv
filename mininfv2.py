@@ -562,9 +562,9 @@ Options:
     CLI.do_vnffg_list = vnffg_list
     CLI.do_vnffg_delete = vnffg_delete
     CLI.do_print = do_print
-    CLI.prompt = 'mininfv> '
     if not WIFI:
+        CLI.prompt = 'mininfv> '
         CLI(NET)
     else:
-        CLI_wifi(net)
+        CLI_wifi(NET)
     NET.stop()
