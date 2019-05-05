@@ -43,11 +43,6 @@ def parse_tosca(path):
     parsed_file = yaml.load(content)
     return parsed_file
 
-class MyTopo(Topo):
-    "Creates the mininet topology"
-    def __init__(self, **opts):
-        Topo.__init__(self, **opts)
-
 def configure_network(net, vnfd, host):
     "Configures the networks."
     if MULTSWITCHES:
@@ -512,7 +507,9 @@ Options:
   --controller=CONTROLLER
                         remote=RemoteController
   --multipleswitches    creates a individual switch for every L2 topo
-  --wifi                integrates and lauchs mininet-wifi instead"""
+  --wifi                integrates and lauchs mininet-wifi instead
+    --container         name of the mininet-wifi container. If no present, defaults to mininet-wifi
+    --ssh-user          name of the localhost user for mininet-wifi. If no present, defaults to root"""
     if len(sys.argv) > 2:
         sys.exit(usage)
     elif len(sys.argv) == 2:
@@ -528,6 +525,8 @@ Options:
             WIFI = True
             STANDALONE = True
             MULTSWITCHES = False
+            container = "mininet-wifi"
+            ssh_user = "jose"
         else:
             sys.exit(usage)
     else:
@@ -535,14 +534,14 @@ Options:
         MULTSWITCHES = False
         WIFI = False
 
-    TOPO = MyTopo()
+    #TOPO = MyTopo()
     # NET = Mininet(topo=topo, link=TCLink)
     if STANDALONE:
-        NET = Mininet(topo=TOPO, link=TCLink, controller=OVSController)
+        NET = Mininet(link=TCLink, controller=OVSController)
     elif not WIFI:
-        NET = Mininet(topo=TOPO, link=TCLink, controller=RemoteController)
+        NET = Mininet(link=TCLink, controller=RemoteController)
     elif WIFI:
-        NET = Mininet_wifi(container='mininet-wifi', ssh_user='jose', docker=True)
+        NET = Mininet_wifi(container=container, ssh_user=ssh_user, docker=True)
     if not MULTSWITCHES:
         NET.addSwitch('s1')   
     NET.start()
