@@ -526,11 +526,14 @@ Options:
             print 'true'
         elif sys.argv[1] == '--wifi':
             WIFI = True
+            STANDALONE = True
+            MULTSWITCHES = False
         else:
             sys.exit(usage)
     else:
         STANDALONE = True
         MULTSWITCHES = False
+        WIFI = False
 
     TOPO = MyTopo()
     # NET = Mininet(topo=topo, link=TCLink)
