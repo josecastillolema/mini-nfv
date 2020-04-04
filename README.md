@@ -12,6 +12,10 @@ Mini-nfv uses TOSCA for VNF meta-data definition. Within TOSCA, mini-nfv uses NF
     - Latest spec is available here: https://www.oasis-open.org/committees/document.php?document_id=56577&wg_abbrev=tosca
     - Current latest (as of Oct 2015) is: https://www.oasis-open.org/committees/download.php/56577/tosca-nfv-v1.0-wd02-rev03.doc
 
+Publications
+--------------
+- [Jose Castillo-Lema, Augusto Venâncio Neto, Flávio de Oliveira, Sergio Takeo Kofuji. "Mininet-NFV: Evolving Mininet with OASIS TOSCA NVF profiles Towards Reproducible NFV Prototyping". In 2019 IEEE Conference on Network Softwarization (NetSoft), June 2019.](https://ieeexplore.ieee.org/document/8806686)
+
 Use cases
 --------------
 In the OpenStack world, Tacker is the project implementing a generic VNFM and NFVO. At the input consumes Tosca-based templates, which are then used to spin up VMs on OpenStack. While it is true that today exist various tools that simplify the deployment of an OpenStack cloud (i.e.: devstack), deploying, configuring and managing OpenStack environments is still a time-consuming process with a considerable learning curve.
