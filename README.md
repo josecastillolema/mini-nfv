@@ -47,7 +47,7 @@ Mini-nfv supports:
 - network definition via VL [&#8629;](/README.md#network-definition)
 - IP/mac definition via CP [&#8629;](/README.md#ipmac-definition)
 - emulation of num CPUs and flavor properties through Mininet's CPULimitedHost [&#8629;](/README.md#flavor-and-number-of-cpus)
-- cloud-init scripts [&#8629;](/master/README.md#cloud-init)
+- cloud-init scripts [&#8629;](/README.md#cloud-init)
 
 Mini-nfv ignores:
 - RAM and disk properties
@@ -410,7 +410,7 @@ PING 10.0.0.12 (10.0.0.12) 56(84) bytes of data.
 3 packets transmitted, 3 received, 0% packet loss, time 2032ms
 rtt min/avg/max/mdev = 0.142/1.270/2.934/1.201 ms
 ```
-Or just source  [`host_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/host_test) from mininfv:
+Or just source  [`host_test`](/samples/topology/host_test) from mininfv:
 ```
 mininfv> source samples/topology/host_test
 *** Creating host h1 with two interfaces ...
