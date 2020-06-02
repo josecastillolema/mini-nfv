@@ -68,7 +68,7 @@ If not specified otherwise, mini-nfv will create 3 standards networks:
 - net0: 10.10.0.0/24
 - net1: 10.10.1.0/24
 
-It is also possible to manually define the networks, within the Virtual Link (VL) definition, see [tosca-vnfd-network.yaml](https://github.com/josecastillolema/mini-nfv/blob/master/samples/vnfd/tosca-vnfd-network.yaml):
+It is also possible to manually define the networks, within the Virtual Link (VL) definition, see [tosca-vnfd-network.yaml](/samples/vnfd/tosca-vnfd-network.yaml):
 ```
     VL2:
       type: tosca.nodes.nfv.VL
@@ -85,7 +85,7 @@ It is also possible to manually define the networks, within the Virtual Link (VL
 IP/MAC definition
 --------------
 If not specified otherwise, mini-nfv will assign random IPs within the defined networks.
-However, it is also possibly to manually define IP/MAC for a VNF, within the Connection Point (CP) definition, see [tosca-vnfd-mac-ip.yaml](https://github.com/josecastillolema/mini-nfv/blob/master/samples/vnfd/tosca-vnfd-mac-ip.yaml):
+However, it is also possibly to manually define IP/MAC for a VNF, within the Connection Point (CP) definition, see [tosca-vnfd-mac-ip.yaml](/samples/vnfd/tosca-vnfd-mac-ip.yaml):
 ```
     CP1:
       type: tosca.nodes.nfv.CP.Tacker
@@ -104,7 +104,7 @@ However, it is also possibly to manually define IP/MAC for a VNF, within the Con
 
 Flavor and number of cpus
 --------------
-Mini-nfv emulates VNF resource configuration defined via num_cpus properties:
+Mini-nfv emulates VNF resource configuration defined via `num_cpus` properties:
 ```
     VDU1:
       type: tosca.nodes.nfv.VDU.Tacker
@@ -134,7 +134,7 @@ Mini-nfv will assign 1/(8-num_cpus))) to each VNF.
 
 Cloud-init
 --------------
-Mini-nfv supports VNFs configuration through user-data, see [tosca-vnfd-userdata.yaml](https://github.com/josecastillolema/mini-nfv/blob/master/samples/vnfd/tosca-vnfd-userdata.yaml):
+Mini-nfv supports VNFs configuration through user-data, see [tosca-vnfd-userdata.yaml](/samples/vnfd/tosca-vnfd-userdata.yaml):
 ```
     VDU1:
       type: tosca.nodes.nfv.VDU.Tacker
@@ -279,7 +279,7 @@ mininfv> vnfd_delete vnfd-userdata
 mininfv> vnfd_list
 vnfd-helloworld: Demo example
 ```
-Or just source  [`vnfd_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnfd_test) from mininfv:
+Or just source  [`vnfd_test`](/samples/topology/vnfd_test) from mininfv:
 ```
 mininfv> source samples/topology/vnfd_test
 *** Creating vnfds userdata and hello-world ...
@@ -338,7 +338,7 @@ c0 s192.168.1
 mininfv> vnf_list
 []
 ```
-Or just source  [`vnf_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnf_test) from mininfv:
+Or just source  [`vnf_test`](/samples/topology/vnf_test) from mininfv:
 ```
 mininfv> source samples/topology/vnf_test
 *** Starting vnf <tosca-vnfd-userdata.yaml> ...
