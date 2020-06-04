@@ -250,6 +250,7 @@ VNF Manager Use
 --------------
 
 - **VNFD creation/listing/removal/template**
+
 ```
 $ sudo ./mininfv.py
 *** Configuring hosts
