@@ -339,7 +339,7 @@ VNF Manager Use
     mininfv> vnf_list
     []
     ```
-Or just source  [`vnf_test`](/samples/topology/vnf_test) from mininfv:
+    Or just source  [`vnf_test`](/samples/topology/vnf_test) from mininfv:
     ```
     mininfv> source samples/topology/vnf_test
     *** Starting vnf <tosca-vnfd-userdata.yaml> ...
@@ -361,153 +361,153 @@ Or just source  [`vnf_test`](/samples/topology/vnf_test) from mininfv:
     c0 s192.168.1 vnfUD
     ```
 
-- **Adding hosts to the topology**
-```
-$ sudo ./mininfv.py
-*** Configuring hosts
-*** Starting controller
-*** Starting 0 switches
-*** Starting CLI:
+ - **Adding hosts to the topology**
+    ```
+    $ sudo ./mininfv.py
+    *** Configuring hosts
+    *** Starting controller
+    *** Starting 0 switches
+    *** Starting CLI:
 
-mininfv> add_host
-Use: add_host <HOST-NAME> [<IP1/masc> <IP2/masc> ...]
+    mininfv> add_host
+    Use: add_host <HOST-NAME> [<IP1/masc> <IP2/masc> ...]
 
-mininfv> add_host h1 10.0.0.11/24 20.0.0.11/24
+    mininfv> add_host h1 10.0.0.11/24 20.0.0.11/24
 
-mininfv> nodes
-available nodes are: 
-c0 h1 s10.0.0.0 s20.0.0.0 ud
+    mininfv> nodes
+    available nodes are: 
+    c0 h1 s10.0.0.0 s20.0.0.0 ud
 
-mininfv> h1 ifconfig
-h1-eth0   Link encap:Ethernet  HWaddr 3e:b2:ba:99:4e:dc  
-          inet addr:10.0.0.11  Bcast:10.255.255.255  Mask:255.255.255.0
-          inet6 addr: fe80::3cb2:baff:fe99:4edc/64 Scope:Link
-          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-          RX packets:24 errors:0 dropped:1 overruns:0 frame:0
-          TX packets:7 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000 
-          RX bytes:3445 (3.4 KB)  TX bytes:578 (578.0 B)
+    mininfv> h1 ifconfig
+    h1-eth0   Link encap:Ethernet  HWaddr 3e:b2:ba:99:4e:dc  
+              inet addr:10.0.0.11  Bcast:10.255.255.255  Mask:255.255.255.0
+              inet6 addr: fe80::3cb2:baff:fe99:4edc/64 Scope:Link
+              UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+              RX packets:24 errors:0 dropped:1 overruns:0 frame:0
+              TX packets:7 errors:0 dropped:0 overruns:0 carrier:0
+              collisions:0 txqueuelen:1000 
+              RX bytes:3445 (3.4 KB)  TX bytes:578 (578.0 B)
 
-h1-eth1   Link encap:Ethernet  HWaddr aa:08:cf:38:e8:d5  
-          inet addr:20.0.0.10  Bcast:20.255.255.255  Mask:255.255.255.0
-          inet6 addr: fe80::a808:cfff:fe38:e8d5/64 Scope:Link
-          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-          RX packets:25 errors:0 dropped:1 overruns:0 frame:0
-          TX packets:7 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000 
-          RX bytes:3515 (3.5 KB)  TX bytes:578 (578.0 B)
-          
-mininfv> add_host h2 10.0.0.12/24
+    h1-eth1   Link encap:Ethernet  HWaddr aa:08:cf:38:e8:d5  
+              inet addr:20.0.0.10  Bcast:20.255.255.255  Mask:255.255.255.0
+              inet6 addr: fe80::a808:cfff:fe38:e8d5/64 Scope:Link
+              UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+              RX packets:25 errors:0 dropped:1 overruns:0 frame:0
+              TX packets:7 errors:0 dropped:0 overruns:0 carrier:0
+              collisions:0 txqueuelen:1000 
+              RX bytes:3515 (3.5 KB)  TX bytes:578 (578.0 B)
 
-mininfv> switch s10.0.0.0 start
+    mininfv> add_host h2 10.0.0.12/24
 
-mininfv> h1 ping -c3 h2
-PING 10.0.0.12 (10.0.0.12) 56(84) bytes of data.
-64 bytes from 10.0.0.12: icmp_seq=1 ttl=64 time=2.93 ms
-64 bytes from 10.0.0.12: icmp_seq=2 ttl=64 time=0.736 ms
-64 bytes from 10.0.0.12: icmp_seq=3 ttl=64 time=0.142 ms
+    mininfv> switch s10.0.0.0 start
 
---- 10.0.0.12 ping statistics ---
-3 packets transmitted, 3 received, 0% packet loss, time 2032ms
-rtt min/avg/max/mdev = 0.142/1.270/2.934/1.201 ms
-```
-Or just source  [`host_test`](/samples/topology/host_test) from mininfv:
-```
-mininfv> source samples/topology/host_test
-*** Creating host h1 with two interfaces ...
-*** Listing interfaces of the host:
-h1-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 10.0.0.11  netmask 255.255.255.0  broadcast 10.0.0.255
-        inet6 fe80::609d:6fff:fe6e:eae8  prefixlen 64  scopeid 0x20<link>
-        ether 62:9d:6f:6e:ea:e8  txqueuelen 1000  (Ethernet)
-        RX packets 1  bytes 90 (90.0 B)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 1  bytes 90 (90.0 B)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+    mininfv> h1 ping -c3 h2
+    PING 10.0.0.12 (10.0.0.12) 56(84) bytes of data.
+    64 bytes from 10.0.0.12: icmp_seq=1 ttl=64 time=2.93 ms
+    64 bytes from 10.0.0.12: icmp_seq=2 ttl=64 time=0.736 ms
+    64 bytes from 10.0.0.12: icmp_seq=3 ttl=64 time=0.142 ms
 
-h1-eth1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 20.0.0.11  netmask 255.255.255.0  broadcast 20.0.0.255
-        inet6 fe80::bc42:45ff:fee1:6e0b  prefixlen 64  scopeid 0x20<link>
-        ether be:42:45:e1:6e:0b  txqueuelen 1000  (Ethernet)
-        RX packets 0  bytes 0 (0.0 B)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 0  bytes 0 (0.0 B)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+    --- 10.0.0.12 ping statistics ---
+    3 packets transmitted, 3 received, 0% packet loss, time 2032ms
+    rtt min/avg/max/mdev = 0.142/1.270/2.934/1.201 ms
+    ```
+    Or just source  [`host_test`](/samples/topology/host_test) from mininfv:
+    ```
+    mininfv> source samples/topology/host_test
+    *** Creating host h1 with two interfaces ...
+    *** Listing interfaces of the host:
+    h1-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+            inet 10.0.0.11  netmask 255.255.255.0  broadcast 10.0.0.255
+            inet6 fe80::609d:6fff:fe6e:eae8  prefixlen 64  scopeid 0x20<link>
+            ether 62:9d:6f:6e:ea:e8  txqueuelen 1000  (Ethernet)
+            RX packets 1  bytes 90 (90.0 B)
+            RX errors 0  dropped 0  overruns 0  frame 0
+            TX packets 1  bytes 90 (90.0 B)
+            TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-*** Creating host h2
-*** Starting switch ...
-*** Listing nodes:
-available nodes are: 
-c0 h1 h2 s10.0.0.0 s192.168.1 s20.0.0.0 vnfUD
+    h1-eth1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+            inet 20.0.0.11  netmask 255.255.255.0  broadcast 20.0.0.255
+            inet6 fe80::bc42:45ff:fee1:6e0b  prefixlen 64  scopeid 0x20<link>
+            ether be:42:45:e1:6e:0b  txqueuelen 1000  (Ethernet)
+            RX packets 0  bytes 0 (0.0 B)
+            RX errors 0  dropped 0  overruns 0  frame 0
+            TX packets 0  bytes 0 (0.0 B)
+            TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-*** Testing conectivity ...
-PING 10.0.0.12 (10.0.0.12) 56(84) bytes of data.
-64 bytes from 10.0.0.12: icmp_seq=1 ttl=64 time=3.43 ms
-64 bytes from 10.0.0.12: icmp_seq=2 ttl=64 time=0.716 ms
-64 bytes from 10.0.0.12: icmp_seq=3 ttl=64 time=0.111 ms
+    *** Creating host h2
+    *** Starting switch ...
+    *** Listing nodes:
+    available nodes are: 
+    c0 h1 h2 s10.0.0.0 s192.168.1 s20.0.0.0 vnfUD
 
---- 10.0.0.12 ping statistics ---
-3 packets transmitted, 3 received, 0% packet loss, time 2003ms
-rtt min/avg/max/mdev = 0.111/1.419/3.430/1.443 ms
-```
+    *** Testing conectivity ...
+    PING 10.0.0.12 (10.0.0.12) 56(84) bytes of data.
+    64 bytes from 10.0.0.12: icmp_seq=1 ttl=64 time=3.43 ms
+    64 bytes from 10.0.0.12: icmp_seq=2 ttl=64 time=0.716 ms
+    64 bytes from 10.0.0.12: icmp_seq=3 ttl=64 time=0.111 ms
+
+    --- 10.0.0.12 ping statistics ---
+    3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+    rtt min/avg/max/mdev = 0.111/1.419/3.430/1.443 ms
+    ```
 
 NFV Orchestrator Use
 --------------
 
-- **VNFFG creation/listing/removal**
-```
-$ sudo ./mininfv.py
-*** Configuring hosts
-*** Starting controller
-*** Starting 0 switches
-*** Starting CLI:
+ - **VNFFG creation/listing/removal**
+    ```
+    $ sudo ./mininfv.py
+    *** Configuring hosts
+    *** Starting controller
+    *** Starting 0 switches
+    *** Starting CLI:
 
-mininfv> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
-*** Initializing VDU vnf-userdata ...
-*** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
+    mininfv> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
+    *** Initializing VDU vnf-userdata ...
+    *** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
 
-mininfv> add_host http_cl 192.168.120.1/24
+    mininfv> add_host http_cl 192.168.120.1/24
 
-mininfv> add_host http_sr 192.168.120.2/24
+    mininfv> add_host http_sr 192.168.120.2/24
 
-mininfv> nodes
-available nodes are: 
-c0 http_cl http_sr s192.168.1 vnfUD
+    mininfv> nodes
+    available nodes are: 
+    c0 http_cl http_sr s192.168.1 vnfUD
 
-mininfv> switch s192.168.1 start
+    mininfv> switch s192.168.1 start
 
-mininfv> py http_sr.cmdPrint('python -m SimpleHTTPServer 80 &')
+    mininfv> py http_sr.cmdPrint('python -m SimpleHTTPServer 80 &')
 
-mininfv> vnffg_<TAB>
-vnffg_create  vnffg_delete  vnffg_list
+    mininfv> vnffg_<TAB>
+    vnffg_create  vnffg_delete  vnffg_list
 
-mininfv> vnffg_create
-Use: vnffg-create --vnffgd-name <vnffgd-name> --vnf-mapping <vnf-mapping>
-                  --symmetrical <boolean> <vnffg-name>
-     vnffg-create --vnffgd-template <vnffgd-template> --vnf-mapping <vnf-mapping>
-                  --symmetrical <boolean> <vnffg-name>
+    mininfv> vnffg_create
+    Use: vnffg-create --vnffgd-name <vnffgd-name> --vnf-mapping <vnf-mapping>
+                      --symmetrical <boolean> <vnffg-name>
+         vnffg-create --vnffgd-template <vnffgd-template> --vnf-mapping <vnf-mapping>
+                      --symmetrical <boolean> <vnffg-name>
 
-mininfv> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-helloworld.yaml --vnf-mapping vnfd-helloworld:'vnfUD' --symmetrical false vnffg-sample
+    mininfv> vnffg_create --vnffgd-template samples/vnffgd/tosca-vnffgd-helloworld.yaml --vnf-mapping vnfd-helloworld:'vnfUD' --symmetrical false vnffg-sample
 
-mininfv> vnffg_list
-['vnffg-sample']
+    mininfv> vnffg_list
+    ['vnffg-sample']
 
-mininfv> xterm vnfUD
+    mininfv> xterm vnfUD
 
-mininfv> http_cl curl http_sr
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"><html>
-...
+    mininfv> http_cl curl http_sr
+    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"><html>
+    ...
 
-mininfv> vnffg_delete vnffg-sample
+    mininfv> vnffg_delete vnffg-sample
 
-mininfv> vnffg_list
-[]
-```
+    mininfv> vnffg_list
+    []
+    ```
 
-Or just source  [`vnffg_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnffg_test) from mininfv:
-`mininfv> source samples/topology/vnffg_test`
+    Or just source  [`vnffg_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnffg_test) from mininfv:
+    `mininfv> source samples/topology/vnffg_test`
 
-In the xterm window of the vnfUD we opened at step 11, if we sniff the interface we can see the http and icmp traffic corresponding to the curl and ping passing through the VNF interface:
+    In the xterm window of the vnfUD we opened at step 11, if we sniff the interface we can see the http and icmp traffic corresponding to the curl and ping passing through the VNF interface:
 ![Screenshot of the VNF xterm](https://raw.githubusercontent.com/josecastillolema/mini-nfv/master/doc/img/screendshot_vnfUD.png)
 
 
