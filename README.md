@@ -249,117 +249,117 @@ NXST_FLOW reply (xid=0x4):
 VNF Manager Use
 --------------
 
-- **VNFD creation/listing/removal/template**
+ - **VNFD creation/listing/removal/template**
 
-```
-$ sudo ./mininfv.py
-*** Configuring hosts
-*** Starting controller
-*** Starting 0 switches
-*** Starting CLI:
+    ```
+    $ sudo ./mininfv.py
+    *** Configuring hosts
+    *** Starting controller
+    *** Starting 0 switches
+    *** Starting CLI:
 
-mininfv> vnfd_<TAB>
-vnfd_create         vnfd_delete         vnfd_list           vnfd_template_show  
+    mininfv> vnfd_<TAB>
+    vnfd_create         vnfd_delete         vnfd_list           vnfd_template_show  
 
-mininfv> vnfd_create
-Use: vnfd_create --vnfd-file <yaml file path> <VNFD-NAME>
+    mininfv> vnfd_create
+    Use: vnfd_create --vnfd-file <yaml file path> <VNFD-NAME>
 
-mininfv> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfd-userdata
+    mininfv> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfd-userdata
 
-mininfv> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-hello-world.yaml vnfd-helloworld
+    mininfv> vnfd_create --vnfd-file samples/vnfd/tosca-vnfd-hello-world.yaml vnfd-helloworld
 
-mininfv> vnfd_list
-vnfd-helloworld: Demo example
-vnfd-userdata: Demo with user-data
+    mininfv> vnfd_list
+    vnfd-helloworld: Demo example
+    vnfd-userdata: Demo with user-data
 
-mininfv> vnfd_template_show vnfd-userdata
-{'VDU1': {'type': 'tosca.nodes.nfv.VDU.Tacker', 'properties': {'image': 'cirros-0.3.5-x86_64-disk', 'user_data_format': 'RAW', 'config': 'param0: key1\nparam1: key2\n', 'user_data': '#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n', 'mgmt_driver': 'noop'}, 'capabilities': {'nfv_compute': {'properties': {'mem_size': '512 MB', 'num_cpus': 1, 'disk_size': '1 GB'}}}}, 'CP1': {'type': 'tosca.nodes.nfv.CP.Tacker', 'requirements': [{'virtualLink': {'node': 'VL1'}}, {'virtualBinding': {'node': 'VDU1'}}], 'properties': {'anti_spoofing_protection': False, 'management': True, 'order': 0}}, 'VL1': {'type': 'tosca.nodes.nfv.VL', 'properties': {'network_name': 'net_mgmt', 'vendor': 'ACME'}}}
+    mininfv> vnfd_template_show vnfd-userdata
+    {'VDU1': {'type': 'tosca.nodes.nfv.VDU.Tacker', 'properties': {'image': 'cirros-0.3.5-x86_64-disk', 'user_data_format': 'RAW', 'config': 'param0: key1\nparam1: key2\n', 'user_data': '#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n', 'mgmt_driver': 'noop'}, 'capabilities': {'nfv_compute': {'properties': {'mem_size': '512 MB', 'num_cpus': 1, 'disk_size': '1 GB'}}}}, 'CP1': {'type': 'tosca.nodes.nfv.CP.Tacker', 'requirements': [{'virtualLink': {'node': 'VL1'}}, {'virtualBinding': {'node': 'VDU1'}}], 'properties': {'anti_spoofing_protection': False, 'management': True, 'order': 0}}, 'VL1': {'type': 'tosca.nodes.nfv.VL', 'properties': {'network_name': 'net_mgmt', 'vendor': 'ACME'}}}
 
-mininfv> vnfd_delete vnfd-userdata
+    mininfv> vnfd_delete vnfd-userdata
 
-mininfv> vnfd_list
-vnfd-helloworld: Demo example
-```
+    mininfv> vnfd_list
+    vnfd-helloworld: Demo example
+    ```
 Or just source  [`vnfd_test`](/samples/topology/vnfd_test) from mininfv:
-```
-mininfv> source samples/topology/vnfd_test
-*** Creating vnfds userdata and hello-world ...
-*** Listing vnfds ...
-vnfd-helloworld: Demo example
-vnfd-userdata: Demo with user-data
+    ```
+    mininfv> source samples/topology/vnfd_test
+    *** Creating vnfds userdata and hello-world ...
+    *** Listing vnfds ...
+    vnfd-helloworld: Demo example
+    vnfd-userdata: Demo with user-data
 
-*** Showing vnf template ...
-{'tosca_definitions_version': 'tosca_simple_profile_for_nfv_1_0_0', 'metadata': {'template_name': 'sample-vnfd-userdata'}, 'description': 'Demo with user-data', 'topology_template': {'node_templates': {'VDU1': {'type': 'tosca.nodes.nfv.VDU.Tacker', 'properties': {'image': 'cirros-0.3.5-x86_64-disk', 'user_data_format': 'RAW', 'config': 'param0: key1\nparam1: key2\n', 'user_data': '#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\necho 1 > /proc/sys/net/ipv4/ip_forward\nip route add default via 192.168.120.10\n', 'mgmt_driver': 'noop'}, 'capabilities': {'nfv_compute': {'properties': {'mem_size': '512 MB', 'num_cpus': 1, 'disk_size': '1 GB'}}}}, 'CP1': {'type': 'tosca.nodes.nfv.CP.Tacker', 'requirements': [{'virtualLink': {'node': 'VL1'}}, {'virtualBinding': {'node': 'VDU1'}}], 'properties': {'anti_spoofing_protection': False, 'management': True, 'order': 0}}, 'VL1': {'type': 'tosca.nodes.nfv.VL', 'properties': {'network_name': 'net_mgmt', 'vendor': 'ACME'}}}}}
+    *** Showing vnf template ...
+    {'tosca_definitions_version': 'tosca_simple_profile_for_nfv_1_0_0', 'metadata': {'template_name': 'sample-vnfd-userdata'}, 'description': 'Demo with user-data', 'topology_template': {'node_templates': {'VDU1': {'type': 'tosca.nodes.nfv.VDU.Tacker', 'properties': {'image': 'cirros-0.3.5-x86_64-disk', 'user_data_format': 'RAW', 'config': 'param0: key1\nparam1: key2\n', 'user_data': '#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\necho 1 > /proc/sys/net/ipv4/ip_forward\nip route add default via 192.168.120.10\n', 'mgmt_driver': 'noop'}, 'capabilities': {'nfv_compute': {'properties': {'mem_size': '512 MB', 'num_cpus': 1, 'disk_size': '1 GB'}}}}, 'CP1': {'type': 'tosca.nodes.nfv.CP.Tacker', 'requirements': [{'virtualLink': {'node': 'VL1'}}, {'virtualBinding': {'node': 'VDU1'}}], 'properties': {'anti_spoofing_protection': False, 'management': True, 'order': 0}}, 'VL1': {'type': 'tosca.nodes.nfv.VL', 'properties': {'network_name': 'net_mgmt', 'vendor': 'ACME'}}}}}
 
-```
+    ```
 
-- **VNF creation/listing/removal**
-```
-$ sudo ./mininfv.py
-*** Configuring hosts
-*** Starting controller
-*** Starting 0 switches
-*** Starting CLI:
+ - **VNF creation/listing/removal**
+    ```
+    $ sudo ./mininfv.py
+    *** Configuring hosts
+    *** Starting controller
+    *** Starting 0 switches
+    *** Starting CLI:
 
-mininfv> vnf_<TAB>
-vnf_create  vnf_delete  vnf_list
+    mininfv> vnf_<TAB>
+    vnf_create  vnf_delete  vnf_list
 
-mininfv> vnf_create
-Use: vnf_create --vnfd-name <VNFD-NAME> <VNF-NAME>
-     vnf_create --vnfd-file <yaml file path> <VNFD-NAME>
-     vnf_create --vnfd-template <yaml file path> <VNFD-NAME>
-     
-mininfv> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
-*** Initializing VDU vnf-userdata ...
-*** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
+    mininfv> vnf_create
+    Use: vnf_create --vnfd-name <VNFD-NAME> <VNF-NAME>
+         vnf_create --vnfd-file <yaml file path> <VNFD-NAME>
+         vnf_create --vnfd-template <yaml file path> <VNFD-NAME>
 
-mininfv> nodes
-available nodes are: 
-c0 s192.168.1 vnfUD
+    mininfv> vnf_create --vnfd-file samples/vnfd/tosca-vnfd-userdata.yaml vnfUD
+    *** Initializing VDU vnf-userdata ...
+    *** user-data : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\ndf -h > /tmp/diskinfo\n',)
 
-mininfv> vnf_list
-['vnfUD']
+    mininfv> nodes
+    available nodes are: 
+    c0 s192.168.1 vnfUD
 
-mininfv> vnfUD ifconfig
-ud-eth0   Link encap:Ethernet  HWaddr 76:2c:90:f5:72:13  
-          inet addr:192.168.120.10  Bcast:192.168.120.255  Mask:255.255.255.0
-          inet6 addr: fe80::742c:90ff:fef5:7213/64 Scope:Link
-          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-          RX packets:41 errors:0 dropped:10 overruns:0 frame:0
-          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000 
-          RX bytes:6751 (6.7 KB)  TX bytes:648 (648.0 B)
+    mininfv> vnf_list
+    ['vnfUD']
 
-mininfv> vnf_delete vnf-userdata
+    mininfv> vnfUD ifconfig
+    ud-eth0   Link encap:Ethernet  HWaddr 76:2c:90:f5:72:13  
+              inet addr:192.168.120.10  Bcast:192.168.120.255  Mask:255.255.255.0
+              inet6 addr: fe80::742c:90ff:fef5:7213/64 Scope:Link
+              UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+              RX packets:41 errors:0 dropped:10 overruns:0 frame:0
+              TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+              collisions:0 txqueuelen:1000 
+              RX bytes:6751 (6.7 KB)  TX bytes:648 (648.0 B)
 
-mininfv> nodes
-available nodes are: 
-c0 s192.168.1
+    mininfv> vnf_delete vnf-userdata
 
-mininfv> vnf_list
-[]
-```
+    mininfv> nodes
+    available nodes are: 
+    c0 s192.168.1
+
+    mininfv> vnf_list
+    []
+    ```
 Or just source  [`vnf_test`](/samples/topology/vnf_test) from mininfv:
-```
-mininfv> source samples/topology/vnf_test
-*** Starting vnf <tosca-vnfd-userdata.yaml> ...
-*** Initializing VDU vnfUD ...
-*** vnfUD : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\necho 1 > /proc/sys/net/ipv4/ip_forward\nip route add default via 192.168.120.10\n',)
+    ```
+    mininfv> source samples/topology/vnf_test
+    *** Starting vnf <tosca-vnfd-userdata.yaml> ...
+    *** Initializing VDU vnfUD ...
+    *** vnfUD : ('#!/bin/sh\necho "my hostname is `hostname`" > /tmp/hostname\necho 1 > /proc/sys/net/ipv4/ip_forward\nip route add default via 192.168.120.10\n',)
 
-*** Listing vNF interfaces:
-vnfUD-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 192.168.120.10  netmask 255.255.255.0  broadcast 192.168.120.255
-        inet6 fe80::7032:2dff:fe89:175e  prefixlen 64  scopeid 0x20<link>
-        ether 72:32:2d:89:17:5e  txqueuelen 1000  (Ethernet)
-        RX packets 0  bytes 0 (0.0 B)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 0  bytes 0 (0.0 B)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+    *** Listing vNF interfaces:
+    vnfUD-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+            inet 192.168.120.10  netmask 255.255.255.0  broadcast 192.168.120.255
+            inet6 fe80::7032:2dff:fe89:175e  prefixlen 64  scopeid 0x20<link>
+            ether 72:32:2d:89:17:5e  txqueuelen 1000  (Ethernet)
+            RX packets 0  bytes 0 (0.0 B)
+            RX errors 0  dropped 0  overruns 0  frame 0
+            TX packets 0  bytes 0 (0.0 B)
+            TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-*** Listing nodes:
-available nodes are: 
-c0 s192.168.1 vnfUD
-```
+    *** Listing nodes:
+    available nodes are: 
+    c0 s192.168.1 vnfUD
+    ```
 
 - **Adding hosts to the topology**
 ```
