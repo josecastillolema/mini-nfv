@@ -280,7 +280,7 @@ VNF Manager Use
     mininfv> vnfd_list
     vnfd-helloworld: Demo example
     ```
-Or just source  [`vnfd_test`](/samples/topology/vnfd_test) from mininfv:
+    Or just source  [`vnfd_test`](/samples/topology/vnfd_test) from mininfv:
     ```
     mininfv> source samples/topology/vnfd_test
     *** Creating vnfds userdata and hello-world ...
