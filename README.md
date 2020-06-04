@@ -249,7 +249,7 @@ NXST_FLOW reply (xid=0x4):
 VNF Manager Use
 --------------
 
- - **VNFD creation/listing/removal/template**
+ - **VNFD creation/listing/removal/template show**
 
     ```
     $ sudo ./mininfv.py
