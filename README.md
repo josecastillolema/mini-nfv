@@ -44,7 +44,7 @@ NFVO Orquestrator
 
 Mini-nfv supports:
 - Jinja2 templating, to automate the scale-out of vNF deplyments and NFV orquestration graphs within the TOSCA templates
-- network definition via VL [&#8629;](/README.md#network-definition)
+- network definition via VL [&#8629;](#network-definition)
 - IP/mac definition via CP [&#8629;](/README.md#ipmac-definition)
 - emulation of num CPUs and flavor properties through Mininet's CPULimitedHost [&#8629;](/README.md#flavor-and-number-of-cpus)
 - cloud-init scripts [&#8629;](/README.md#cloud-init)
