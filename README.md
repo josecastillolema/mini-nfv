@@ -68,7 +68,7 @@ If not specified otherwise, mini-nfv will create 3 standards networks:
 - net0: 10.10.0.0/24
 - net1: 10.10.1.0/24
 
-It is also possible to manually define the networks, within the Virtual Link (VL) definition, see [tosca-vnfd-network.yaml](/samples/vnfd/tosca-vnfd-network.yaml):
+It is also possible to manually define the networks, within the Virtual Link (VL) definition, see [tosca-vnfd-network.yaml](https://github.com/josecastillolema/mini-nfv/blob/master/samples/vnfd/tosca-vnfd-network.yaml):
 ```
     VL2:
       type: tosca.nodes.nfv.VL
@@ -85,7 +85,7 @@ It is also possible to manually define the networks, within the Virtual Link (VL
 IP/MAC definition
 --------------
 If not specified otherwise, mini-nfv will assign random IPs within the defined networks.
-However, it is also possibly to manually define IP/MAC for a VNF, within the Connection Point (CP) definition, see [tosca-vnfd-mac-ip.yaml](/samples/vnfd/tosca-vnfd-mac-ip.yaml):
+However, it is also possibly to manually define IP/MAC for a VNF, within the Connection Point (CP) definition, see [tosca-vnfd-mac-ip.yaml](https://github.com/josecastillolema/mini-nfv/blob/master/samples/vnfd/tosca-vnfd-mac-ip.yaml):
 ```
     CP1:
       type: tosca.nodes.nfv.CP.Tacker
@@ -134,7 +134,7 @@ Mini-nfv will assign 1/(8-num_cpus))) to each VNF.
 
 Cloud-init
 --------------
-Mini-nfv supports VNFs configuration through user-data, see [tosca-vnfd-userdata.yaml](/samples/vnfd/tosca-vnfd-userdata.yaml):
+Mini-nfv supports VNFs configuration through user-data, see [tosca-vnfd-userdata.yaml](https://github.com/josecastillolema/mini-nfv/blob/master/samples/vnfd/tosca-vnfd-userdata.yaml):
 ```
     VDU1:
       type: tosca.nodes.nfv.VDU.Tacker
@@ -280,7 +280,7 @@ VNF Manager Use
     mininfv> vnfd_list
     vnfd-helloworld: Demo example
     ```
-    Or just source  [`vnfd_test`](/samples/topology/vnfd_test) from mininfv:
+    Or just source  [`vnfd_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnfd_test) from mininfv:
     ```
     mininfv> source samples/topology/vnfd_test
     *** Creating vnfds userdata and hello-world ...
@@ -339,7 +339,7 @@ VNF Manager Use
     mininfv> vnf_list
     []
     ```
-    Or just source  [`vnf_test`](/samples/topology/vnf_test) from mininfv:
+    Or just source  [`vnf_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/vnf_test) from mininfv:
     ```
     mininfv> source samples/topology/vnf_test
     *** Starting vnf <tosca-vnfd-userdata.yaml> ...
@@ -411,7 +411,7 @@ VNF Manager Use
     3 packets transmitted, 3 received, 0% packet loss, time 2032ms
     rtt min/avg/max/mdev = 0.142/1.270/2.934/1.201 ms
     ```
-    Or just source  [`host_test`](/samples/topology/host_test) from mininfv:
+    Or just source  [`host_test`](https://github.com/josecastillolema/mini-nfv/blob/master/samples/topology/host_test) from mininfv:
     ```
     mininfv> source samples/topology/host_test
     *** Creating host h1 with two interfaces ...
