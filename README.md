@@ -157,16 +157,16 @@ APT dependencies:
 - python-yaml (it can also be installed via `pip`)
 
 ```
-pip install -r ./requirements.txt
+$ pip install -r ./requirements.txt
 ```
 If you are running Ubuntu 16.04, the `openvswitch-ovscontroller` was recently renamed to `openvswitch-testcontroller`.
 To solve it, you need to create a symbolic link to `ovs-testcontroller` that is called `ovs-controller`.
 ```
-sudo ln /usr/bin/ovs-testcontroller /usr/bin/ovs-controller
+$ sudo ln /usr/bin/ovs-testcontroller /usr/bin/ovs-controller
 ```
 In Ubuntu 18.04 `openvswitch-testcontroller` must be stopped before running mini-nfv in standalone mode.
 ```
-sudo systemctl stop openvswitch-testcontroller.service
+$ sudo systemctl stop openvswitch-testcontroller.service
 ```
 
 mini-nfv use
@@ -184,8 +184,8 @@ Options:
 ```
 Whithou any explicit options mininfv runs mininet with its default controller. This way can be usefull to test the VNF Manager functionality with full connectivity between VNFs hosts and NFV Orchestration capabilities without the need of running POX, Ryu or other SDN controller. However, if you wish to include a SDN controller into your experiments mininfv must be run with the `--controller=remote` option alongside with the controller running in the background, for example:
 ```
-./pox.py pox.forwarding.l3_learning openflow.discovery                              or
-./pox.py log.level --DEBUG pox.forwarding.l3_learning openflow.discovery           (debug mode)
+$ ./pox.py pox.forwarding.l3_learning openflow.discovery                              or
+$ ./pox.py log.level --DEBUG pox.forwarding.l3_learning openflow.discovery           (debug mode)
 ```
 
 mini-nfv debugging
