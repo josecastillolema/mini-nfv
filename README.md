@@ -1,3 +1,4 @@
+![GitHub followers](https://img.shields.io/github/followers/josecastillolema?style=social)
 ![GitHub](https://img.shields.io/github/license/josecastillolema/mini-nfv)
 [![Requirements Status](https://requires.io/github/josecastillolema/mini-nfv/requirements.svg?branch=master)](https://requires.io/github/josecastillolema/mini-nfv/requirements/?branch=master)
 ![GitHub top language](https://img.shields.io/github/languages/top/josecastillolema/mini-nfv)
