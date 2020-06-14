@@ -1,5 +1,5 @@
-![GitHub language count](https://img.shields.io/github/languages/count/josecastillolema/josecastillolema.github.io)
-![GitHub top language](https://img.shields.io/github/languages/top/josecastillolema/josecastillolema.github.io)
+![GitHub language count](https://img.shields.io/github/languages/count/josecastillolema/mini-nfv)
+![GitHub top language](https://img.shields.io/github/languages/top/josecastillolema/mini-nfv)
 
 # mini-nfv
 Mini-nfv is a framework for NFV Orchestration with a general purpose VNF Manager to deploy and operate Virtual Network Functions (VNFs) and Network Services on Mininet. It is based on ETSI MANO Architectural Framework.
