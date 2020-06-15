@@ -160,10 +160,10 @@ Dependencies
 Mini-nfv was tested on Ubuntu 14.04, 16.04 and 18.04.
 
 APT dependencies:
-- mininet
-- openvswitch-testcontroller (in Ubuntu 16.04 and 18.04)
-- python-netaddr (it can also be installed via `pip`)
-- python-yaml (it can also be installed via `pip`)
+- `mininet`
+- `openvswitch-testcontroller` (in Ubuntu 16.04 and 18.04)
+- `python-netaddr` (it can also be installed via `pip`)
+- `python-yaml` (it can also be installed via `pip`)
 
 ```
 $ pip install -r ./requirements.txt
