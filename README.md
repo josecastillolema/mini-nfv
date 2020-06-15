@@ -165,9 +165,16 @@ APT dependencies:
 - `python-netaddr` (it can also be installed via `pip`)
 - `python-yaml` (it can also be installed via `pip`)
 
+#### Via pip
 ```
 $ pip install -r ./requirements.txt
 ```
+
+#### Via pipenv
+```
+$ pipenv install
+```
+
 If you are running Ubuntu 16.04, the `openvswitch-ovscontroller` was recently renamed to `openvswitch-testcontroller`.
 To solve it, you need to create a symbolic link to `ovs-testcontroller` that is called `ovs-controller`.
 ```
