@@ -32,7 +32,19 @@ In the OpenStack world, Tacker is the project implementing a generic VNFM and NF
 
 On the other hand, Mininet has shown itself as a great tool for agile network/SDN/NFV experimentation. The goal of mini-nfv is to alleviate the developers’ tedious task of setting up a whole service chaining environment and let them focus on their own work (e.g., developing a particular VNF, prototyping, implementing an orchestration algorithm or a customized traffic steering).
 
-On top of that, mini-nfv supports [Jinja2](http://jinja.pocoo.org/docs/2.10/), a full featured and designer-friendly template engine for Python, with an integrated sandboxed execution environment. This way, developers can easily automate the scale-out of vNF deployments and NFV orquestration graphs within the TOSCA templates.
+On top of that, mini-nfv supports [Jinja2](http://jinja.pocoo.org/docs/2.10/), a full featured and designer-friendly template engine for Python, with an integrated sandboxed execution environment. This way, developers can easily automate the scale-out of vNF deployments and NFV orquestration graphs within the TOSCA templates. Inside the TOSCA templates, variables or expres- sions can be defined, as in for example:
+```
+ip_dst_prefix: ’{{ ip_dst }}’
+```
+It is also possible to define tags, which control the logic of the template:
+```
+{% ip_masq == 24 %}
+```
+Variables will then be replaced with values when the templates are rendered. This can be done interactively through mini-nfv CLI, as in:
+```
+px import yaml; net.values=yaml.load (’---\nip_dst: 10.0.40.10/24’)
+```
+Like this, using only one parametrized template it is possible to deploy any number of VNFs/VNFDs/VNFFGs with varying parameters.
 
 Characteristics
 --------------
@@ -525,6 +537,3 @@ NFV Orchestrator Use
 
     In the xterm window of the vnfUD we opened at step 11, if we sniff the interface we can see the http and icmp traffic corresponding to the curl and ping passing through the VNF interface:
 ![Screenshot of the VNF xterm](https://raw.githubusercontent.com/josecastillolema/mini-nfv/master/doc/img/screendshot_vnfUD.png)
-
-
-
