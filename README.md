@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/116139340.svg)](https://zenodo.org/badge/latestdoi/116139340)
 ![GitHub](https://img.shields.io/github/license/josecastillolema/mini-nfv)
 ![GitHub top language](https://img.shields.io/github/languages/top/josecastillolema/mini-nfv)
 ![GitHub Pipenv locked Python version](https://img.shields.io/github/pipenv/locked/python-version/josecastillolema/mini-nfv)
