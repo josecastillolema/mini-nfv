@@ -1,4 +1,5 @@
 [![DOI](https://zenodo.org/badge/116139340.svg)](https://zenodo.org/badge/latestdoi/116139340)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/josecastillolema/mini-nfv)
 ![GitHub top language](https://img.shields.io/github/languages/top/josecastillolema/mini-nfv)
 ![GitHub Pipenv locked Python version](https://img.shields.io/github/pipenv/locked/python-version/josecastillolema/mini-nfv)
 ![GitHub Pipenv locked dependency version](https://img.shields.io/github/pipenv/locked/dependency-version/josecastillolema/mini-nfv/netaddr)
