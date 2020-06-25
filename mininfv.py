@@ -29,21 +29,24 @@ SWITCH = {}
 PORTS = defaultdict(list)
 INC = 10
 
+
 def parse_tosca(path):
     "Parses the yaml file corresponding to the TOSCA vnfd ou vnnffgg template."
     try:
         yaml_file = open(path, 'r')
     except IOError:
-        print 'File does not exist'
+        print('File does not exist')
         return None
     content = yaml_file.read()
     parsed_file = yaml.load(content)
     return parsed_file
 
+
 class MyTopo(Topo):
     "Creates the mininet topology"
     def __init__(self, **opts):
         Topo.__init__(self, **opts)
+
 
 def configure_network(net, vnfd, host):
     "Configures the networks."
@@ -98,6 +101,7 @@ def configure_network(net, vnfd, host):
         net.addLink('s1', host1)
         PORTS['s1'].append(host1)
 
+
 def configure_host(net, vnfd, host):
     "Configures the host."
     host1 = net.getNodeByName(host)
@@ -123,19 +127,20 @@ def configure_host(net, vnfd, host):
                     start_ip = topo['VL%s' % i]['properties']['start_ip']
                     ip_address = '%s/%s' % (start_ip, cidr.prefixlen)
                 else:
-                    ip_address = str(cidr.ip+INC)+'/%s' % cidr.prefixlen
+                    ip_address = str(cidr.ip + INC) + '/%s' % cidr.prefixlen
                     INC += 1
             else:
-                ip_address = '10.0.%s.%s/24' %(i, INC)
+                ip_address = '10.0.%s.%s/24' % (i, INC)
                 INC += 1
-        host1.setIP(ip_address, intf=host+'-eth%s' % (i-1))
-        c =  netaddr.IPNetwork(ip_address)
-        host1.cmd('ip route add default via %s' % netaddr.IPAddress(c.first+1))
+        host1.setIP(ip_address, intf=host + '-eth%s' % (i - 1))
+        c = netaddr.IPNetwork(ip_address)
+        host1.cmd('ip route add default via %s' % netaddr.IPAddress(c.first + 1))
         PORTS[host].append(ip_address)
         if topo['CP%s' % i]['properties'].has_key('mac_address'):
             mac_address = topo['CP%s' % i]['properties']['mac_address']
-            host1.setMAC(mac_address, intf=host+'-eth%s' % (i-1))
+            host1.setMAC(mac_address, intf=host + '-eth%s' % (i - 1))
         i += 1
+
 
 def configure_host2(net, ips, host):
     "Configures the host."
@@ -143,10 +148,11 @@ def configure_host2(net, ips, host):
     for i in range(len(ips)):
         ip_address = netaddr.IPNetwork(ips[i])
         ip_address_final = '%s/%s' % (ip_address.ip, ip_address.prefixlen)
-        host1.setIP(ip_address_final, intf=host+'-eth%s' % i)
-        host1.cmd('ip route add default via %s' % netaddr.IPAddress(ip_address.first+1))
+        host1.setIP(ip_address_final, intf=host + '-eth%s' % i)
+        host1.cmd('ip route add default via %s' % netaddr.IPAddress(ip_address.first + 1))
         PORTS[host].append(ip_address)
         PORTS[host].append(ip_address_final)
+
 
 def list_ports(self, line):
     "List all ports."
@@ -157,11 +163,12 @@ def list_ports(self, line):
         if i[0] == 's':
             output('%s ' % i)
             for j in PORTS[i]:
-                output ('%s ' % j.IP())
+                output('%s ' % j.IP())
         else:
             output(i, PORTS[i])
         output('\n')
     return None
+
 
 def find_port(ip_address):
     "Returns the host of the port if the port exists."
@@ -170,16 +177,18 @@ def find_port(ip_address):
             return i
     return None
 
+
 def find_port2(ip_address):
     "Returns the number of the port in the swtich if the port exists."
     for i in PORTS:
         if i[0] == 's':
-            port_number=1
+            port_number = 1
             for j in PORTS[i]:
                 if j.IP() == str(ip_address):
                     return port_number
                 port_number += 1
     return None
+
 
 def find_port3(host, ip_src, ip_dst):
     "Returns the IP of the host if the host exists."
@@ -189,6 +198,7 @@ def find_port3(host, ip_src, ip_dst):
             if i2.cidr == ip_src.cidr or i2.cidr == ip_dst.cidr:
                 return i2.ip
     return None
+
 
 def add_host(self, line):
     "Adds a host to the mininet topology."
@@ -229,6 +239,7 @@ def add_host(self, line):
     configure_host2(net, ips, host_name)
     return None
 
+
 def cloud_init(net, vnfd, host_name):
     "Configures the networks."
     host = net.getNodeByName(host_name)
@@ -237,6 +248,7 @@ def cloud_init(net, vnfd, host_name):
     host.cmdPrint(cloudinit)
 
 # VNFD
+
 
 def vnfd_create(self, line, jinja=False):
     "Creates vnfd from template."
@@ -253,10 +265,12 @@ def vnfd_create(self, line, jinja=False):
             output('<VNFD-NAME> already in use\n')
     return None
 
+
 def vnfd_create_jinja(self, line):
     "Creates vnfd using jinja template."
     vnfd_create(self, line, jinja=True)
     return None
+
 
 def vnfd_list(self, line):
     "Lists all VNFD uploaded."
@@ -265,8 +279,9 @@ def vnfd_list(self, line):
         return None
     for i in VNFD:
         output('%s: %s\n' % (i, VNFD[i]['description']))
-    #output('%s' % VNFD.keys() + '\n')
+    # output('%s' % VNFD.keys() + '\n')
     return None
+
 
 def vnfd_delete(self, line):
     "Deletes a given vnfd."
@@ -280,6 +295,7 @@ def vnfd_delete(self, line):
         output('<VNFD-NAME> does not exist\n')
     return None
 
+
 def vnfd_template_show(self, line):
     "Shows the template of a given vnfd."
     if len(line.split()) != 1:
@@ -287,10 +303,11 @@ def vnfd_template_show(self, line):
         output('Use: vnfd_template_show <VNFD-NAME>\n')
         return None
     vnfd_name = line.split()[0]
-    output(('%s' % VNFD[vnfd_name])+'\n')
+    output(('%s' % VNFD[vnfd_name]) + '\n')
     return None
 
 # VNF
+
 
 def vnf_create(self, line, jinja=False):
     "Creates vnf from vnfd previously created or directly from template."
@@ -304,9 +321,9 @@ def vnf_create(self, line, jinja=False):
         file_path = line.split()[1]
         vnfd = parse_tosca(file_path)
         if jinja:
-            template=Template(str(vnfd))
-            print 'template jinja',
-            print "{}".format(template.render(net.values))
+            template = Template(str(vnfd))
+            print('template jinja',)
+            print("{}".format(template.render(net.values)))
     else:  # --vnfd-name
         vnfd_name = line.split()[1]
         vnfd = VNFD[vnfd_name]
@@ -325,14 +342,17 @@ def vnf_create(self, line, jinja=False):
         return None
     return None
 
+
 def vnf_create_jinja(self, line):
     "Creates vnf using jinja templates."
     vnf_create(self, line, jinja=True)
     return None
 
+
 def vnf_list(self, line):
     "Lists all vnfs created."
     output('%s' % VNFS + '\n')
+
 
 def vnf_delete(self, line):
     "Deletes a given vnf."
@@ -350,6 +370,7 @@ def vnf_delete(self, line):
     return None
 
 # VNFFG
+
 
 def configure_vnffg(net, vnffg, vnffg_name, binds):
     "NFV Orchestration function."
@@ -369,7 +390,7 @@ def configure_vnffg(net, vnffg, vnffg_name, binds):
                     output('ip_src_prefix ,' + ip_src + '> not exists in current environment\n')
                     return
                 ip_src = netaddr.IPNetwork(ip_src)
-                #ip_address_final = '%s/%s' % (ip_address.ip, ip_address.prefixlen)
+                # ip_address_final = '%s/%s' % (ip_address.ip, ip_address.prefixlen)
             elif criteria[i].has_key('ip_dst_prefix'):
                 ip_dst = criteria[i]['ip_dst_prefix']
                 if not find_port(ip_dst):
@@ -398,7 +419,7 @@ def configure_vnffg(net, vnffg, vnffg_name, binds):
         if criteria[i].has_key('destination_port_range'):
             port_range = criteria[0]['destination_port_range']
 
-    print 'vnfs0', binds[1], 'ip_src', ip_src, 'ip_dst', ip_dst
+    print('vnfs0', binds[1], 'ip_src', ip_src, 'ip_dst', ip_dst)
     vnf = binds[1]
     vnf = net.getNodeByName(vnf)
 
@@ -406,36 +427,38 @@ def configure_vnffg(net, vnffg, vnffg_name, binds):
     port_dst = find_port2(ip_dst.ip)
     port_vnf = find_port2(find_port3(forwarder, ip_src, ip_dst))
     VNFFGS.append(vnffg_name)
-    print ip_src.ip, find_port2(ip_src.ip), ip_dst.ip, port_dst, forwarder, port_vnf
+    print(ip_src.ip, find_port2(ip_src.ip), ip_dst.ip, port_dst, forwarder, port_vnf)
     if MULTSWITCHES:
-        #command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=192.168.120.1,actions=output:2,3'
+        # command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=192.168.120.1,actions=output:2,3'
         command2 = "ovs-ofctl add-flow s192.168.1 priority=1,arp,actions=flood"
         command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s,%s' % (ip_src.ip, port_dst, port_vnf)
-        #command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s' % (ip_src.ip, port_vnf)
-        #command2 = 'sudo ovs-ofctl mod-flows s192.168.1 in_port=%s,actions=output:%s' % (port_vnf, port_dst)
-        #command3 = 'sudo ovs-ofctl mod-flows s192.168.1 arp,in_port="s192.168.1-eth4",vlan_tci=0x0000/0x1fff,dl_src=12:b9:d1:5d:26:5e,dl_dst=1e:29:c2:41:d5:02,arp_spa=192.168.120.2,arp_tpa=192.168.120.1,arp_op=2,actions=output:"s192.168.1-eth3"'
+        # command = 'sudo ovs-ofctl mod-flows s192.168.1 ip,nw_src=%s,actions=output:%s' % (ip_src.ip, port_vnf)
+        # command2 = 'sudo ovs-ofctl mod-flows s192.168.1 in_port=%s,actions=output:%s' % (port_vnf, port_dst)
+        # command3 = 'sudo ovs-ofctl mod-flows s192.168.1 arp,in_port="s192.168.1-eth4",vlan_tci=0x0000/0x1fff,dl_src=12:b9:d1:5d:26:5e,dl_dst=1e:29:c2:41:d5:02,arp_spa=192.168.120.2,arp_tpa=192.168.120.1,arp_op=2,actions=output:"s192.168.1-eth3"'
         s2 = subprocess.check_output(command2, shell=True)
         s = subprocess.check_output(command, shell=True)
-        #s3 = subprocess.check_output(command2, shell=True)
-        print s, s2
+        # s3 = subprocess.check_output(command2, shell=True)
+        print(s, s2)
     else:
-        vnf.cmdPrint('ip addr add %s/24 brd + dev %s-eth0' % (netaddr.IPAddress(netaddr.IPNetwork(ip_src).first+1), binds[1]))
-        vnf.cmdPrint('ip addr add %s/24 brd + dev %s-eth0' % (netaddr.IPAddress(netaddr.IPNetwork(ip_dst).first+1), binds[1]))
+        vnf.cmdPrint('ip addr add %s/24 brd + dev %s-eth0' % (netaddr.IPAddress(netaddr.IPNetwork(ip_src).first + 1), binds[1]))
+        vnf.cmdPrint('ip addr add %s/24 brd + dev %s-eth0' % (netaddr.IPAddress(netaddr.IPNetwork(ip_dst).first + 1), binds[1]))
         vnf.cmdPrint("echo 1 > /proc/sys/net/ipv4/ip_forward")
-        #s1 = net.getNodeByName('s1')
-        #s1.cmdPrint('ovs-ofctl add-flow s1 priority=1,arp,actions=flood')
-        #s1.cmdPrint("ovs-ofctl add-flow s1 priority=65535,ip,dl_dst=00:00:00:00:01:00,actions=output:1")
-        #s1.cmdPrint("ovs-ofctl add-flow s1 priority=10,ip,nw_dst=10.0.10.0/24,actions=output:2")
-        #s1.cmdPrint("ovs-ofctl add-flow s1 priority=10,ip,nw_dst=10.0.20.0/24,actions=output:3")
+        # s1 = net.getNodeByName('s1')
+        # s1.cmdPrint('ovs-ofctl add-flow s1 priority=1,arp,actions=flood')
+        # s1.cmdPrint("ovs-ofctl add-flow s1 priority=65535,ip,dl_dst=00:00:00:00:01:00,actions=output:1")
+        # s1.cmdPrint("ovs-ofctl add-flow s1 priority=10,ip,nw_dst=10.0.10.0/24,actions=output:2")
+        # s1.cmdPrint("ovs-ofctl add-flow s1 priority=10,ip,nw_dst=10.0.20.0/24,actions=output:3")
+
 
 def read_binding(binding):
     "Translates something in the form VNF:'vnf' into ('VNF', 'vnf')"
     return (binding.split(':')[0], binding.split(':')[1].replace("'", ''))
 
+
 def vnffg_create(self, line, jinja=False):
     "Creates vnffg from previously defined vnffgd or directly from template."
     net = self.mn
-    #if len(line.split()) != 7:
+    # if len(line.split()) != 7:
     #    print 'problema e tamanho'
     #    print line.split()[0]
     if len(line.split()) != 7 or line.split()[0] not in ['--vnffgd-name', '--vnffgd-template'] or line.split()[2] != '--vnf-mapping' or line.split()[4] != '--symmetrical':
@@ -447,13 +470,13 @@ def vnffg_create(self, line, jinja=False):
     if line.split()[0] == '--vnffgd-template':
         file_path = line.split()[1]
         vnffg = parse_tosca(file_path)
-        #print 'antes: ', vnffg
+        # print 'antes: ', vnffg
         if jinja:
-            template=Template(str(vnffg))
-            #print 'template jinja',
-            #print "{}".format(template.render(net.values))
+            template = Template(str(vnffg))
+            # print 'template jinja',
+            # print "{}".format(template.render(net.values))
             vnffg = yaml.load("{}".format(template.render(net.values)))
-            #print 'despues: ', vnffg
+            # print 'despues: ', vnffg
     else:  # --vnffg-name
         vnffg_name = line.split()[1]
         vnffg = VNFFGD[vnffg_name]
@@ -463,19 +486,22 @@ def vnffg_create(self, line, jinja=False):
         if vnffg_name in VNFFGS:
             output('<VNFFG-NAME> already in use\n')
             return None
-        #VNFFGS.append(vnffg_name)
+        # VNFFGS.append(vnffg_name)
         configure_vnffg(net, vnffg, vnffg_name, binds)
         return None
     return None
+
 
 def vnffg_create_jinja(self, line):
     "Creates vnffg using jinja templates."
     vnffg_create(self, line, jinja=True)
     return None
 
+
 def vnffg_list(self, line):
     "Lists all vnffgs created."
     output('%s' % VNFFGS + '\n')
+
 
 def vnffg_delete(self, line):
     "Deletes a given vnffg."
@@ -492,10 +518,12 @@ def vnffg_delete(self, line):
         output('<VNFFG-NAME> does not exist\n')
     return None
 
+
 def do_print(self, line):
     "Prints a given line."
     output(line + '\n')
     return None
+
 
 if __name__ == '__main__':
     setLogLevel('info')
@@ -519,7 +547,7 @@ Options:
         elif sys.argv[1] == '--multipleswitches':
             STANDALONE = True
             MULTSWITCHES = True
-            print 'true'
+            print('true')
         else:
             sys.exit(usage)
     else:
@@ -533,7 +561,7 @@ Options:
     else:
         NET = Mininet(topo=TOPO, link=TCLink, controller=RemoteController)
     if not MULTSWITCHES:
-        NET.addSwitch('s1')   
+        NET.addSwitch('s1')
     NET.start()
     CLI.do_add_host = add_host
     CLI.do_list_ports = list_ports
