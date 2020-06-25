@@ -180,12 +180,12 @@ APT dependencies:
 - `python-netaddr` (it can also be installed via `pip`)
 - `python-yaml` (it can also be installed via `pip`)
 
-#### Via pip
+### Via pip
 ```
 $ pip install -r ./requirements.txt
 ```
 
-#### Via pipenv
+### Via pipenv
 ```
 $ pipenv install
 ```
