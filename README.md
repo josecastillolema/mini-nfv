@@ -9,6 +9,7 @@
 ![GitHub](https://img.shields.io/github/license/josecastillolema/mini-nfv)
 [![Requirements Status](https://requires.io/github/josecastillolema/mini-nfv/requirements.svg?branch=master)](https://requires.io/github/josecastillolema/mini-nfv/requirements/?branch=master)
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/josecastillolema/mini-nfv)
+![Python application](https://github.com/josecastillolema/mini-nfv/workflows/Python%20application/badge.svg)
 
 # mini-nfv
 Mini-nfv is a framework for NFV Orchestration with a general purpose VNF Manager to deploy and operate Virtual Network Functions (VNFs) and Network Services on Mininet. It is based on ETSI MANO Architectural Framework.
