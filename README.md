@@ -8,7 +8,7 @@
 ![GitHub Pipenv locked dependency version](https://img.shields.io/github/pipenv/locked/dependency-version/josecastillolema/mini-nfv/jinja2)
 ![GitHub](https://img.shields.io/github/license/josecastillolema/mini-nfv)
 [![Requirements Status](https://requires.io/github/josecastillolema/mini-nfv/requirements.svg?branch=master)](https://requires.io/github/josecastillolema/mini-nfv/requirements/?branch=master)
-![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/josecastillolema/mini-nfv)
+#![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/josecastillolema/mini-nfv)
 ![Python application](https://github.com/josecastillolema/mini-nfv/workflows/Python%20application/badge.svg)
 
 # mini-nfv
