@@ -1,4 +1,6 @@
 [![DOI](https://zenodo.org/badge/116139340.svg)](https://zenodo.org/badge/latestdoi/116139340)
+[![DOI:10.1109/NETSOFT.2019.8806686](https://zenodo.org/badge/DOI/10.1109/NETSOFT.2019.8806686.svg)](https://doi.org/10.1109/NETSOFT.2019.8806686)
+
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/josecastillolema/mini-nfv)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/josecastillolema/mini-nfv)
 ![GitHub top language](https://img.shields.io/github/languages/top/josecastillolema/mini-nfv)
