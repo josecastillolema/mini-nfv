@@ -1,6 +1,4 @@
 [![DOI](https://zenodo.org/badge/116139340.svg)](https://zenodo.org/badge/latestdoi/116139340)
-[![DOI:10.1109/NETSOFT.2019.8806686](https://zenodo.org/badge/DOI/10.1109/NETSOFT.2019.8806686.svg)](https://doi.org/10.1109/NETSOFT.2019.8806686)
-
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/josecastillolema/mini-nfv)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/josecastillolema/mini-nfv)
 ![GitHub top language](https://img.shields.io/github/languages/top/josecastillolema/mini-nfv)
@@ -30,6 +28,7 @@ Mini-nfv uses TOSCA for VNF meta-data definition. Within TOSCA, mini-nfv uses NF
 Publications
 --------------
 - [José Castillo-Lema, Augusto Venâncio Neto, Flávio de Oliveira, Sergio Takeo Kofuji. "Mininet-NFV: Evolving Mininet with OASIS TOSCA NVF profiles Towards Reproducible NFV Prototyping". In 2019 IEEE Conference on Network Softwarization (NetSoft), June 2019.](https://ieeexplore.ieee.org/document/8806686)
+[![DOI:10.1109/NETSOFT.2019.8806686](https://zenodo.org/badge/DOI/10.1109/NETSOFT.2019.8806686.svg)](https://doi.org/10.1109/NETSOFT.2019.8806686)
 - [José Castillo-Lema. "A generic Network Function Virtualization Manager and Orchestrator (NFV MANO) for Content-Centric Networks". Polytechnic School of the University of São Paulo, October 2019.](https://teses.usp.br/teses/disponiveis/3/3142/tde-23102019-120559/pt-br.php)
 
 Use cases
