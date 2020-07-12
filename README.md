@@ -40,6 +40,8 @@ In the OpenStack world, Tacker is the project implementing a generic VNFM and NF
 
 On the other hand, Mininet has shown itself as a great tool for agile network/SDN/NFV experimentation. The goal of mini-nfv is to alleviate the developers’ tedious task of setting up a whole service chaining environment and let them focus on their own work (e.g., developing a particular VNF, prototyping, implementing an orchestration algorithm or a customized traffic steering).
 
+### Automation / Jinja2 support
+
 On top of that, mini-nfv supports [Jinja2](http://jinja.pocoo.org/docs/2.10/), a full featured and designer-friendly template engine for Python, with an integrated sandboxed execution environment. This way, developers can easily automate the scale-out of vNF deployments and NFV orquestration graphs within the TOSCA templates. Inside the TOSCA templates, variables or expres- sions can be defined, as in for example:
 ```
 ip_dst_prefix: ’{{ ip_dst }}’
