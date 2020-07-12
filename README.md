@@ -23,8 +23,8 @@ Mini-nfv uses TOSCA for VNF meta-data definition. Within TOSCA, mini-nfv uses NF
 - TOSCA YAML
     - YAML Simple Profile: [http://docs.oasis-open.org/tosca/TOSCA-Simple-Profile-YAML/v1.1/csprd02/TOSCA-Simple-Profile-YAML-v1.1-csprd02.html](http://docs.oasis-open.org/tosca/TOSCA-Simple-Profile-YAML/v1.1/csprd02/TOSCA-Simple-Profile-YAML-v1.1-csprd02.html)
 - TOSCA NFV Profile:
-    - Latest spec is available here: [https://www.oasis-open.org/committees/document.php?document_id=56577&wg_abbrev=tosca](https://www.oasis-open.org/committees/document.php?document_id=56577&wg_abbrev=tosca)
-    - Current latest (as of Oct 2015) is: [https://www.oasis-open.org/committees/download.php/56577/tosca-nfv-v1.0-wd02-rev03.doc](https://www.oasis-open.org/committees/download.php/56577/tosca-nfv-v1.0-wd02-rev03.doc)
+    - Spec is available here: [https://www.oasis-open.org/committees/document.php?document_id=56577&wg_abbrev=tosca](https://www.oasis-open.org/committees/document.php?document_id=56577&wg_abbrev=tosca)
+    - Download: [https://www.oasis-open.org/committees/download.php/56577/tosca-nfv-v1.0-wd02-rev03.doc](https://www.oasis-open.org/committees/download.php/56577/tosca-nfv-v1.0-wd02-rev03.doc)
 
 Publications
 --------------
