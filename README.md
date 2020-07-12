@@ -74,7 +74,7 @@ NFVO Orquestrator
 - Symmetrical and asymmetrical traffic from and to the VNFs! (currently Tacker/OpenStack VIM driver only support asymmetrical unidirectional traffic)
 
 Mini-nfv supports:
-- Jinja2 templating, to automate the scale-out of vNF deplyments and NFV orquestration graphs within the TOSCA templates [&#8629;](#automation-jinja2-support)
+- Jinja2 templating, to automate the scale-out of vNF deplyments and NFV orquestration graphs within the TOSCA templates [&#8629;](#automation--jinja2-support)
 - network definition via VL [&#8629;](#network-definition)
 - IP/mac definition via CP [&#8629;](#ipmac-definition)
 - emulation of num CPUs and flavor properties through Mininet's CPULimitedHost [&#8629;](#flavor-and-number-of-cpus)
