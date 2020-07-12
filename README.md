@@ -82,9 +82,9 @@ Mini-nfv supports:
 
 Mini-nfv ignores:
 - RAM and disk properties
-- floating ips
+- Floating IPs
 - NUMA topology
-- SRiOV
+- SR-IOV
 
 Mini-nfv has not implemented (yet):
 - Monitoring/autoscaling of VNFs
