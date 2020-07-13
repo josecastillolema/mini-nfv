@@ -32,7 +32,7 @@ Publications
 [![DOI:10.1109/NETSOFT.2019.8806686](https://zenodo.org/badge/DOI/10.1109/NETSOFT.2019.8806686.svg)](https://doi.org/10.1109/NETSOFT.2019.8806686)
 - [José Castillo-Lema. "**A generic Network Function Virtualization Manager and Orchestrator (NFV MANO) for Content-Centric Networks**". Polytechnic School of the University of São Paulo, October 2019.](https://teses.usp.br/teses/disponiveis/3/3142/tde-23102019-120559/pt-br.php)
 [![DOI:10.11606/T.3.2019.tde-23102019-120559](https://zenodo.org/badge/DOI/10.11606/T.3.2019.tde-23102019-120559.svg)](https://doi.org/10.11606/T.3.2019.tde-23102019-120559)
-- [CASTILLO LEMA, José. A generic network function virtualization manager and orchestrator for content-centric networks [doi:10.11606/T.3.2019.tde-23102019-120559]. São Paulo : Escola Politécnica, Universidade de São Paulo, 2019. PhD. Thesis in Electronic Systems. [last accessed 2020-06-01].](https://teses.usp.br/teses/disponiveis/3/3142/tde-23102019-120559/pt-br.php) [![DOI:10.11606/T.3.2019.tde-23102019-120559](https://zenodo.org/badge/DOI/10.11606/T.3.2019.tde-23102019-120559.svg)](https://doi.org/10.11606/T.3.2019.tde-23102019-120559)
+- [CASTILLO LEMA, José. **A generic network function virtualization manager and orchestrator for content-centric networks** [doi:10.11606/T.3.2019.tde-23102019-120559]. São Paulo : Escola Politécnica, Universidade de São Paulo, 2019. PhD. Thesis in Electronic Systems. [last accessed 2020-06-01].](https://teses.usp.br/teses/disponiveis/3/3142/tde-23102019-120559/pt-br.php) [![DOI:10.11606/T.3.2019.tde-23102019-120559](https://zenodo.org/badge/DOI/10.11606/T.3.2019.tde-23102019-120559.svg)](https://doi.org/10.11606/T.3.2019.tde-23102019-120559)
 
 
 Use cases
