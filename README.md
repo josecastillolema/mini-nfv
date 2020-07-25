@@ -10,7 +10,6 @@
 ![GitHub](https://img.shields.io/github/license/josecastillolema/mini-nfv)
 [![Requirements Status](https://requires.io/github/josecastillolema/mini-nfv/requirements.svg?branch=master)](https://requires.io/github/josecastillolema/mini-nfv/requirements/?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/josecastillolema/mini-nfv/badge.svg)](https://snyk.io/test/github/josecastillolema/mini-nfv)
-[![HitCount](http://hits.dwyl.io/josecastillolema/mini-nfv.svg)](http://hits.dwyl.io/josecastillolema/mini-nfv)
 ![Python application](https://github.com/josecastillolema/mini-nfv/workflows/Python%20application/badge.svg)
 
 # mini-nfv
