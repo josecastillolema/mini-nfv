@@ -2,6 +2,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/josecastillolema/mini-nfv)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/josecastillolema/mini-nfv)
 ![GitHub top language](https://img.shields.io/github/languages/top/josecastillolema/mini-nfv)
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=josecastillolema.mini-nfv&title=hits)
 ![GitHub Pipenv locked Python version](https://img.shields.io/github/pipenv/locked/python-version/josecastillolema/mini-nfv)
 ![GitHub Pipenv locked dependency version](https://img.shields.io/github/pipenv/locked/dependency-version/josecastillolema/mini-nfv/netaddr)
 ![GitHub Pipenv locked dependency version](https://img.shields.io/github/pipenv/locked/dependency-version/josecastillolema/mini-nfv/pyyaml)
