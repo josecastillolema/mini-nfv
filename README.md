@@ -195,7 +195,8 @@ $ pip install -r ./requirements.txt
 ```
 $ pipenv install
 ```
-<br />
+  
+
 If you are running Ubuntu 16.04, the `openvswitch-ovscontroller` was recently renamed to `openvswitch-testcontroller`.
 To solve it, you need to create a symbolic link to `ovs-testcontroller` that is called `ovs-controller`.
 ```
