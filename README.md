@@ -29,7 +29,7 @@ Publications
 --------------
 - [J. Castillo-Lema, A. Venâncio Neto, F. de Oliveira and S. Takeo Kofuji, "**Mininet-NFV: Evolving Mininet with OASIS TOSCA NVF profiles Towards Reproducible NFV Prototyping**", *2019 IEEE Conference on Network Softwarization (NetSoft)*, Paris, France, 2019, pp. 506-512, doi: 10.1109/NETSOFT.2019.8806686.](https://ieeexplore.ieee.org/document/8806686)
 [![DOI:10.1109/NETSOFT.2019.8806686](https://zenodo.org/badge/DOI/10.1109/NETSOFT.2019.8806686.svg)](https://doi.org/10.1109/NETSOFT.2019.8806686)
-- [CASTILLO LEMA, José. **A generic network function virtualization manager and orchestrator for content-centric networks** [doi:10.11606/T.3.2019.tde-23102019-120559]. São Paulo : Polytechnic School of the University of São Paulo, 2019. PhD. Thesis in Electronic Systems. [last accessed 2020-06-01].](https://teses.usp.br/teses/disponiveis/3/3142/tde-23102019-120559/pt-br.php) [![DOI:10.11606/T.3.2019.tde-23102019-120559](https://zenodo.org/badge/DOI/10.11606/T.3.2019.tde-23102019-120559.svg)](https://doi.org/10.11606/T.3.2019.tde-23102019-120559)
+- [CASTILLO LEMA, José. **A generic Network Function Virtualization Manager and Orchestrator for Content-Centric Networks** [doi:10.11606/T.3.2019.tde-23102019-120559]. São Paulo : Polytechnic School of the University of São Paulo, 2019. PhD. Thesis in Electronic Systems. [last accessed 2020-06-01].](https://teses.usp.br/teses/disponiveis/3/3142/tde-23102019-120559/pt-br.php) [![DOI:10.11606/T.3.2019.tde-23102019-120559](https://zenodo.org/badge/DOI/10.11606/T.3.2019.tde-23102019-120559.svg)](https://doi.org/10.11606/T.3.2019.tde-23102019-120559)
 
 
 Use cases
