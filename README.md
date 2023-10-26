@@ -205,8 +205,8 @@ In Ubuntu 18.04 `openvswitch-testcontroller` must be stopped before running mini
 $ sudo systemctl stop openvswitch-testcontroller.service
 ```
 
-mini-nfv use
---------------
+mini-nfv
+--------
 ```
 Usage: mininfv [options]
 
@@ -282,7 +282,7 @@ NXST_FLOW reply (xid=0x4):
 ```
 
 
-VNF Manager Use
+VNF Manager
 --------------
 
  - **VNFD creation/listing/removal/template show**
@@ -487,7 +487,7 @@ VNF Manager Use
     rtt min/avg/max/mdev = 0.111/1.419/3.430/1.443 ms
     ```
 
-NFV Orchestrator Use
+NFV Orchestrator
 --------------
 
  - **VNFFG creation/listing/removal**
